@@ -55,7 +55,7 @@ module.exports = class FileRouter {
             this.onFile(path.dirname(f), curr);
         }, (curr, f, prev) => {
             if(require.cache[f]){
-                this.delRouter(require.cache[f]);
+                this.delRouter(require.cache[f], curr.name.substring(0, curr.name.length - '.js'.length));
                 Reflect.deleteProperty(require.cache, f);
             }
         });

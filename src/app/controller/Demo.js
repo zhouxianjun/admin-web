@@ -31,7 +31,10 @@ module.exports = class Demo {
             this.body = 'bbb';
         });
     }
-    $(ctx, next) {
+    $(ctx) {
         ctx.body = '33';
+    }
+    say(ctx) {
+        ctx.body = 'say';
     }
 };
