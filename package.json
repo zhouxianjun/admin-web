@@ -1,0 +1,18 @@
+{
+  "name": "admin-web",
+  "version": "1.0.0",
+  "description": "admin web for koa and adminlte",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Gary",
+  "license": "ISC",
+  "dependencies": {
+    "koa": "^1.2.0",
+    "koa-router": "^5.4.0",
+    "tracer": "^0.8.3",
+    "walk": "^2.3.9",
+    "watch": "^0.19.1"
+  }
+}
