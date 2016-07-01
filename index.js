@@ -66,7 +66,7 @@ app.use(function* rbac(next) {
 });
 
 // router
-new FileRouter(router).auto('./src/app/controller');
+new FileRouter(router).auto('./src/controller');
 app.on('error', (err, ctx) =>
     logger.error('server error', err, ctx)
 );

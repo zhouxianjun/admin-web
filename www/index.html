@@ -33,7 +33,7 @@
     <header class="main-header">
 
         <!-- Logo -->
-        <a href="index2.html" class="logo navbar-fixed-top">
+        <a href="#" class="logo navbar-fixed-top">
             <!-- mini logo for sidebar mini 50x50 pixels -->
             <span class="logo-mini"><b>A</b>LT</span>
             <!-- logo for regular state and mobile devices -->
@@ -335,15 +335,7 @@
             <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu">
                 <li class="header">MAIN NAVIGATION</li>
-                <!-- ko foreach: myItems -->
-                    <!-- ko if: sub -->
-                    <li class="treeview">
-                        <a href="#">
-                            <i class="fa fa-dashboard"></i> <span>Dashboard</span> <i
-                                class="fa fa-angle-left pull-right"></i>
-                        </a>
-                    </li>
-                    <!-- /ko -->
+                <!-- ko template: {name: 'menus-template'} -->
                 <!-- /ko -->
                 <li class="active treeview">
                     <a href="#">
@@ -1574,6 +1566,7 @@
 <script src="plugins/jQuery/jQuery-2.2.0.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="plugins/jquery.tmpl.min.js"></script>
 <script src="plugins/knockout-3.4.0.js"></script>
 <!-- FastClick -->
 <script src="plugins/fastclick/fastclick.js"></script>
@@ -1592,8 +1585,43 @@
 <script src="dist/js/pages/dashboard2.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
+<script type="text/html" id="menus-template">
+    {{each menus}}
+        {{tmpl($item) "#menu-template"}}
+    {{/each}}
+</script>
+<script type="text/html" id="menu-template">
+    {{if $data.sub && $data.sub.length > 0}}
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-dashboard"></i>
+            <span>${$data.name}</span>
+            <i class="fa fa-angle-left pull-right"></i>
+        </a>
+        <ul class="treeview-menu">
+            {{each $data.sub}}
+            {{tmpl($item) "#menu-template"}}
+            {{/each}}
+        </ul>
+    </li>
+    {{else}}
+    <li><a href="#"><i class="fa fa-book"></i> <span>${$data{$id}}</span></a></li>
+    {{/if}}
+</script>
 <script>
-
+    var viewModel = {
+        menus: ko.observableArray([{
+            id: 1000,
+            pid: 0,
+            name: 'test',
+            sub: [{
+                id: 1001,
+                pid: 1000,
+                name: 'test11'
+            }]
+        }])
+    };
+    ko.applyBindings(viewModel);
 </script>
 </body>
 </html>
