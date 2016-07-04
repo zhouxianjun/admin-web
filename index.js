@@ -32,7 +32,7 @@ const router = require('koa-router')();
 const Static = require('koa-static');
 const app = new Koa();
 
-const ignoreUrl = ['/login'];
+const ignoreUrl = ['/user/login'];
 
 //logger
 app.use(function* log(next) {

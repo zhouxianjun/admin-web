@@ -27,6 +27,8 @@
 'use strict';
 const path = require('path');
 const watch = require('watch');
+const enumerables = ['hasOwnProperty', 'valueOf', 'isPrototypeOf', 'propertyIsEnumerable',
+    'toLocaleString', 'toString', 'constructor'];
 module.exports = class Utils {
     static watch(dir, onChange, onDelete){
         watch.watchTree(dir, (f, curr, prev) => {
@@ -65,5 +67,82 @@ module.exports = class Utils {
                 Reflect.apply(callback, callback, [pwd, service, base]);
             }
         }
+    }
+    static merge(source) {
+        var i = 1,
+            ln = arguments.length,
+            mergeFn = Utils.merge,
+            cloneFn = Utils.clone,
+            object, key, value, sourceKey;
+
+        for (; i < ln; i++) {
+            object = arguments[i];
+
+            for (key in object) {
+                value = object[key];
+                if (value && value.constructor === Object) {
+                    sourceKey = source[key];
+                    if (sourceKey && sourceKey.constructor === Object) {
+                        mergeFn(sourceKey, value);
+                    }
+                    else {
+                        source[key] = cloneFn(value);
+                    }
+                }
+                else {
+                    source[key] = value;
+                }
+            }
+        }
+
+        return source;
+    }
+    static clone(item) {
+        if (item === null || item === undefined) {
+            return item;
+        }
+
+        // DOM nodes
+        if (item.nodeType && item.cloneNode) {
+            return item.cloneNode(true);
+        }
+
+        // Strings
+        var type = toString.call(item);
+
+        // Dates
+        if (type === '[object Date]') {
+            return new Date(item.getTime());
+        }
+
+        var i, j, k, clone, key;
+
+        // Arrays
+        if (type === '[object Array]') {
+            i = item.length;
+
+            clone = [];
+
+            while (i--) {
+                clone[i] = Utils.clone(item[i]);
+            }
+        }
+        // Objects
+        else if (type === '[object Object]' && item.constructor === Object) {
+            clone = {};
+
+            for (key in item) {
+                clone[key] = Utils.clone(item[key]);
+            }
+
+            if (enumerables) {
+                for (j = enumerables.length; j--;) {
+                    k = enumerables[j];
+                    clone[k] = item[k];
+                }
+            }
+        }
+
+        return clone || item;
     }
 };

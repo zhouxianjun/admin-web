@@ -22,8 +22,9 @@ fis.hook('relative');
 fis.match('**', { relative: true });
 //清除其他配置，只剩下如下配置
 fis.match('*.{js,css,png}', {
-    useHash: false
+    useHash: true
 });
+/*
 fis.match('/app/module/(**).js', {
     isMod: true,
     moduleId: 'app/module/$1'
@@ -36,11 +37,13 @@ fis.hook('amd', {
         'jquery': '/plugins/jQuery/jQuery-2.2.0.min.js',
         'bootstrap': '/bootstrap/js/bootstrap.min.js',
         'fastclick': '/plugins/fastclick/fastclick.min.js',
-        'slimScroll': '/plugins/slimScroll/jquery.slimscroll.min.js'
+        'slimScroll': '/plugins/slimScroll/jquery.slimscroll.min.js',
+        'icheck': '/plugins/iCheck/icheck.min.js'
     },
     shim: {
         'jquery-tmpl': ['jquery'],
         'bootstrap': ['jquery'],
-        'slimScroll': ['jquery']
+        'slimScroll': ['jquery'],
+        'icheck': ['jquery']
     }
-});
+});*/
