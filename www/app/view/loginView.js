@@ -25,19 +25,56 @@
  *           佛祖保佑       永无BUG
  */
 'use strict';
-require(['jquery', 'userService', 'bootstrap', 'icheck'], function ($, UserService) {
+require(['jquery', 'ko', 'userService', 'bootstrap', 'icheck', 'validator'], function ($, ko, UserService) {
+    var viewModel = {
+        email: ko.observable(),
+        password: ko.observable()
+    };
+    ko.applyBindings(viewModel);
     $(function () {
         console.log(UserService);
-        var deferred = UserService.login({});
-        $.when(deferred).done(function (response) {
-            console.log(response);
-        }).fail(function (error) {
-
-        });
         $('input').iCheck({
             checkboxClass: 'icheckbox_square-blue',
             radioClass: 'iradio_square-blue',
             increaseArea: '20%' // optional
+        });
+
+        $('#loginForm').bootstrapValidator({
+            message: 'This value is not valid',
+            live: 'enabled',
+            trigger: 'blur',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            submitHandler: function(validator, form, submitButton) {
+                var deferred = UserService.login(ko.toJS(viewModel));
+                $.when(deferred).done(function (response) {
+                    console.log(response);
+                }).fail(function (error) {
+
+                });
+            },
+            fields: {
+                email: {
+                    validators: {
+                        notEmpty: {
+                            message: 'The email address is required and can\'t be empty'
+                        },
+                        emailAddress: {
+                            message: 'The input is not a valid email address'
+                        }
+                    }
+                },
+                password: {
+                    validators: {
+                        notEmpty: {
+                            message: 'The password is required and can\'t be empty'
+                        }
+                    }
+                }
+            }
         });
     });
 });

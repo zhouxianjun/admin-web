@@ -36,6 +36,7 @@ require.config({
         'fastclick': '/plugins/fastclick/fastclick.min',
         'slimScroll': '/plugins/slimScroll/jquery.slimscroll.min',
         'icheck': '/plugins/iCheck/icheck.min',
+        'validator': '/plugins/bootstrapvalidator/js/bootstrapValidator',
 
         // service
         'userService': 'service/UserService'
@@ -44,6 +45,7 @@ require.config({
         'jquery-tmpl': ['jquery'],
         'bootstrap': ['jquery'],
         'slimScroll': ['jquery'],
-        'icheck': ['jquery']
+        'icheck': ['jquery'],
+        'validator': ['jquery', 'bootstrap']
     }
 });

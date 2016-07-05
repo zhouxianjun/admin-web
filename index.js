@@ -49,7 +49,7 @@ app.use(function* log(next) {
 app.keys = ['session_key'];
 app.use(session({
     store: redisStore(),
-    ttl: 10000
+    ttl: 1000 * 60 * 5
 }));
 app.use(function *session(next){
     yield next;

@@ -34,6 +34,7 @@ module.exports = class {
         ctx.body = '33';
     }
     login(ctx) {
+        console.log(ctx.query, ctx.request.body);
         console.log(ctx.session);
         ctx.body = new Result(true, {
             key: 'menus',
