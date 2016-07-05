@@ -145,4 +145,19 @@ module.exports = class Utils {
 
         return clone || item;
     }
+
+    static writeResult(ctx, result) {
+        switch (ctx.accepts('html', 'json')) {
+            case 'html':
+                ctx.type = 'html';
+                ctx.body = `<p>${result.json.msg}</p>`;
+                break;
+            case 'json':
+                this.body = result.json;
+                break;
+            default:
+                this.type = 'text';
+                this.body = result.json.msg;
+        }
+    }
 };

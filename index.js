@@ -27,9 +27,13 @@
 'use strict';
 const logger = require('./src/util/LogUtils').log();
 const FileRouter = require('./src/util/FileRouter');
+const Utils = require('./src/util/Utils');
+const Result = require('./src/dto/Result');
 const Koa = require('koa');
 const router = require('koa-router')();
 const Static = require('koa-static');
+const session = require('koa-generic-session');
+const redisStore = require('koa-redis');
 const app = new Koa();
 
 const ignoreUrl = ['/user/login'];
@@ -41,28 +45,47 @@ app.use(function* log(next) {
     logger.log('%s %s - %s', this.method, this.url, new Date - start);
 });
 
+//session
+app.keys = ['session_key'];
+app.use(session({
+    store: redisStore(),
+    ttl: 10000
+}));
+app.use(function *session(next){
+    yield next;
+    // ignore favicon
+    if (this.path === '/favicon.ico') return;
+
+    var n = this.session.views || 0;
+    this.session.views = ++n;
+});
+
 //static
 app.use(Static('./www'));
 
-const menu = [{
-    id: 1000,
-    pid: 0,
-    name: 'test',
-    sub: [{
-        id: 1001,
-        pid: 1000,
-        name: 'test11'
-    }]
-}];
 const urls = ['/demo'];
 app.use(function* rbac(next) {
-    if (ignoreUrl.indexOf(this.url) == -1 && urls.indexOf(this.url) == -1) {
-        this.body = {
-            msg: '403'
-        };
-        return;
+    if (this.path.indexOf('.') != -1){
+        yield next;
+    } else {
+        if (ignoreUrl.indexOf(this.path) == -1 && urls.indexOf(this.path) == -1) {
+            Utils.writeResult(new Result(Result.CODE.NO_ACCESS));
+            return;
+        }
     }
     yield next;
+});
+
+app.use(function *pageNotFound(next){
+    yield next;
+
+    if (404 != this.status) return;
+
+    // we need to explicitly set 404 here
+    // so that koa doesn't assign 200 on body=
+    this.status = 404;
+
+    Utils.writeResult(this, new Result(Result.CODE.NOT_FOUND));
 });
 
 // router

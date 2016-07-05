@@ -34,20 +34,17 @@ module.exports = class Result {
         this.$prop = {
             success: false,
             data: {},
-            msg: '',
-            executeResult: {
-                result: ErrorCodeDesc.errorCode.FAIL,
-                resultMsg: ErrorCodeDesc.errorDesc.FAIL
-            }
+            msg: ErrorCodeDesc.errorDesc.FAIL,
+            code: ErrorCodeDesc.errorCode.FAIL
         };
         if(args && args.length){
             args.forEach(arg => {
                 if (_.isBoolean(arg)) {
                     this.$prop.success = arg;
                     if (this.$prop.success)
-                        this.setExecuteResult(ErrorCodeDesc.errorCode.SUCCESS);
+                        this.setResultCode(ErrorCodeDesc.errorCode.SUCCESS);
                     else
-                        this.setExecuteResult(ErrorCodeDesc.errorCode.FAIL);
+                        this.setResultCode(ErrorCodeDesc.errorCode.FAIL);
                 } else if (_.isObject(arg) && Reflect.has(arg, 'key') && typeof arg['key'] === 'string' && Reflect.has(arg, 'value')) {
                     this.$prop.data[arg.key] = arg.value;
                 } else if (typeof arg === 'string') {
@@ -55,7 +52,7 @@ module.exports = class Result {
                 } else if (_.isObject(arg)) {
                     this.$prop = Utils.merge(this.$prop, arg || {});
                 } else if (!_.isNaN(arg)) {
-
+                    this.setResultCode(arg);
                 }
             });
         }
@@ -63,16 +60,12 @@ module.exports = class Result {
     get isSuccess() {
         return this.$prop.success;
     }
-    setExecuteResult(executeResult) {
-        if (_.isObject(executeResult)) {
-            this.$prop.executeResult = executeResult;
-        } else if (!_.isNaN(executeResult)) {
-            this.$prop.executeResult = {
-                result: executeResult,
-                resultMsg: ErrorCodeDesc.getDesc(executeResult)
-            }
+    setResultCode(code) {
+       if (!_.isNaN(code)) {
+            this.$prop.code = code;
+            this.$prop.msg = ErrorCodeDesc.getDesc(code);
         }
-        this.$prop.success = this.$prop.executeResult.result == ErrorCodeDesc.errorCode.SUCCESS;
+        this.$prop.success = this.$prop.code == ErrorCodeDesc.errorCode.SUCCESS;
         return this;
     }
     addData(key, value) {
@@ -80,5 +73,11 @@ module.exports = class Result {
     }
     getData(key) {
         return this.$prop.data[key];
+    }
+    get json() {
+        return this.$prop;
+    }
+    static get CODE() {
+        return ErrorCodeDesc.errorCode;
     }
 };
