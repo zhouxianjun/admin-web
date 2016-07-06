@@ -87,6 +87,7 @@ module.exports = class FileRouter {
                     url = fKey + '/' + method;
                 }
                 this.router[tmp.type || 'all'](url, function *(next) {
+                    this.status = 200;
                     Reflect.apply(tmp[method], tmp, [this, next]);
                 });
                 logger.info('注册Controller<%s>:%s = %s', simpleName, url, simpleName + '.' + method);

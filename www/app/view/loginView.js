@@ -27,7 +27,7 @@
 'use strict';
 require(['jquery', 'ko', 'userService', 'bootstrap', 'icheck', 'validator'], function ($, ko, UserService) {
     var viewModel = {
-        email: ko.observable(),
+        username: ko.observable(),
         password: ko.observable()
     };
     ko.applyBindings(viewModel);
@@ -52,18 +52,21 @@ require(['jquery', 'ko', 'userService', 'bootstrap', 'icheck', 'validator'], fun
                 var deferred = UserService.login(ko.toJS(viewModel));
                 $.when(deferred).done(function (response) {
                     console.log(response);
+                    window.location.href = './index.html';
                 }).fail(function (error) {
-
+                    alert('登录失败');
                 });
             },
             fields: {
-                email: {
+                username: {
                     validators: {
                         notEmpty: {
-                            message: 'The email address is required and can\'t be empty'
+                            message: 'The username is required and can\'t be empty'
                         },
-                        emailAddress: {
-                            message: 'The input is not a valid email address'
+                        stringLength: {
+                            min: 3,
+                            max: 20,
+                            message: 'The full name must be less than 20 characters'
                         }
                     }
                 },
@@ -71,6 +74,11 @@ require(['jquery', 'ko', 'userService', 'bootstrap', 'icheck', 'validator'], fun
                     validators: {
                         notEmpty: {
                             message: 'The password is required and can\'t be empty'
+                        },
+                        stringLength: {
+                            min: 6,
+                            max: 20,
+                            message: 'The full name must be less than 20 characters'
                         }
                     }
                 }

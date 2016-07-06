@@ -39,7 +39,8 @@ require.config({
         'validator': '/plugins/bootstrapvalidator/js/bootstrapValidator',
 
         // service
-        'userService': 'service/UserService'
+        'userService': 'service/UserService',
+        'permissionsService': 'service/PermissionsService'
     },
     shim: {
         'jquery-tmpl': ['jquery'],

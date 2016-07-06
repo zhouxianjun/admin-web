@@ -64,7 +64,7 @@ app.use(function *session(next){
 app.use(Static('./www'));
 
 const urls = ['/demo'];
-app.use(function* rbac(next) {
+/*app.use(function* rbac(next) {
     if (this.path.indexOf('.') != -1){
         yield next;
     } else {
@@ -74,7 +74,7 @@ app.use(function* rbac(next) {
         }
     }
     yield next;
-});
+});*/
 
 app.use(function *pageNotFound(next){
     yield next;
