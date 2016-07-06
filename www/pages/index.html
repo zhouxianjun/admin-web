@@ -3,16 +3,16 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>AdminLTE 2 | Dashboard</title>
+    <title>数据管理系统</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.6 -->
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
-  <!--  &lt;!&ndash; Font Awesome &ndash;&gt;
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
-    &lt;!&ndash; Ionicons &ndash;&gt;
+    <!-- Ionicons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-    &lt;!&ndash; jvectormap &ndash;&gt;
+    <!-- jvectormap
     <link rel="stylesheet" href="../plugins/jvectormap/jquery-jvectormap-1.2.2.css">-->
     <!-- Theme style -->
     <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
@@ -35,9 +35,9 @@
         <!-- Logo -->
         <a href="#" class="logo navbar-fixed-top">
             <!-- mini logo for sidebar mini 50x50 pixels -->
-            <span class="logo-mini"><b>A</b>LT</span>
+            <span class="logo-mini">HAILIN</span>
             <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg"><b>Admin</b>LTE</span>
+            <span class="logo-lg">数据管理系统</span>
         </a>
 
         <!-- Header Navbar: style can be found in header.less -->
@@ -260,7 +260,7 @@
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <img src="../dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-                            <span class="hidden-xs">Alexander Pierce</span>
+                            <span class="hidden-xs" data-bind="text: name">Alexander Pierce</span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
@@ -268,32 +268,18 @@
                                 <img src="../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
                                 <p>
-                                    Alexander Pierce - Web Developer
-                                    <small>Member since Nov. 2012</small>
+                                    一些资料显示
+                                    <small>XXXXXXX</small>
                                 </p>
                             </li>
                             <!-- Menu Body -->
-                            <li class="user-body">
-                                <div class="row">
-                                    <div class="col-xs-4 text-center">
-                                        <a href="#">Followers</a>
-                                    </div>
-                                    <div class="col-xs-4 text-center">
-                                        <a href="#">Sales</a>
-                                    </div>
-                                    <div class="col-xs-4 text-center">
-                                        <a href="#">Friends</a>
-                                    </div>
-                                </div>
-                                <!-- /.row -->
-                            </li>
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-left">
-                                    <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                    <a href="#" class="btn btn-default btn-flat">资料</a>
                                 </div>
                                 <div class="pull-right">
-                                    <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                    <a href="#" data-bind="click: logout" class="btn btn-default btn-flat">退出</a>
                                 </div>
                             </li>
                         </ul>
@@ -317,12 +303,12 @@
                     <img src="../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
                 </div>
                 <div class="pull-left info">
-                    <p>Alexander Pierce</p>
+                    <p data-bind="text: name">Alexander Pierce</p>
                     <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                 </div>
             </div>
             <!-- search form -->
-            <form action="#" method="get" class="sidebar-form">
+            <form action="#" method="get" class="sidebar-form" style="display: none">
                 <div class="input-group">
                     <input type="text" name="q" class="form-control" placeholder="Search...">
               <span class="input-group-btn">
@@ -333,9 +319,10 @@
             </form>
             <!-- /.search form -->
             <!-- sidebar menu: : style can be found in sidebar.less -->
-            <ul class="sidebar-menu" data-bind="template: {name: 'menus-template', foreach: menus}">
+            <ul class="sidebar-menu">
                 <li class="header">MAIN NAVIGATION</li>
-
+                <!-- ko template: {name: 'menus-template', foreach: menus} -->
+                <!-- /ko -->
             </ul>
         </section>
         <!-- /.sidebar -->
@@ -403,7 +390,7 @@
         <div class="pull-right hidden-xs">
             <b>Version</b> 2.3.3
         </div>
-        <strong>Copyright &copy; 2014-2015 <a href="http://almsaeedstudio.com">Almsaeed Studio</a>.</strong> All rights
+        <strong>Copyright &copy; 2014-2016 <a href="http://blog.cn-face.com">Alone Studio</a>.</strong> All rights
         reserved.
     </footer>
 
@@ -602,31 +589,25 @@
 </div>
 <!-- ./wrapper -->
 <script type="text/html" id="menus-template">
-    <!-- ko template -->
-        2222
+    <!-- ko template: {name: 'menu-template'} -->
     <!-- /ko -->
-    <!-- ko if: id == 1000 -->
-        1111
-    <!-- /ko -->
-    {{each(i, menu) menus}}
-        {{tmpl(menu) "#menu-template"}}
-    {{/each}}
 </script>
 <script type="text/html" id="menu-template">
     <!-- ko if: sub.length > 0 -->
     <li class="treeview">
         <a href="#">
-            <i class="fa ${icon}"></i>
+            <i data-bind="css: 'fa ' + icon"></i>
             <span data-bind="text: name"></span>
             <i class="fa fa-angle-left pull-right"></i>
         </a>
         <ul class="treeview-menu">
-
+            <!-- ko template: {name: 'menu-template', foreach: sub} -->
+            <!-- /ko -->
         </ul>
     </li>
     <!-- /ko -->
     <!-- ko if: sub.length <= 0 -->
-    <li><a href="#" data-bind="click: menuClick"><i class="fa ${icon}"></i> <span data-bind="text: name"></span></a></li>
+    <li><a href="#" data-bind="click: $root.menuClick"><i data-bind="css: 'fa ' + icon"></i> <span data-bind="text: name"></span></a></li>
     <!-- /ko -->
 </script>
 <script src="../plugins/require.js"></script>

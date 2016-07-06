@@ -36,7 +36,8 @@ module.exports = class ErrorCodeDesc {
             NOT_FOUND: 404,
             UNKNOWN_ERROR: 500,
             UN_AUTHORIZED: 401,
-            NO_ACCESS: 403
+            NO_ACCESS: 403,
+            NO_LOGIN: 99
         }
     }
     static get errorDesc() {
@@ -48,7 +49,8 @@ module.exports = class ErrorCodeDesc {
             NOT_FOUND: '未找到',
             UNKNOWN_ERROR: '未知错误',
             UN_AUTHORIZED: '未授权',
-            NO_ACCESS: '禁止访问:没有访问的权限'
+            NO_ACCESS: '禁止访问:没有访问的权限',
+            NO_LOGIN: '未登录'
         }
     }
     static getDesc(code) {

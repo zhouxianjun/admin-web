@@ -1,8 +1,8 @@
 /**
  * Created with JetBrains Idea.
  * User: Gary
- * Date: 16-7-4
- * Time: 下午9:18
+ * Date: 16-7-6
+ * Time: 下午11:21
  *                 _ooOoo_
  *                o8888888o
  *                88" . "88
@@ -25,26 +25,6 @@
  *           佛祖保佑       永无BUG
  */
 'use strict';
-const Result = require('../dto/Result');
-module.exports = class {
-    static get path() {
-        return '/user';
-    }
-    logout(ctx) {
-        ctx.session = null;
-        ctx.redirect('/');
-    }
-    login(ctx) {
-        var param = ctx.request.body;
-        if (!param || !param.username) {
-            ctx.throw(400);
-            return;
-        }
-        console.log(ctx.session);
-        ctx.session.user = {
-            username: param.username,
-            name: param.username
-        };
-        ctx.redirect('/pages/index.html');
-    }
-};
+require(['jquery', 'treetable'], function ($) {
+    $("#menuTable").treetable();
+});

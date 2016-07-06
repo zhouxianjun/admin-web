@@ -45,7 +45,7 @@ module.exports = class {
                     pid: 1000,
                     name: '菜单配置',
                     panel: 'permissions_panel',
-                    path: '#',
+                    path: '/pages/menuMgr.html',
                     icon: '',
                     sub: []
                 }, {
@@ -115,6 +115,9 @@ module.exports = class {
                 panel: 'data_send_panel',
                 sub: []
             }]
+        }, {
+            key: 'user',
+            value: ctx.session.user
         }).json;
     }
 };

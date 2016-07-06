@@ -34,9 +34,10 @@ const router = require('koa-router')();
 const Static = require('koa-static');
 const session = require('koa-generic-session');
 const redisStore = require('koa-redis');
+const bodyParser = require('koa-bodyparser');
 const app = new Koa();
 
-const ignoreUrl = ['/user/login'];
+const ignoreUrl = ['/user/login', '/'];
 
 //logger
 app.use(function* log(next) {
@@ -44,6 +45,9 @@ app.use(function* log(next) {
     yield next;
     logger.log('%s %s - %s', this.method, this.url, new Date - start);
 });
+
+//body
+app.use(bodyParser());
 
 //session
 app.keys = ['session_key'];
@@ -54,7 +58,7 @@ app.use(session({
 app.use(function *session(next){
     yield next;
     // ignore favicon
-    if (this.path === '/favicon.ico') return;
+    if (this.path === '/favicon.ico' || !this.session) return;
 
     var n = this.session.views || 0;
     this.session.views = ++n;
@@ -64,17 +68,21 @@ app.use(function *session(next){
 app.use(Static('./www'));
 
 const urls = ['/demo'];
-/*app.use(function* rbac(next) {
+app.use(function* rbac(next) {
     if (this.path.indexOf('.') != -1){
         yield next;
     } else {
-        if (ignoreUrl.indexOf(this.path) == -1 && urls.indexOf(this.path) == -1) {
-            Utils.writeResult(new Result(Result.CODE.NO_ACCESS));
+        if (ignoreUrl.indexOf(this.path) == -1 && !this.session.user) {
+            Utils.writeResult(this, new Result(Result.CODE.NO_LOGIN));
             return;
         }
+        /*if (ignoreUrl.indexOf(this.path) == -1 && urls.indexOf(this.path) == -1) {
+            Utils.writeResult(new Result(Result.CODE.NO_ACCESS));
+            return;
+        }*/
     }
     yield next;
-});*/
+});
 
 app.use(function *pageNotFound(next){
     yield next;
@@ -86,6 +94,10 @@ app.use(function *pageNotFound(next){
     this.status = 404;
 
     Utils.writeResult(this, new Result(Result.CODE.NOT_FOUND));
+});
+
+router.get('/', function *(next) {
+    this.redirect('/pages/login.html');
 });
 
 // router

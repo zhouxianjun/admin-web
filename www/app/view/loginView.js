@@ -48,15 +48,15 @@ require(['jquery', 'ko', 'userService', 'bootstrap', 'icheck', 'validator'], fun
                 invalid: 'glyphicon glyphicon-remove',
                 validating: 'glyphicon glyphicon-refresh'
             },
-            submitHandler: function(validator, form, submitButton) {
-                var deferred = UserService.login(ko.toJS(viewModel));
+            /*submitHandler: function(validator, form, submitButton) {
+                var deferred = UserService.login(ko.toJSON(viewModel));
                 $.when(deferred).done(function (response) {
                     console.log(response);
                     window.location.href = './index.html';
                 }).fail(function (error) {
                     alert('登录失败');
                 });
-            },
+            },*/
             fields: {
                 username: {
                     validators: {

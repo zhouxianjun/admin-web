@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "koa": "^1.2.0",
+    "koa-bodyparser": "^2.2.0",
     "koa-generic-session": "^1.11.1",
     "koa-redis": "^2.1.1",
     "koa-router": "^5.4.0",

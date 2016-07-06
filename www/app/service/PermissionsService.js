@@ -31,6 +31,7 @@ define(['jquery'], function ($) {
             return $.ajax({
                 url: '/permissions/menus',
                 type: 'get',
+                dataType: 'json',
                 contentType : 'application/json'
             });
         }

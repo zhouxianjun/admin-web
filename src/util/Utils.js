@@ -149,15 +149,19 @@ module.exports = class Utils {
     static writeResult(ctx, result) {
         switch (ctx.accepts('html', 'json')) {
             case 'html':
+                if (result.code == 99) {
+                    ctx.redirect('/');
+                    return;
+                }
                 ctx.type = 'html';
                 ctx.body = `<p>${result.json.msg}</p>`;
                 break;
             case 'json':
-                this.body = result.json;
+                ctx.body = result.json;
                 break;
             default:
-                this.type = 'text';
-                this.body = result.json.msg;
+                ctx.type = 'text';
+                ctx.body = result.json.msg;
         }
     }
 };

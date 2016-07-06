@@ -29,6 +29,7 @@ require.config({
     baseUrl: '/app',
     paths: {
         'app': 'app',
+        'util': 'util',
         'jquery-tmpl': '/plugins/jquery.tmpl.min',
         'ko': '/plugins/knockout-3.4.0',
         'jquery': '/plugins/jQuery/jQuery-2.2.0.min',
@@ -37,6 +38,7 @@ require.config({
         'slimScroll': '/plugins/slimScroll/jquery.slimscroll.min',
         'icheck': '/plugins/iCheck/icheck.min',
         'validator': '/plugins/bootstrapvalidator/js/bootstrapValidator',
+        'treetable': '/plugins/jquery.treetable',
 
         // service
         'userService': 'service/UserService',
@@ -47,6 +49,7 @@ require.config({
         'bootstrap': ['jquery'],
         'slimScroll': ['jquery'],
         'icheck': ['jquery'],
-        'validator': ['jquery', 'bootstrap']
+        'validator': ['jquery', 'bootstrap'],
+        'treetable': ['jquery']
     }
 });
