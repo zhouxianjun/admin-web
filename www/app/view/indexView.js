@@ -54,8 +54,7 @@ require(['jquery', 'ko', 'permissionsService', 'util', 'jquery-tmpl', 'app', 'bo
             var exist = false;
             $.each(viewModel.tabs(), function (index, tab) {
                 if (tab.href == parentRoot.panel) {
-                    tab.src = '';
-                    tab.src = data.path;
+                    tab.src(data.path);
                     exist = true;
                     return false;
                 }
@@ -65,7 +64,7 @@ require(['jquery', 'ko', 'permissionsService', 'util', 'jquery-tmpl', 'app', 'bo
                 viewModel.tabs.push({
                     name: parentRoot.name,
                     href: parentRoot.panel,
-                    src: data.path,
+                    src: ko.observable(data.path),
                     icon: parentRoot.icon
                 });
             }

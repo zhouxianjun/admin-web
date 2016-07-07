@@ -39,6 +39,7 @@ require.config({
         'icheck': '/plugins/iCheck/icheck.min',
         'validator': '/plugins/bootstrapvalidator/js/bootstrapValidator',
         'treetable': '/plugins/jquery.treetable',
+        'xtree': '/plugins/xtree/dhtmlxtree',
 
         // service
         'userService': 'service/UserService',

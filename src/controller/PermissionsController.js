@@ -31,6 +31,20 @@ module.exports = class {
     static get path() {
         return '/permissions';
     }
+    roles(ctx) {
+        ctx.body = {
+            id: 0,
+            text: '超级管理员',
+            open: 1,
+            items: [{
+                id: 2,
+                text: '管理员2'
+            }, {
+                id: 3,
+                text: '管理员3'
+            }]
+        };
+    }
     menus(ctx) {
         ctx.body = new Result(true, {
             key: 'menus',
@@ -53,7 +67,7 @@ module.exports = class {
                     pid: 1000,
                     name: '角色配置',
                     panel: 'permissions_panel',
-                    path: '#',
+                    path: '/pages/roleMgr.html',
                     icon: '',
                     sub: []
                 }, {

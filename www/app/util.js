@@ -44,6 +44,20 @@ define(['jquery'], function ($) {
                 console.log(error);
                 alert('请求失败');
             });
+        },
+        adjustIframeHeight: function (hasParent) {
+            var p = parent;
+            if (hasParent) {
+                p = parent.parent;
+            }
+            if (p != null && typeof p != 'undefined') {
+                if ($('body').height() < 500 && !hasParent) {
+                    var height = p.window.innerHeight - 166 < 500 ? 500 : parent.window.innerHeight - 166;
+                    p.$('div.active iframe').height(height);
+                } else {
+                    p.$('div.active iframe').height($('body').height());
+                }
+            }
         }
-    };
+    }
 });
