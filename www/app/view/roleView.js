@@ -25,43 +25,20 @@
  *           佛祖保佑       永无BUG
  */
 'use strict';
-require(['jquery', 'util', 'xtree'], function ($, util) {
+require(['jquery', 'util', 'dhtmlx'], function ($, util) {
     $(function () {
-        var tree = new dhtmlXTreeObject('tree_role', '100%', '100%', 0);
-        tree.setImagePath('/plugins/xtree/imgs/dhxtree_material/');
-        tree.loadJSONObject({
-            id: 0,
-            item: [{
-                id: 1, text: '超级管理员',
-                item: [{
-                    id: 2,
-                    text: '管理员1'
-                }, {
-                    id: 3,
-                    text: '管理员2'
-                }]
-            }]
-        });
-        var menu = new dhtmlXMenuObject({
-            context: true,
-            icons_path: '/plugins/xtree/imgs/dhxmenu_material/',
-            items: [{
-                id: 'modify',
-                text: '修改'
-            }, {
-                type: "separator"
-            }, {
-                id: 'add', text: '新增', img: "dhxmenu_arrow_down.png"
-            }, {
-                id: 'del', text: '删除', img: "dhxmenu_arrow_up.png"
-            }]
-        });
-        console.log(menu);
-        menu.attachEvent('onClick', function(id, zoneId, cas){
-            
-        });
-        //menu.setImagePath('/plugins/xtree/imgs/dhxmenu_material/');
-        tree.enableContextMenu(menu);
+        var myTreeGrid = new dhtmlXGridObject('tree_role');
+        myTreeGrid.setImagePath('/plugins/dhtmlx/imgs/');
+        myTreeGrid.setHeader(',名称,上级角色,状态,创建时间,更新时间');
+        myTreeGrid.setColumnIds(',name,pname,status,create_date,update_date');
+        myTreeGrid.setInitWidths('60');
+        myTreeGrid.setColAlign('center,center,center,center,center,center');
+        myTreeGrid.setColTypes('tree,ed,ro,ch,ro,ro');
+        myTreeGrid.setColSorting("str,str,str,str,str,str");
+        myTreeGrid.enableDragAndDrop(true);
+        //myTreeGrid.enableAutoWidth(true);
+        myTreeGrid.init();
+        myTreeGrid.load('/permissions/rolesByMgr', 'js');
         util.adjustIframeHeight();
     });
 });

@@ -31,19 +31,72 @@ module.exports = class {
     static get path() {
         return '/permissions';
     }
-    roles(ctx) {
-        ctx.body = {
-            id: 0,
-            text: '超级管理员',
-            open: 1,
-            items: [{
-                id: 2,
-                text: '管理员2'
+    rolesByMgr(ctx) {
+        ctx.body = [{
+            id: 1000,
+            name: '超级管理员',
+            pname: '',
+            create_date: '2016-07-08 11:11:11',
+            update_date: '2016-07-08 11:11:11',
+            status: true,
+            rows: [{
+                id: 2000,
+                name: '管理员2',
+                pname: '超级管理员',
+                create_date: '2016-07-08 11:11:11',
+                update_date: '2016-07-08',
+                status: true
             }, {
-                id: 3,
-                text: '管理员3'
+                id: 3000,
+                name: '管理员3',
+                pname: '超级管理员',
+                create_date: '2016-07-08 11:11:11',
+                update_date: '2016-07-08',
+                status: false
             }]
-        };
+        }];
+    }
+    menusByMgr(ctx) {
+        ctx.body = [{
+            id: 1000,
+            seq: 1,
+            name: "权限管理",
+            icon: 'fa-dashboard',
+            target: 'permissions_panel',
+            status: true,
+            rows: [{
+                id: 1001,
+                seq: 1,
+                name: '菜单配置',
+                target: 'permissions_panel',
+                path: '/pages/menuMgr.html',
+                icon: '',
+                status: true
+            }, {
+                id: 1002,
+                seq: 2,
+                name: '角色配置',
+                target: 'permissions_panel',
+                path: '/pages/roleMgr.html',
+                icon: '',
+                status: true
+            }, {
+                id: 1003,
+                seq: 3,
+                name: '用户配置',
+                target: 'permissions_panel',
+                path: '#',
+                icon: '',
+                status: false
+            }]
+        }, {
+            id: 1100,
+            seq: 1,
+            name: '设备管理',
+            icon: 'fa-dashboard',
+            target: 'device_panel',
+            status: true
+        }];
     }
     menus(ctx) {
         ctx.body = new Result(true, {
