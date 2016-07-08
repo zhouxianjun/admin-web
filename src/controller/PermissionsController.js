@@ -27,6 +27,7 @@
 'use strict';
 const Result = require('../dto/Result');
 const Utils = require('../util/Utils');
+const ThriftClient = require('node-thrift-client');
 module.exports = class {
     static get path() {
         return '/permissions';
