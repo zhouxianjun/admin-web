@@ -27,6 +27,7 @@
 'use strict';
 const path = require('path');
 const watch = require('watch');
+const thrift = require('thrift');
 const enumerables = ['hasOwnProperty', 'valueOf', 'isPrototypeOf', 'propertyIsEnumerable',
     'toLocaleString', 'toString', 'constructor'];
 module.exports = class Utils {
@@ -163,5 +164,26 @@ module.exports = class Utils {
                 ctx.type = 'text';
                 ctx.body = result.json.msg;
         }
+    }
+
+    static makeTree(array, pid, prop_parent, prop_id, prop_child, renderer){
+        let result = [] , temp;
+        for(let item of array){
+            Reflect.ownKeys(item).forEach(key => {
+                if (item[key] instanceof thrift.Int64)
+                    item[key] = item[key].toNumber();
+            });
+            if(item[prop_parent] == pid){
+                result.push(item);
+                temp = Utils.makeTree(array, item[prop_id], prop_parent, prop_id, prop_child);
+                if(temp.length > 0){
+                    item[prop_child] = temp;
+                }
+            }
+            if (typeof renderer == 'function') {
+                renderer(item);
+            }
+        }
+        return result;
     }
 };

@@ -25,7 +25,7 @@
  *           佛祖保佑       永无BUG
  */
 'use strict';
-define(['jquery'], function ($) {
+define(['jquery', 'layer'], function ($, layer) {
     return {
         send: function (deferred, callback, errorFn) {
             $.when(deferred).done(function (response) {
@@ -33,16 +33,21 @@ define(['jquery'], function ($) {
                     window.location.href = '/';
                     return;
                 }
+                if (response.code != 1) {
+                    layer.msg(response.msg || '操作失败', {icon: 2});
+                    if (typeof errorFn === 'function') {
+                        errorFn(response);
+                        return;
+                    }
+                }
                 if (typeof callback === 'function') {
                     callback(response);
                 }
             }).fail(function (error) {
+                layer.msg('操作失败', {icon: 2});
                 if (typeof errorFn === 'function') {
                     errorFn(error);
-                    return;
                 }
-                console.log(error);
-                alert('请求失败');
             });
         },
         adjustIframeHeight: function (hasParent) {

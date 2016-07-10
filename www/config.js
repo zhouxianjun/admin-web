@@ -40,6 +40,9 @@ require.config({
         'validator': '/plugins/bootstrapvalidator/js/bootstrapValidator',
         'treetable': '/plugins/jquery.treetable',
         'dhtmlx': '/plugins/dhtmlx/dhtmlx',
+        'moment-locales': '/plugins/moment/moment-with-locales',
+        'moment': '/plugins/moment/moment',
+        'layer': '/plugins/layer/layer',
 
         // service
         'userService': 'service/UserService',
@@ -51,6 +54,8 @@ require.config({
         'slimScroll': ['jquery'],
         'icheck': ['jquery'],
         'validator': ['jquery', 'bootstrap'],
-        'treetable': ['jquery']
+        'treetable': ['jquery'],
+        'moment-locales': ['moment'],
+        'layer': ['jquery']
     }
 });

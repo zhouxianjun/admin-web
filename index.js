@@ -53,7 +53,7 @@ app.use(bodyParser());
 app.keys = ['session_key'];
 app.use(session({
     store: redisStore(),
-    ttl: 1000 * 60 * 5
+    ttl: 1000 * 60 * 50
 }));
 app.use(function *session(next){
     yield next;
@@ -100,10 +100,14 @@ router.get('/', function *(next) {
     this.redirect('/pages/login.html');
 });
 
-// router
-new FileRouter(router).auto('./src/controller');
 app.on('error', (err, ctx) =>
     logger.error('server error', err, ctx)
 );
+
 app.use(router.routes()).use(router.allowedMethods());
-app.listen(3000);
+
+require('./src/ThirftClient')(() => {
+    // router
+    new FileRouter(router).auto('./src/controller');
+    app.listen(3000);
+});

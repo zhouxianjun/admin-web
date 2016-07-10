@@ -80,17 +80,22 @@ module.exports = class FileRouter {
                 descriptor.get === undefined &&
                 descriptor.set === undefined &&
                 typeof descriptor.value == 'function') {
+                let name = descriptor.value.name;
                 let url;
-                if(method === '$'){
+                if(name === '$'){
                     url = fKey;
                 }else {
-                    url = fKey + '/' + method;
+                    url = fKey + '/' + name;
                 }
-                this.router[tmp.type || 'all'](url, function *(next) {
-                    this.status = 200;
-                    Reflect.apply(tmp[method], tmp, [this, next]);
-                });
-                logger.info('注册Controller<%s>:%s = %s', simpleName, url, simpleName + '.' + method);
+
+                if (descriptor.value.constructor.name == 'GeneratorFunction') {
+                    this.router.all(url, descriptor.value);
+                } else {
+                    this.router[tmp.type || 'all'](url, function *(next) {
+                        Reflect.apply(tmp[method], tmp, [this, next]);
+                    });
+                }
+                logger.info('注册Controller<%s>:%s = %s', simpleName, url, simpleName + '.' + name);
             }
         });
     }

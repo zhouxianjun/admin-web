@@ -10,13 +10,13 @@ var Q = thrift.Q;
 var PublicStruct_ttypes = require('./PublicStruct_types')
 
 
-var ttypes = require('./RoleService_types');
+var ttypes = require('./MenuService_types');
 //HELPER FUNCTIONS AND STRUCTURES
 
-RoleService_roles_args = function(args) {
+MenuService_menus_args = function(args) {
 };
-RoleService_roles_args.prototype = {};
-RoleService_roles_args.prototype.read = function(input) {
+MenuService_menus_args.prototype = {};
+MenuService_menus_args.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -34,14 +34,14 @@ RoleService_roles_args.prototype.read = function(input) {
   return;
 };
 
-RoleService_roles_args.prototype.write = function(output) {
-  output.writeStructBegin('RoleService_roles_args');
+MenuService_menus_args.prototype.write = function(output) {
+  output.writeStructBegin('MenuService_menus_args');
   output.writeFieldStop();
   output.writeStructEnd();
   return;
 };
 
-RoleService_roles_result = function(args) {
+MenuService_menus_result = function(args) {
   this.success = null;
   this.ex = null;
   if (args instanceof PublicStruct_ttypes.InvalidOperation) {
@@ -50,15 +50,15 @@ RoleService_roles_result = function(args) {
   }
   if (args) {
     if (args.success !== undefined && args.success !== null) {
-      this.success = Thrift.copyList(args.success, [PublicStruct_ttypes.RoleStruct]);
+      this.success = Thrift.copyList(args.success, [PublicStruct_ttypes.MenuStruct]);
     }
     if (args.ex !== undefined && args.ex !== null) {
       this.ex = args.ex;
     }
   }
 };
-RoleService_roles_result.prototype = {};
-RoleService_roles_result.prototype.read = function(input) {
+MenuService_menus_result.prototype = {};
+MenuService_menus_result.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -83,7 +83,7 @@ RoleService_roles_result.prototype.read = function(input) {
         for (var _i5 = 0; _i5 < _size0; ++_i5)
         {
           var elem6 = null;
-          elem6 = new PublicStruct_ttypes.RoleStruct();
+          elem6 = new PublicStruct_ttypes.MenuStruct();
           elem6.read(input);
           this.success.push(elem6);
         }
@@ -109,8 +109,8 @@ RoleService_roles_result.prototype.read = function(input) {
   return;
 };
 
-RoleService_roles_result.prototype.write = function(output) {
-  output.writeStructBegin('RoleService_roles_result');
+MenuService_menus_result.prototype.write = function(output) {
+  output.writeStructBegin('MenuService_menus_result');
   if (this.success !== null && this.success !== undefined) {
     output.writeFieldBegin('success', Thrift.Type.LIST, 0);
     output.writeListBegin(Thrift.Type.STRUCT, this.success.length);
@@ -135,20 +135,16 @@ RoleService_roles_result.prototype.write = function(output) {
   return;
 };
 
-RoleService_add_args = function(args) {
-  this.name = null;
-  this.pid = null;
+MenuService_menusByUser_args = function(args) {
+  this.user = null;
   if (args) {
-    if (args.name !== undefined && args.name !== null) {
-      this.name = args.name;
-    }
-    if (args.pid !== undefined && args.pid !== null) {
-      this.pid = args.pid;
+    if (args.user !== undefined && args.user !== null) {
+      this.user = args.user;
     }
   }
 };
-RoleService_add_args.prototype = {};
-RoleService_add_args.prototype.read = function(input) {
+MenuService_menusByUser_args.prototype = {};
+MenuService_menusByUser_args.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -162,15 +158,91 @@ RoleService_add_args.prototype.read = function(input) {
     switch (fid)
     {
       case 1:
-      if (ftype == Thrift.Type.STRING) {
-        this.name = input.readString();
+      if (ftype == Thrift.Type.I64) {
+        this.user = input.readI64();
       } else {
         input.skip(ftype);
       }
       break;
-      case 2:
-      if (ftype == Thrift.Type.I64) {
-        this.pid = input.readI64();
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+MenuService_menusByUser_args.prototype.write = function(output) {
+  output.writeStructBegin('MenuService_menusByUser_args');
+  if (this.user !== null && this.user !== undefined) {
+    output.writeFieldBegin('user', Thrift.Type.I64, 1);
+    output.writeI64(this.user);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+MenuService_menusByUser_result = function(args) {
+  this.success = null;
+  this.ex = null;
+  if (args instanceof PublicStruct_ttypes.InvalidOperation) {
+    this.ex = args;
+    return;
+  }
+  if (args) {
+    if (args.success !== undefined && args.success !== null) {
+      this.success = Thrift.copyList(args.success, [PublicStruct_ttypes.MenuStruct]);
+    }
+    if (args.ex !== undefined && args.ex !== null) {
+      this.ex = args.ex;
+    }
+  }
+};
+MenuService_menusByUser_result.prototype = {};
+MenuService_menusByUser_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.LIST) {
+        var _size8 = 0;
+        var _rtmp312;
+        this.success = [];
+        var _etype11 = 0;
+        _rtmp312 = input.readListBegin();
+        _etype11 = _rtmp312.etype;
+        _size8 = _rtmp312.size;
+        for (var _i13 = 0; _i13 < _size8; ++_i13)
+        {
+          var elem14 = null;
+          elem14 = new PublicStruct_ttypes.MenuStruct();
+          elem14.read(input);
+          this.success.push(elem14);
+        }
+        input.readListEnd();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.ex = new PublicStruct_ttypes.InvalidOperation();
+        this.ex.read(input);
       } else {
         input.skip(ftype);
       }
@@ -184,16 +256,25 @@ RoleService_add_args.prototype.read = function(input) {
   return;
 };
 
-RoleService_add_args.prototype.write = function(output) {
-  output.writeStructBegin('RoleService_add_args');
-  if (this.name !== null && this.name !== undefined) {
-    output.writeFieldBegin('name', Thrift.Type.STRING, 1);
-    output.writeString(this.name);
+MenuService_menusByUser_result.prototype.write = function(output) {
+  output.writeStructBegin('MenuService_menusByUser_result');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.LIST, 0);
+    output.writeListBegin(Thrift.Type.STRUCT, this.success.length);
+    for (var iter15 in this.success)
+    {
+      if (this.success.hasOwnProperty(iter15))
+      {
+        iter15 = this.success[iter15];
+        iter15.write(output);
+      }
+    }
+    output.writeListEnd();
     output.writeFieldEnd();
   }
-  if (this.pid !== null && this.pid !== undefined) {
-    output.writeFieldBegin('pid', Thrift.Type.I64, 2);
-    output.writeI64(this.pid);
+  if (this.ex !== null && this.ex !== undefined) {
+    output.writeFieldBegin('ex', Thrift.Type.STRUCT, 1);
+    this.ex.write(output);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
@@ -201,7 +282,61 @@ RoleService_add_args.prototype.write = function(output) {
   return;
 };
 
-RoleService_add_result = function(args) {
+MenuService_add_args = function(args) {
+  this.menu = null;
+  if (args) {
+    if (args.menu !== undefined && args.menu !== null) {
+      this.menu = new PublicStruct_ttypes.MenuStruct(args.menu);
+    }
+  }
+};
+MenuService_add_args.prototype = {};
+MenuService_add_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.menu = new PublicStruct_ttypes.MenuStruct();
+        this.menu.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+MenuService_add_args.prototype.write = function(output) {
+  output.writeStructBegin('MenuService_add_args');
+  if (this.menu !== null && this.menu !== undefined) {
+    output.writeFieldBegin('menu', Thrift.Type.STRUCT, 1);
+    this.menu.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+MenuService_add_result = function(args) {
   this.success = null;
   this.ex = null;
   if (args instanceof PublicStruct_ttypes.InvalidOperation) {
@@ -217,8 +352,8 @@ RoleService_add_result = function(args) {
     }
   }
 };
-RoleService_add_result.prototype = {};
-RoleService_add_result.prototype.read = function(input) {
+MenuService_add_result.prototype = {};
+MenuService_add_result.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -255,8 +390,8 @@ RoleService_add_result.prototype.read = function(input) {
   return;
 };
 
-RoleService_add_result.prototype.write = function(output) {
-  output.writeStructBegin('RoleService_add_result');
+MenuService_add_result.prototype.write = function(output) {
+  output.writeStructBegin('MenuService_add_result');
   if (this.success !== null && this.success !== undefined) {
     output.writeFieldBegin('success', Thrift.Type.I64, 0);
     output.writeI64(this.success);
@@ -272,28 +407,141 @@ RoleService_add_result.prototype.write = function(output) {
   return;
 };
 
-RoleService_update_args = function(args) {
+MenuService_update_args = function(args) {
+  this.menu = null;
+  if (args) {
+    if (args.menu !== undefined && args.menu !== null) {
+      this.menu = new PublicStruct_ttypes.MenuStruct(args.menu);
+    }
+  }
+};
+MenuService_update_args.prototype = {};
+MenuService_update_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.menu = new PublicStruct_ttypes.MenuStruct();
+        this.menu.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+MenuService_update_args.prototype.write = function(output) {
+  output.writeStructBegin('MenuService_update_args');
+  if (this.menu !== null && this.menu !== undefined) {
+    output.writeFieldBegin('menu', Thrift.Type.STRUCT, 1);
+    this.menu.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+MenuService_update_result = function(args) {
+  this.success = null;
+  this.ex = null;
+  if (args instanceof PublicStruct_ttypes.InvalidOperation) {
+    this.ex = args;
+    return;
+  }
+  if (args) {
+    if (args.success !== undefined && args.success !== null) {
+      this.success = args.success;
+    }
+    if (args.ex !== undefined && args.ex !== null) {
+      this.ex = args.ex;
+    }
+  }
+};
+MenuService_update_result.prototype = {};
+MenuService_update_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.BOOL) {
+        this.success = input.readBool();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.ex = new PublicStruct_ttypes.InvalidOperation();
+        this.ex.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+MenuService_update_result.prototype.write = function(output) {
+  output.writeStructBegin('MenuService_update_result');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.BOOL, 0);
+    output.writeBool(this.success);
+    output.writeFieldEnd();
+  }
+  if (this.ex !== null && this.ex !== undefined) {
+    output.writeFieldBegin('ex', Thrift.Type.STRUCT, 1);
+    this.ex.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+MenuService_delMenu_args = function(args) {
   this.id = null;
-  this.name = null;
-  this.status = null;
-  this.pid = null;
   if (args) {
     if (args.id !== undefined && args.id !== null) {
       this.id = args.id;
     }
-    if (args.name !== undefined && args.name !== null) {
-      this.name = args.name;
-    }
-    if (args.status !== undefined && args.status !== null) {
-      this.status = args.status;
-    }
-    if (args.pid !== undefined && args.pid !== null) {
-      this.pid = args.pid;
-    }
   }
 };
-RoleService_update_args.prototype = {};
-RoleService_update_args.prototype.read = function(input) {
+MenuService_delMenu_args.prototype = {};
+MenuService_delMenu_args.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -313,27 +561,9 @@ RoleService_update_args.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
-      case 2:
-      if (ftype == Thrift.Type.STRING) {
-        this.name = input.readString();
-      } else {
+      case 0:
         input.skip(ftype);
-      }
-      break;
-      case 3:
-      if (ftype == Thrift.Type.BOOL) {
-        this.status = input.readBool();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 4:
-      if (ftype == Thrift.Type.I64) {
-        this.pid = input.readI64();
-      } else {
-        input.skip(ftype);
-      }
-      break;
+        break;
       default:
         input.skip(ftype);
     }
@@ -343,34 +573,19 @@ RoleService_update_args.prototype.read = function(input) {
   return;
 };
 
-RoleService_update_args.prototype.write = function(output) {
-  output.writeStructBegin('RoleService_update_args');
+MenuService_delMenu_args.prototype.write = function(output) {
+  output.writeStructBegin('MenuService_delMenu_args');
   if (this.id !== null && this.id !== undefined) {
     output.writeFieldBegin('id', Thrift.Type.I64, 1);
     output.writeI64(this.id);
     output.writeFieldEnd();
   }
-  if (this.name !== null && this.name !== undefined) {
-    output.writeFieldBegin('name', Thrift.Type.STRING, 2);
-    output.writeString(this.name);
-    output.writeFieldEnd();
-  }
-  if (this.status !== null && this.status !== undefined) {
-    output.writeFieldBegin('status', Thrift.Type.BOOL, 3);
-    output.writeBool(this.status);
-    output.writeFieldEnd();
-  }
-  if (this.pid !== null && this.pid !== undefined) {
-    output.writeFieldBegin('pid', Thrift.Type.I64, 4);
-    output.writeI64(this.pid);
-    output.writeFieldEnd();
-  }
   output.writeFieldStop();
   output.writeStructEnd();
   return;
 };
 
-RoleService_update_result = function(args) {
+MenuService_delMenu_result = function(args) {
   this.success = null;
   this.ex = null;
   if (args instanceof PublicStruct_ttypes.InvalidOperation) {
@@ -386,8 +601,8 @@ RoleService_update_result = function(args) {
     }
   }
 };
-RoleService_update_result.prototype = {};
-RoleService_update_result.prototype.read = function(input) {
+MenuService_delMenu_result.prototype = {};
+MenuService_delMenu_result.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -424,8 +639,8 @@ RoleService_update_result.prototype.read = function(input) {
   return;
 };
 
-RoleService_update_result.prototype.write = function(output) {
-  output.writeStructBegin('RoleService_update_result');
+MenuService_delMenu_result.prototype.write = function(output) {
+  output.writeStructBegin('MenuService_delMenu_result');
   if (this.success !== null && this.success !== undefined) {
     output.writeFieldBegin('success', Thrift.Type.BOOL, 0);
     output.writeBool(this.success);
@@ -441,175 +656,16 @@ RoleService_update_result.prototype.write = function(output) {
   return;
 };
 
-RoleService_updateStatus_args = function(args) {
-  this.ids = null;
-  this.status = null;
-  if (args) {
-    if (args.ids !== undefined && args.ids !== null) {
-      this.ids = Thrift.copyList(args.ids, [null]);
-    }
-    if (args.status !== undefined && args.status !== null) {
-      this.status = args.status;
-    }
-  }
-};
-RoleService_updateStatus_args.prototype = {};
-RoleService_updateStatus_args.prototype.read = function(input) {
-  input.readStructBegin();
-  while (true)
-  {
-    var ret = input.readFieldBegin();
-    var fname = ret.fname;
-    var ftype = ret.ftype;
-    var fid = ret.fid;
-    if (ftype == Thrift.Type.STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 1:
-      if (ftype == Thrift.Type.LIST) {
-        var _size8 = 0;
-        var _rtmp312;
-        this.ids = [];
-        var _etype11 = 0;
-        _rtmp312 = input.readListBegin();
-        _etype11 = _rtmp312.etype;
-        _size8 = _rtmp312.size;
-        for (var _i13 = 0; _i13 < _size8; ++_i13)
-        {
-          var elem14 = null;
-          elem14 = input.readI64();
-          this.ids.push(elem14);
-        }
-        input.readListEnd();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 2:
-      if (ftype == Thrift.Type.BOOL) {
-        this.status = input.readBool();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      default:
-        input.skip(ftype);
-    }
-    input.readFieldEnd();
-  }
-  input.readStructEnd();
-  return;
-};
-
-RoleService_updateStatus_args.prototype.write = function(output) {
-  output.writeStructBegin('RoleService_updateStatus_args');
-  if (this.ids !== null && this.ids !== undefined) {
-    output.writeFieldBegin('ids', Thrift.Type.LIST, 1);
-    output.writeListBegin(Thrift.Type.I64, this.ids.length);
-    for (var iter15 in this.ids)
-    {
-      if (this.ids.hasOwnProperty(iter15))
-      {
-        iter15 = this.ids[iter15];
-        output.writeI64(iter15);
-      }
-    }
-    output.writeListEnd();
-    output.writeFieldEnd();
-  }
-  if (this.status !== null && this.status !== undefined) {
-    output.writeFieldBegin('status', Thrift.Type.BOOL, 2);
-    output.writeBool(this.status);
-    output.writeFieldEnd();
-  }
-  output.writeFieldStop();
-  output.writeStructEnd();
-  return;
-};
-
-RoleService_updateStatus_result = function(args) {
-  this.success = null;
-  this.ex = null;
-  if (args instanceof PublicStruct_ttypes.InvalidOperation) {
-    this.ex = args;
-    return;
-  }
-  if (args) {
-    if (args.success !== undefined && args.success !== null) {
-      this.success = args.success;
-    }
-    if (args.ex !== undefined && args.ex !== null) {
-      this.ex = args.ex;
-    }
-  }
-};
-RoleService_updateStatus_result.prototype = {};
-RoleService_updateStatus_result.prototype.read = function(input) {
-  input.readStructBegin();
-  while (true)
-  {
-    var ret = input.readFieldBegin();
-    var fname = ret.fname;
-    var ftype = ret.ftype;
-    var fid = ret.fid;
-    if (ftype == Thrift.Type.STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 0:
-      if (ftype == Thrift.Type.BOOL) {
-        this.success = input.readBool();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 1:
-      if (ftype == Thrift.Type.STRUCT) {
-        this.ex = new PublicStruct_ttypes.InvalidOperation();
-        this.ex.read(input);
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      default:
-        input.skip(ftype);
-    }
-    input.readFieldEnd();
-  }
-  input.readStructEnd();
-  return;
-};
-
-RoleService_updateStatus_result.prototype.write = function(output) {
-  output.writeStructBegin('RoleService_updateStatus_result');
-  if (this.success !== null && this.success !== undefined) {
-    output.writeFieldBegin('success', Thrift.Type.BOOL, 0);
-    output.writeBool(this.success);
-    output.writeFieldEnd();
-  }
-  if (this.ex !== null && this.ex !== undefined) {
-    output.writeFieldBegin('ex', Thrift.Type.STRUCT, 1);
-    this.ex.write(output);
-    output.writeFieldEnd();
-  }
-  output.writeFieldStop();
-  output.writeStructEnd();
-  return;
-};
-
-RoleServiceClient = exports.Client = function(output, pClass) {
+MenuServiceClient = exports.Client = function(output, pClass) {
     this.output = output;
     this.pClass = pClass;
     this._seqid = 0;
     this._reqs = {};
 };
-RoleServiceClient.prototype = {};
-RoleServiceClient.prototype.seqid = function() { return this._seqid; }
-RoleServiceClient.prototype.new_seqid = function() { return this._seqid += 1; }
-RoleServiceClient.prototype.roles = function(callback) {
+MenuServiceClient.prototype = {};
+MenuServiceClient.prototype.seqid = function() { return this._seqid; }
+MenuServiceClient.prototype.new_seqid = function() { return this._seqid += 1; }
+MenuServiceClient.prototype.menus = function(callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
     var _defer = Q.defer();
@@ -620,24 +676,24 @@ RoleServiceClient.prototype.roles = function(callback) {
         _defer.resolve(result);
       }
     };
-    this.send_roles();
+    this.send_menus();
     return _defer.promise;
   } else {
     this._reqs[this.seqid()] = callback;
-    this.send_roles();
+    this.send_menus();
   }
 };
 
-RoleServiceClient.prototype.send_roles = function() {
+MenuServiceClient.prototype.send_menus = function() {
   var output = new this.pClass(this.output);
-  output.writeMessageBegin('roles', Thrift.MessageType.CALL, this.seqid());
-  var args = new RoleService_roles_args();
+  output.writeMessageBegin('menus', Thrift.MessageType.CALL, this.seqid());
+  var args = new MenuService_menus_args();
   args.write(output);
   output.writeMessageEnd();
   return this.output.flush();
 };
 
-RoleServiceClient.prototype.recv_roles = function(input,mtype,rseqid) {
+MenuServiceClient.prototype.recv_menus = function(input,mtype,rseqid) {
   var callback = this._reqs[rseqid] || function() {};
   delete this._reqs[rseqid];
   if (mtype == Thrift.MessageType.EXCEPTION) {
@@ -646,7 +702,7 @@ RoleServiceClient.prototype.recv_roles = function(input,mtype,rseqid) {
     input.readMessageEnd();
     return callback(x);
   }
-  var result = new RoleService_roles_result();
+  var result = new MenuService_menus_result();
   result.read(input);
   input.readMessageEnd();
 
@@ -656,9 +712,9 @@ RoleServiceClient.prototype.recv_roles = function(input,mtype,rseqid) {
   if (null !== result.success) {
     return callback(null, result.success);
   }
-  return callback('roles failed: unknown result');
+  return callback('menus failed: unknown result');
 };
-RoleServiceClient.prototype.add = function(name, pid, callback) {
+MenuServiceClient.prototype.menusByUser = function(user, callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
     var _defer = Q.defer();
@@ -669,26 +725,25 @@ RoleServiceClient.prototype.add = function(name, pid, callback) {
         _defer.resolve(result);
       }
     };
-    this.send_add(name, pid);
+    this.send_menusByUser(user);
     return _defer.promise;
   } else {
     this._reqs[this.seqid()] = callback;
-    this.send_add(name, pid);
+    this.send_menusByUser(user);
   }
 };
 
-RoleServiceClient.prototype.send_add = function(name, pid) {
+MenuServiceClient.prototype.send_menusByUser = function(user) {
   var output = new this.pClass(this.output);
-  output.writeMessageBegin('add', Thrift.MessageType.CALL, this.seqid());
-  var args = new RoleService_add_args();
-  args.name = name;
-  args.pid = pid;
+  output.writeMessageBegin('menusByUser', Thrift.MessageType.CALL, this.seqid());
+  var args = new MenuService_menusByUser_args();
+  args.user = user;
   args.write(output);
   output.writeMessageEnd();
   return this.output.flush();
 };
 
-RoleServiceClient.prototype.recv_add = function(input,mtype,rseqid) {
+MenuServiceClient.prototype.recv_menusByUser = function(input,mtype,rseqid) {
   var callback = this._reqs[rseqid] || function() {};
   delete this._reqs[rseqid];
   if (mtype == Thrift.MessageType.EXCEPTION) {
@@ -697,7 +752,57 @@ RoleServiceClient.prototype.recv_add = function(input,mtype,rseqid) {
     input.readMessageEnd();
     return callback(x);
   }
-  var result = new RoleService_add_result();
+  var result = new MenuService_menusByUser_result();
+  result.read(input);
+  input.readMessageEnd();
+
+  if (null !== result.ex) {
+    return callback(result.ex);
+  }
+  if (null !== result.success) {
+    return callback(null, result.success);
+  }
+  return callback('menusByUser failed: unknown result');
+};
+MenuServiceClient.prototype.add = function(menu, callback) {
+  this._seqid = this.new_seqid();
+  if (callback === undefined) {
+    var _defer = Q.defer();
+    this._reqs[this.seqid()] = function(error, result) {
+      if (error) {
+        _defer.reject(error);
+      } else {
+        _defer.resolve(result);
+      }
+    };
+    this.send_add(menu);
+    return _defer.promise;
+  } else {
+    this._reqs[this.seqid()] = callback;
+    this.send_add(menu);
+  }
+};
+
+MenuServiceClient.prototype.send_add = function(menu) {
+  var output = new this.pClass(this.output);
+  output.writeMessageBegin('add', Thrift.MessageType.CALL, this.seqid());
+  var args = new MenuService_add_args();
+  args.menu = menu;
+  args.write(output);
+  output.writeMessageEnd();
+  return this.output.flush();
+};
+
+MenuServiceClient.prototype.recv_add = function(input,mtype,rseqid) {
+  var callback = this._reqs[rseqid] || function() {};
+  delete this._reqs[rseqid];
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(input);
+    input.readMessageEnd();
+    return callback(x);
+  }
+  var result = new MenuService_add_result();
   result.read(input);
   input.readMessageEnd();
 
@@ -709,7 +814,7 @@ RoleServiceClient.prototype.recv_add = function(input,mtype,rseqid) {
   }
   return callback('add failed: unknown result');
 };
-RoleServiceClient.prototype.update = function(id, name, status, pid, callback) {
+MenuServiceClient.prototype.update = function(menu, callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
     var _defer = Q.defer();
@@ -720,28 +825,25 @@ RoleServiceClient.prototype.update = function(id, name, status, pid, callback) {
         _defer.resolve(result);
       }
     };
-    this.send_update(id, name, status, pid);
+    this.send_update(menu);
     return _defer.promise;
   } else {
     this._reqs[this.seqid()] = callback;
-    this.send_update(id, name, status, pid);
+    this.send_update(menu);
   }
 };
 
-RoleServiceClient.prototype.send_update = function(id, name, status, pid) {
+MenuServiceClient.prototype.send_update = function(menu) {
   var output = new this.pClass(this.output);
   output.writeMessageBegin('update', Thrift.MessageType.CALL, this.seqid());
-  var args = new RoleService_update_args();
-  args.id = id;
-  args.name = name;
-  args.status = status;
-  args.pid = pid;
+  var args = new MenuService_update_args();
+  args.menu = menu;
   args.write(output);
   output.writeMessageEnd();
   return this.output.flush();
 };
 
-RoleServiceClient.prototype.recv_update = function(input,mtype,rseqid) {
+MenuServiceClient.prototype.recv_update = function(input,mtype,rseqid) {
   var callback = this._reqs[rseqid] || function() {};
   delete this._reqs[rseqid];
   if (mtype == Thrift.MessageType.EXCEPTION) {
@@ -750,7 +852,7 @@ RoleServiceClient.prototype.recv_update = function(input,mtype,rseqid) {
     input.readMessageEnd();
     return callback(x);
   }
-  var result = new RoleService_update_result();
+  var result = new MenuService_update_result();
   result.read(input);
   input.readMessageEnd();
 
@@ -762,7 +864,7 @@ RoleServiceClient.prototype.recv_update = function(input,mtype,rseqid) {
   }
   return callback('update failed: unknown result');
 };
-RoleServiceClient.prototype.updateStatus = function(ids, status, callback) {
+MenuServiceClient.prototype.delMenu = function(id, callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
     var _defer = Q.defer();
@@ -773,26 +875,25 @@ RoleServiceClient.prototype.updateStatus = function(ids, status, callback) {
         _defer.resolve(result);
       }
     };
-    this.send_updateStatus(ids, status);
+    this.send_delMenu(id);
     return _defer.promise;
   } else {
     this._reqs[this.seqid()] = callback;
-    this.send_updateStatus(ids, status);
+    this.send_delMenu(id);
   }
 };
 
-RoleServiceClient.prototype.send_updateStatus = function(ids, status) {
+MenuServiceClient.prototype.send_delMenu = function(id) {
   var output = new this.pClass(this.output);
-  output.writeMessageBegin('updateStatus', Thrift.MessageType.CALL, this.seqid());
-  var args = new RoleService_updateStatus_args();
-  args.ids = ids;
-  args.status = status;
+  output.writeMessageBegin('delMenu', Thrift.MessageType.CALL, this.seqid());
+  var args = new MenuService_delMenu_args();
+  args.id = id;
   args.write(output);
   output.writeMessageEnd();
   return this.output.flush();
 };
 
-RoleServiceClient.prototype.recv_updateStatus = function(input,mtype,rseqid) {
+MenuServiceClient.prototype.recv_delMenu = function(input,mtype,rseqid) {
   var callback = this._reqs[rseqid] || function() {};
   delete this._reqs[rseqid];
   if (mtype == Thrift.MessageType.EXCEPTION) {
@@ -801,7 +902,7 @@ RoleServiceClient.prototype.recv_updateStatus = function(input,mtype,rseqid) {
     input.readMessageEnd();
     return callback(x);
   }
-  var result = new RoleService_updateStatus_result();
+  var result = new MenuService_delMenu_result();
   result.read(input);
   input.readMessageEnd();
 
@@ -811,12 +912,12 @@ RoleServiceClient.prototype.recv_updateStatus = function(input,mtype,rseqid) {
   if (null !== result.success) {
     return callback(null, result.success);
   }
-  return callback('updateStatus failed: unknown result');
+  return callback('delMenu failed: unknown result');
 };
-RoleServiceProcessor = exports.Processor = function(handler) {
+MenuServiceProcessor = exports.Processor = function(handler) {
   this._handler = handler
 }
-RoleServiceProcessor.prototype.process = function(input, output) {
+MenuServiceProcessor.prototype.process = function(input, output) {
   var r = input.readMessageBegin();
   if (this['process_' + r.fname]) {
     return this['process_' + r.fname].call(this, r.rseqid, input, output);
@@ -831,38 +932,38 @@ RoleServiceProcessor.prototype.process = function(input, output) {
   }
 }
 
-RoleServiceProcessor.prototype.process_roles = function(seqid, input, output) {
-  var args = new RoleService_roles_args();
+MenuServiceProcessor.prototype.process_menus = function(seqid, input, output) {
+  var args = new MenuService_menus_args();
   args.read(input);
   input.readMessageEnd();
-  if (this._handler.roles.length === 0) {
-    Q.fcall(this._handler.roles)
+  if (this._handler.menus.length === 0) {
+    Q.fcall(this._handler.menus)
       .then(function(result) {
-        var result = new RoleService_roles_result({success: result});
-        output.writeMessageBegin("roles", Thrift.MessageType.REPLY, seqid);
+        var result = new MenuService_menus_result({success: result});
+        output.writeMessageBegin("menus", Thrift.MessageType.REPLY, seqid);
         result.write(output);
         output.writeMessageEnd();
         output.flush();
       }, function (err) {
         if (err instanceof PublicStruct_ttypes.InvalidOperation) {
-          var result = new RoleService_roles_result(err);
-          output.writeMessageBegin("roles", Thrift.MessageType.REPLY, seqid);
+          var result = new MenuService_menus_result(err);
+          output.writeMessageBegin("menus", Thrift.MessageType.REPLY, seqid);
         } else {
           var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
-          output.writeMessageBegin("roles", Thrift.MessageType.EXCEPTION, seqid);
+          output.writeMessageBegin("menus", Thrift.MessageType.EXCEPTION, seqid);
         }
         result.write(output);
         output.writeMessageEnd();
         output.flush();
       });
   } else {
-    this._handler.roles(function (err, result) {
+    this._handler.menus(function (err, result) {
       if (err == null || err instanceof PublicStruct_ttypes.InvalidOperation) {
-        var result = new RoleService_roles_result((err != null ? err : {success: result}));
-        output.writeMessageBegin("roles", Thrift.MessageType.REPLY, seqid);
+        var result = new MenuService_menus_result((err != null ? err : {success: result}));
+        output.writeMessageBegin("menus", Thrift.MessageType.REPLY, seqid);
       } else {
         var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
-        output.writeMessageBegin("roles", Thrift.MessageType.EXCEPTION, seqid);
+        output.writeMessageBegin("menus", Thrift.MessageType.EXCEPTION, seqid);
       }
       result.write(output);
       output.writeMessageEnd();
@@ -871,21 +972,61 @@ RoleServiceProcessor.prototype.process_roles = function(seqid, input, output) {
   }
 }
 
-RoleServiceProcessor.prototype.process_add = function(seqid, input, output) {
-  var args = new RoleService_add_args();
+MenuServiceProcessor.prototype.process_menusByUser = function(seqid, input, output) {
+  var args = new MenuService_menusByUser_args();
   args.read(input);
   input.readMessageEnd();
-  if (this._handler.add.length === 2) {
-    Q.fcall(this._handler.add, args.name, args.pid)
+  if (this._handler.menusByUser.length === 1) {
+    Q.fcall(this._handler.menusByUser, args.user)
       .then(function(result) {
-        var result = new RoleService_add_result({success: result});
+        var result = new MenuService_menusByUser_result({success: result});
+        output.writeMessageBegin("menusByUser", Thrift.MessageType.REPLY, seqid);
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      }, function (err) {
+        if (err instanceof PublicStruct_ttypes.InvalidOperation) {
+          var result = new MenuService_menusByUser_result(err);
+          output.writeMessageBegin("menusByUser", Thrift.MessageType.REPLY, seqid);
+        } else {
+          var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+          output.writeMessageBegin("menusByUser", Thrift.MessageType.EXCEPTION, seqid);
+        }
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      });
+  } else {
+    this._handler.menusByUser(args.user, function (err, result) {
+      if (err == null || err instanceof PublicStruct_ttypes.InvalidOperation) {
+        var result = new MenuService_menusByUser_result((err != null ? err : {success: result}));
+        output.writeMessageBegin("menusByUser", Thrift.MessageType.REPLY, seqid);
+      } else {
+        var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+        output.writeMessageBegin("menusByUser", Thrift.MessageType.EXCEPTION, seqid);
+      }
+      result.write(output);
+      output.writeMessageEnd();
+      output.flush();
+    });
+  }
+}
+
+MenuServiceProcessor.prototype.process_add = function(seqid, input, output) {
+  var args = new MenuService_add_args();
+  args.read(input);
+  input.readMessageEnd();
+  if (this._handler.add.length === 1) {
+    Q.fcall(this._handler.add, args.menu)
+      .then(function(result) {
+        var result = new MenuService_add_result({success: result});
         output.writeMessageBegin("add", Thrift.MessageType.REPLY, seqid);
         result.write(output);
         output.writeMessageEnd();
         output.flush();
       }, function (err) {
         if (err instanceof PublicStruct_ttypes.InvalidOperation) {
-          var result = new RoleService_add_result(err);
+          var result = new MenuService_add_result(err);
           output.writeMessageBegin("add", Thrift.MessageType.REPLY, seqid);
         } else {
           var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
@@ -896,9 +1037,9 @@ RoleServiceProcessor.prototype.process_add = function(seqid, input, output) {
         output.flush();
       });
   } else {
-    this._handler.add(args.name, args.pid, function (err, result) {
+    this._handler.add(args.menu, function (err, result) {
       if (err == null || err instanceof PublicStruct_ttypes.InvalidOperation) {
-        var result = new RoleService_add_result((err != null ? err : {success: result}));
+        var result = new MenuService_add_result((err != null ? err : {success: result}));
         output.writeMessageBegin("add", Thrift.MessageType.REPLY, seqid);
       } else {
         var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
@@ -911,21 +1052,21 @@ RoleServiceProcessor.prototype.process_add = function(seqid, input, output) {
   }
 }
 
-RoleServiceProcessor.prototype.process_update = function(seqid, input, output) {
-  var args = new RoleService_update_args();
+MenuServiceProcessor.prototype.process_update = function(seqid, input, output) {
+  var args = new MenuService_update_args();
   args.read(input);
   input.readMessageEnd();
-  if (this._handler.update.length === 4) {
-    Q.fcall(this._handler.update, args.id, args.name, args.status, args.pid)
+  if (this._handler.update.length === 1) {
+    Q.fcall(this._handler.update, args.menu)
       .then(function(result) {
-        var result = new RoleService_update_result({success: result});
+        var result = new MenuService_update_result({success: result});
         output.writeMessageBegin("update", Thrift.MessageType.REPLY, seqid);
         result.write(output);
         output.writeMessageEnd();
         output.flush();
       }, function (err) {
         if (err instanceof PublicStruct_ttypes.InvalidOperation) {
-          var result = new RoleService_update_result(err);
+          var result = new MenuService_update_result(err);
           output.writeMessageBegin("update", Thrift.MessageType.REPLY, seqid);
         } else {
           var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
@@ -936,9 +1077,9 @@ RoleServiceProcessor.prototype.process_update = function(seqid, input, output) {
         output.flush();
       });
   } else {
-    this._handler.update(args.id, args.name, args.status, args.pid, function (err, result) {
+    this._handler.update(args.menu, function (err, result) {
       if (err == null || err instanceof PublicStruct_ttypes.InvalidOperation) {
-        var result = new RoleService_update_result((err != null ? err : {success: result}));
+        var result = new MenuService_update_result((err != null ? err : {success: result}));
         output.writeMessageBegin("update", Thrift.MessageType.REPLY, seqid);
       } else {
         var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
@@ -951,38 +1092,38 @@ RoleServiceProcessor.prototype.process_update = function(seqid, input, output) {
   }
 }
 
-RoleServiceProcessor.prototype.process_updateStatus = function(seqid, input, output) {
-  var args = new RoleService_updateStatus_args();
+MenuServiceProcessor.prototype.process_delMenu = function(seqid, input, output) {
+  var args = new MenuService_delMenu_args();
   args.read(input);
   input.readMessageEnd();
-  if (this._handler.updateStatus.length === 2) {
-    Q.fcall(this._handler.updateStatus, args.ids, args.status)
+  if (this._handler.delMenu.length === 1) {
+    Q.fcall(this._handler.delMenu, args.id)
       .then(function(result) {
-        var result = new RoleService_updateStatus_result({success: result});
-        output.writeMessageBegin("updateStatus", Thrift.MessageType.REPLY, seqid);
+        var result = new MenuService_delMenu_result({success: result});
+        output.writeMessageBegin("delMenu", Thrift.MessageType.REPLY, seqid);
         result.write(output);
         output.writeMessageEnd();
         output.flush();
       }, function (err) {
         if (err instanceof PublicStruct_ttypes.InvalidOperation) {
-          var result = new RoleService_updateStatus_result(err);
-          output.writeMessageBegin("updateStatus", Thrift.MessageType.REPLY, seqid);
+          var result = new MenuService_delMenu_result(err);
+          output.writeMessageBegin("delMenu", Thrift.MessageType.REPLY, seqid);
         } else {
           var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
-          output.writeMessageBegin("updateStatus", Thrift.MessageType.EXCEPTION, seqid);
+          output.writeMessageBegin("delMenu", Thrift.MessageType.EXCEPTION, seqid);
         }
         result.write(output);
         output.writeMessageEnd();
         output.flush();
       });
   } else {
-    this._handler.updateStatus(args.ids, args.status, function (err, result) {
+    this._handler.delMenu(args.id, function (err, result) {
       if (err == null || err instanceof PublicStruct_ttypes.InvalidOperation) {
-        var result = new RoleService_updateStatus_result((err != null ? err : {success: result}));
-        output.writeMessageBegin("updateStatus", Thrift.MessageType.REPLY, seqid);
+        var result = new MenuService_delMenu_result((err != null ? err : {success: result}));
+        output.writeMessageBegin("delMenu", Thrift.MessageType.REPLY, seqid);
       } else {
         var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
-        output.writeMessageBegin("updateStatus", Thrift.MessageType.EXCEPTION, seqid);
+        output.writeMessageBegin("delMenu", Thrift.MessageType.EXCEPTION, seqid);
       }
       result.write(output);
       output.writeMessageEnd();

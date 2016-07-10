@@ -34,6 +34,33 @@ define(['jquery'], function ($) {
                 dataType: 'json',
                 contentType : 'application/json'
             });
+        },
+        addRole: function(data) {
+            return $.ajax({
+                url: '/permissions/addRole',
+                type: 'post',
+                dataType: 'json',
+                data: data,
+                contentType : 'application/json'
+            });
+        },
+        updateRole: function(data) {
+            return $.ajax({
+                url: '/permissions/updateRole',
+                type: 'post',
+                dataType: 'json',
+                data: data,
+                contentType : 'application/json'
+            });
+        },
+        updateRoleStatus: function(data) {
+            return $.ajax({
+                url: '/permissions/updateRoleStatus',
+                type: 'post',
+                dataType: 'json',
+                data: data,
+                contentType : 'application/json'
+            });
         }
     };
 });

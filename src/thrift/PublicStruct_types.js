@@ -13,9 +13,8 @@ RoleStruct = module.exports.RoleStruct = function(args) {
   this.id = null;
   this.name = null;
   this.pid = null;
-  this.pname = null;
-  this.create_date = null;
-  this.update_date = null;
+  this.create_time = null;
+  this.update_time = null;
   this.status = null;
   if (args) {
     if (args.id !== undefined && args.id !== null) {
@@ -27,14 +26,11 @@ RoleStruct = module.exports.RoleStruct = function(args) {
     if (args.pid !== undefined && args.pid !== null) {
       this.pid = args.pid;
     }
-    if (args.pname !== undefined && args.pname !== null) {
-      this.pname = args.pname;
+    if (args.create_time !== undefined && args.create_time !== null) {
+      this.create_time = args.create_time;
     }
-    if (args.create_date !== undefined && args.create_date !== null) {
-      this.create_date = args.create_date;
-    }
-    if (args.update_date !== undefined && args.update_date !== null) {
-      this.update_date = args.update_date;
+    if (args.update_time !== undefined && args.update_time !== null) {
+      this.update_time = args.update_time;
     }
     if (args.status !== undefined && args.status !== null) {
       this.status = args.status;
@@ -76,23 +72,16 @@ RoleStruct.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
-      case 4:
-      if (ftype == Thrift.Type.STRING) {
-        this.pname = input.readString();
-      } else {
-        input.skip(ftype);
-      }
-      break;
       case 5:
       if (ftype == Thrift.Type.I64) {
-        this.create_date = input.readI64();
+        this.create_time = input.readI64();
       } else {
         input.skip(ftype);
       }
       break;
       case 6:
       if (ftype == Thrift.Type.I64) {
-        this.update_date = input.readI64();
+        this.update_time = input.readI64();
       } else {
         input.skip(ftype);
       }
@@ -130,24 +119,282 @@ RoleStruct.prototype.write = function(output) {
     output.writeI64(this.pid);
     output.writeFieldEnd();
   }
-  if (this.pname !== null && this.pname !== undefined) {
-    output.writeFieldBegin('pname', Thrift.Type.STRING, 4);
-    output.writeString(this.pname);
+  if (this.create_time !== null && this.create_time !== undefined) {
+    output.writeFieldBegin('create_time', Thrift.Type.I64, 5);
+    output.writeI64(this.create_time);
     output.writeFieldEnd();
   }
-  if (this.create_date !== null && this.create_date !== undefined) {
-    output.writeFieldBegin('create_date', Thrift.Type.I64, 5);
-    output.writeI64(this.create_date);
-    output.writeFieldEnd();
-  }
-  if (this.update_date !== null && this.update_date !== undefined) {
-    output.writeFieldBegin('update_date', Thrift.Type.I64, 6);
-    output.writeI64(this.update_date);
+  if (this.update_time !== null && this.update_time !== undefined) {
+    output.writeFieldBegin('update_time', Thrift.Type.I64, 6);
+    output.writeI64(this.update_time);
     output.writeFieldEnd();
   }
   if (this.status !== null && this.status !== undefined) {
     output.writeFieldBegin('status', Thrift.Type.BOOL, 7);
     output.writeBool(this.status);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+MenuStruct = module.exports.MenuStruct = function(args) {
+  this.id = null;
+  this.name = null;
+  this.pid = null;
+  this.description = null;
+  this.seq = null;
+  this.status = null;
+  this.create_time = null;
+  this.path = null;
+  this.target = null;
+  this.icon = null;
+  if (args) {
+    if (args.id !== undefined && args.id !== null) {
+      this.id = args.id;
+    }
+    if (args.name !== undefined && args.name !== null) {
+      this.name = args.name;
+    }
+    if (args.pid !== undefined && args.pid !== null) {
+      this.pid = args.pid;
+    }
+    if (args.description !== undefined && args.description !== null) {
+      this.description = args.description;
+    }
+    if (args.seq !== undefined && args.seq !== null) {
+      this.seq = args.seq;
+    }
+    if (args.status !== undefined && args.status !== null) {
+      this.status = args.status;
+    }
+    if (args.create_time !== undefined && args.create_time !== null) {
+      this.create_time = args.create_time;
+    }
+    if (args.path !== undefined && args.path !== null) {
+      this.path = args.path;
+    }
+    if (args.target !== undefined && args.target !== null) {
+      this.target = args.target;
+    }
+    if (args.icon !== undefined && args.icon !== null) {
+      this.icon = args.icon;
+    }
+  }
+};
+MenuStruct.prototype = {};
+MenuStruct.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.I64) {
+        this.id = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.name = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.I64) {
+        this.pid = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 4:
+      if (ftype == Thrift.Type.STRING) {
+        this.description = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 5:
+      if (ftype == Thrift.Type.I32) {
+        this.seq = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 6:
+      if (ftype == Thrift.Type.BOOL) {
+        this.status = input.readBool();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 7:
+      if (ftype == Thrift.Type.I64) {
+        this.create_time = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 8:
+      if (ftype == Thrift.Type.STRING) {
+        this.path = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 9:
+      if (ftype == Thrift.Type.STRING) {
+        this.target = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 10:
+      if (ftype == Thrift.Type.STRING) {
+        this.icon = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+MenuStruct.prototype.write = function(output) {
+  output.writeStructBegin('MenuStruct');
+  if (this.id !== null && this.id !== undefined) {
+    output.writeFieldBegin('id', Thrift.Type.I64, 1);
+    output.writeI64(this.id);
+    output.writeFieldEnd();
+  }
+  if (this.name !== null && this.name !== undefined) {
+    output.writeFieldBegin('name', Thrift.Type.STRING, 2);
+    output.writeString(this.name);
+    output.writeFieldEnd();
+  }
+  if (this.pid !== null && this.pid !== undefined) {
+    output.writeFieldBegin('pid', Thrift.Type.I64, 3);
+    output.writeI64(this.pid);
+    output.writeFieldEnd();
+  }
+  if (this.description !== null && this.description !== undefined) {
+    output.writeFieldBegin('description', Thrift.Type.STRING, 4);
+    output.writeString(this.description);
+    output.writeFieldEnd();
+  }
+  if (this.seq !== null && this.seq !== undefined) {
+    output.writeFieldBegin('seq', Thrift.Type.I32, 5);
+    output.writeI32(this.seq);
+    output.writeFieldEnd();
+  }
+  if (this.status !== null && this.status !== undefined) {
+    output.writeFieldBegin('status', Thrift.Type.BOOL, 6);
+    output.writeBool(this.status);
+    output.writeFieldEnd();
+  }
+  if (this.create_time !== null && this.create_time !== undefined) {
+    output.writeFieldBegin('create_time', Thrift.Type.I64, 7);
+    output.writeI64(this.create_time);
+    output.writeFieldEnd();
+  }
+  if (this.path !== null && this.path !== undefined) {
+    output.writeFieldBegin('path', Thrift.Type.STRING, 8);
+    output.writeString(this.path);
+    output.writeFieldEnd();
+  }
+  if (this.target !== null && this.target !== undefined) {
+    output.writeFieldBegin('target', Thrift.Type.STRING, 9);
+    output.writeString(this.target);
+    output.writeFieldEnd();
+  }
+  if (this.icon !== null && this.icon !== undefined) {
+    output.writeFieldBegin('icon', Thrift.Type.STRING, 10);
+    output.writeString(this.icon);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+InvalidOperation = module.exports.InvalidOperation = function(args) {
+  Thrift.TException.call(this, "InvalidOperation")
+  this.name = "InvalidOperation"
+  this.code = null;
+  this.msg = null;
+  if (args) {
+    if (args.code !== undefined && args.code !== null) {
+      this.code = args.code;
+    }
+    if (args.msg !== undefined && args.msg !== null) {
+      this.msg = args.msg;
+    }
+  }
+};
+Thrift.inherits(InvalidOperation, Thrift.TException);
+InvalidOperation.prototype.name = 'InvalidOperation';
+InvalidOperation.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.I32) {
+        this.code = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.msg = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+InvalidOperation.prototype.write = function(output) {
+  output.writeStructBegin('InvalidOperation');
+  if (this.code !== null && this.code !== undefined) {
+    output.writeFieldBegin('code', Thrift.Type.I32, 1);
+    output.writeI32(this.code);
+    output.writeFieldEnd();
+  }
+  if (this.msg !== null && this.msg !== undefined) {
+    output.writeFieldBegin('msg', Thrift.Type.STRING, 2);
+    output.writeString(this.msg);
     output.writeFieldEnd();
   }
   output.writeFieldStop();

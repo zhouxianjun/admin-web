@@ -27,77 +27,51 @@
 'use strict';
 const Result = require('../dto/Result');
 const Utils = require('../util/Utils');
-const ThriftClient = require('node-thrift-client');
-module.exports = class {
+const thrift = require('thrift');
+const roleService = require('../service/RoleService').instance();
+const menuService = require('../service/MenuService').instance();
+const co = require('co');
+module.exports = class PermissionsController {
     static get path() {
         return '/permissions';
     }
-    rolesByMgr(ctx) {
-        ctx.body = [{
-            id: 1000,
-            name: '超级管理员',
-            pname: '',
-            create_date: '2016-07-08 11:11:11',
-            update_date: '2016-07-08 11:11:11',
-            status: true,
-            rows: [{
-                id: 2000,
-                name: '管理员2',
-                pname: '超级管理员',
-                create_date: '2016-07-08 11:11:11',
-                update_date: '2016-07-08',
-                status: true
-            }, {
-                id: 3000,
-                name: '管理员3',
-                pname: '超级管理员',
-                create_date: '2016-07-08 11:11:11',
-                update_date: '2016-07-08',
-                status: false
-            }]
-        }];
+    * rolesByMgr() {
+        let roles = yield roleService.roles();
+        this.body = Utils.makeTree(roles, 0, 'pid', 'id', 'rows', item => {
+            if (item.rows && item.rows.length) {
+                item.tree = {
+                    image: 'folder.gif'
+                }
+            }
+        });
     }
-    menusByMgr(ctx) {
-        ctx.body = [{
-            id: 1000,
-            seq: 1,
-            name: "权限管理",
-            icon: 'fa-dashboard',
-            target: 'permissions_panel',
-            status: true,
-            rows: [{
-                id: 1001,
-                seq: 1,
-                name: '菜单配置',
-                target: 'permissions_panel',
-                path: '/pages/menuMgr.html',
-                icon: '',
-                status: true
-            }, {
-                id: 1002,
-                seq: 2,
-                name: '角色配置',
-                target: 'permissions_panel',
-                path: '/pages/roleMgr.html',
-                icon: '',
-                status: true
-            }, {
-                id: 1003,
-                seq: 3,
-                name: '用户配置',
-                target: 'permissions_panel',
-                path: '#',
-                icon: '',
-                status: false
-            }]
-        }, {
-            id: 1100,
-            seq: 1,
-            name: '设备管理',
-            icon: 'fa-dashboard',
-            target: 'device_panel',
-            status: true
-        }];
+    * addRole() {
+        let params = this.request.body;
+        let res = roleService.add(params.name, params.pid);
+        Utils.writeResult(this, new Result(res ? true : false, {
+            key: 'id',
+            value: res
+        }));
+    }
+    * updateRole() {
+        let params = this.request.body;
+        let res = roleService.update(params.id, params.name, params.status, params.pid);
+        Utils.writeResult(this, new Result(res ? true : false));
+    }
+    * updateRoleStatus() {
+        let params = this.request.body;
+        let res = roleService.updateStatus(params.ids);
+        Utils.writeResult(this, new Result(res ? true : false));
+    }
+    * menusByMgr() {
+        let menus = yield menuService.menus();
+        this.body = Utils.makeTree(menus, 0, 'pid', 'id', 'rows', item => {
+            if (item.rows && item.rows.length) {
+                item.tree = {
+                    image: 'folder.gif'
+                }
+            }
+        });
     }
     menus(ctx) {
         ctx.body = new Result(true, {
@@ -129,7 +103,7 @@ module.exports = class {
                     pid: 1000,
                     name: '用户配置',
                     panel: 'permissions_panel',
-                    path: '#',
+                    path: '/pages/userMgr.html',
                     icon: '',
                     sub: []
                 }]
