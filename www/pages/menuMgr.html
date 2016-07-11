@@ -18,6 +18,7 @@
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
     <link rel="stylesheet" href="../plugins/dhtmlx/dhtmlx.css">
+    <link rel="stylesheet" href="../plugins/layer/skin/layer.css">
 </head>
 <body>
     <div class="panel panel-success">
@@ -33,6 +34,82 @@
             </div>
         </div>
     </div>
+
+<script type="text/html" id="layer_add_menu">
+    <div class="box box-info" style="overflow: hidden" id="addMenuForm">
+        <div class="box-header with-border">
+            <h3 class="box-title">新增菜单</h3>
+        </div>
+        <!-- /.box-header -->
+        <!-- form start -->
+        <form class="form-horizontal">
+            <div class="box-body">
+                <div class="form-group">
+                    <label for="menu_name" class="col-sm-2 control-label">
+                        <span class="icon-require">*</span>名称
+                    </label>
+
+                    <div class="col-sm-10">
+                        <input type="text" name="menu_name" class="form-control" id="menu_name" placeholder="名称">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="menu_path" class="col-sm-2 control-label">路径</label>
+
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="menu_path" placeholder="访问页面路径">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="menu_target" class="col-sm-2 control-label">选项卡</label>
+
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="menu_target" placeholder="Tab选项卡标识">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="menu_icon" class="col-sm-2 control-label">图标</label>
+
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="menu_icon" placeholder="导航栏图标">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="menu_seq" class="col-sm-2 control-label">
+                        <span class="icon-require">*</span>序号
+                    </label>
+
+                    <div class="col-sm-10">
+                        <input type="number" min="0" name="menu_seq" class="form-control" id="menu_seq" placeholder="排序序号">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="menu_description" class="col-sm-2 control-label">描述</label>
+
+                    <div class="col-sm-10">
+                        <input type="text" min="0" class="form-control" id="menu_description" placeholder="描述">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 col-sm-2 col-lg-2 control-label">
+                        <span class="icon-require">*</span>
+                        状态：
+                    </label>
+                    <div class="col-md-10">
+                        <select class="form-control" name="menu_status"
+                                data-bind="options:statusOptions,optionsText:'name',optionsValue:'id',value: status,optionsCaption: '-选择-'"></select>
+                    </div>
+                </div>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+                <button type="submit" class="btn btn-default">取消</button>
+                <button type="submit" class="btn btn-info pull-right">添加</button>
+            </div>
+            <!-- /.box-footer -->
+        </form>
+    </div>
+</script>
 </body>
 <script src="../plugins/require.js"></script>
 <script src="../config.js"></script>

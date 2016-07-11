@@ -25,7 +25,18 @@
  *           佛祖保佑       永无BUG
  */
 'use strict';
-require(['jquery', 'util', 'layer', 'moment', 'permissionsService', 'dhtmlx'], function ($, util, layer, moment, PermissionsService) {
+require(['jquery', 'util', 'layer', 'moment', 'permissionsService', 'ko', 'dhtmlx', 'validator'],
+    function ($, util, layer, moment, PermissionsService, ko) {
+    var viewModel = {
+        status: ko.observable(),
+        statusOptions: ko.observableArray([{
+            name: '启用',
+            id: 1
+        }, {
+            name: '禁用',
+            id: 0
+        }])
+    };
     $(function () {
         layer.load(2);
         var myTreeGrid = new dhtmlXGridObject('menu-grid');
@@ -49,9 +60,51 @@ require(['jquery', 'util', 'layer', 'moment', 'permissionsService', 'dhtmlx'], f
         });
         menu.attachEvent("onClick", function(id, zoneId, cas){
             if (id == 'add') {
-
+                //捕获页
+                layer.open({
+                    type: 1,
+                    title: false,
+                    closeBtn: 0,
+                    area: ['500px'], //宽高
+                    content: $('#layer_add_menu').html()
+                });
+                $('#addMenuForm').bootstrapValidator({
+                    message: 'This value is not valid',
+                    live: 'enabled',
+                    trigger: 'blur',
+                    feedbackIcons: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        menu_name: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'The username is required and can\'t be empty'
+                                }
+                            }
+                        },
+                        menu_seq: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'The password is required and can\'t be empty'
+                                }
+                            }
+                        },
+                        menu_status: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'The password is required and can\'t be empty'
+                                }
+                            }
+                        }
+                    }
+                });
+                ko.applyBindings(viewModel, $('#addMenuForm')[0]);
             }
         });
+        myTreeGrid.enableContextMenu(menu);
         myTreeGrid.init();
         var combo = myTreeGrid.getColumnCombo(5);//takes the column index
         combo.enableFilteringMode(false);
@@ -61,6 +114,7 @@ require(['jquery', 'util', 'layer', 'moment', 'permissionsService', 'dhtmlx'], f
         ]);
         myTreeGrid.load('/permissions/menusByMgr', function () {
             layer.closeAll('loading');
+            ko.applyBindings(viewModel);
         }, 'js');
         util.adjustIframeHeight();
     });
