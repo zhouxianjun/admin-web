@@ -43,6 +43,7 @@ require.config({
         'moment-locales': '/plugins/moment/moment-with-locales',
         'moment': '/plugins/moment/moment',
         'layer': '/plugins/layer/layer',
+        'underscore': '/plugins/underscore/underscore',
 
         // service
         'userService': 'service/UserService',

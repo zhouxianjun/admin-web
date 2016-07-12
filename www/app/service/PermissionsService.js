@@ -35,6 +35,33 @@ define(['jquery'], function ($) {
                 contentType : 'application/json'
             });
         },
+        addMenu: function(data) {
+            return $.ajax({
+                url: '/permissions/addMenu',
+                type: 'post',
+                dataType: 'json',
+                data: data,
+                contentType : 'application/json'
+            });
+        },
+        updateMenu: function(data) {
+            return $.ajax({
+                url: '/permissions/addMenu',
+                type: 'post',
+                dataType: 'json',
+                data: data,
+                contentType : 'application/json'
+            });
+        },
+        delMenu: function(data) {
+            return $.ajax({
+                url: '/permissions/delMenu',
+                type: 'post',
+                dataType: 'json',
+                data: data,
+                contentType : 'application/json'
+            });
+        },
         addRole: function(data) {
             return $.ajax({
                 url: '/permissions/addRole',

@@ -73,6 +73,19 @@ module.exports = class PermissionsController {
             }
         });
     }
+    * addMenu() {
+        let params = this.request.body;
+        let res = menuService.add(params);
+        Utils.writeResult(this, new Result(res ? true : false, {
+            key: 'id',
+            value: res
+        }));
+    }
+    * updateMenu() {
+        let params = this.request.body;
+        let res = menuService.update(params);
+        Utils.writeResult(this, new Result(res ? true : false));
+    }
     menus(ctx) {
         ctx.body = new Result(true, {
             key: 'menus',

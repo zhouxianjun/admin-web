@@ -27,8 +27,6 @@
 'use strict';
 require(['jquery', 'util', 'layer', 'moment', 'permissionsService', 'dhtmlx'],
     function ($, util, layer, moment, PermissionsService) {
-        eXcell_ltro.prototype = new eXcell;// nests all other methods from the base class
-        eXcell_ltro.moment = moment;
         var myTreeGrid = null;
         function update(rId, name, status, pid, oldPid) {
             var id = myTreeGrid.getRowAttribute(rId, 'id');
@@ -97,14 +95,14 @@ require(['jquery', 'util', 'layer', 'moment', 'permissionsService', 'dhtmlx'],
                     var prompt = layer.prompt({
                         title: '请输入角色名称'
                     }, function(val){
-                        let rowId = myTreeGrid.contextID.split('_')[0];
-                        let id = myTreeGrid.getRowAttribute(rowId, 'id');
-                        let ajax = PermissionsService.addRole(JSON.stringify({
+                        var rowId = myTreeGrid.contextID.split('_')[0];
+                        var id = myTreeGrid.getRowAttribute(rowId, 'id');
+                        var ajax = PermissionsService.addRole(JSON.stringify({
                             name: val,
                             pid: id
                         }));
                         util.send(ajax, function (response) {
-                            let time = new Date().getTime();
+                            var time = new Date().getTime();
                             myTreeGrid.addRow(response.data.id,[
                                 response.data.id, {
                                 image: 'folder.gif'
@@ -134,27 +132,10 @@ require(['jquery', 'util', 'layer', 'moment', 'permissionsService', 'dhtmlx'],
             //myTreeGrid.enableAutoWidth(true);
             myTreeGrid.init();
             var combo = myTreeGrid.getColumnCombo(3);//takes the column index
-            combo.enableFilteringMode(false);
-            combo.addOption([
-                {value: true, text: '启用', css: 'color:green;'},
-                {value: false, text: '禁用', css: 'color:gray;'}
-            ]);
+            util.initStatusCombo(combo);
             myTreeGrid.load('/permissions/rolesByMgr', function () {
                 layer.closeAll('loading');
             }, 'js');
             util.adjustIframeHeight();
         });
 });
-function eXcell_ltro(cell){ // the eXcell name is defined here
-    if (cell){            // the default pattern, just copy it
-        this.cell = cell;
-        this.grid = this.cell.parentNode.grid;
-    }
-    this.edit = function(){}; //read-only cell doesn't have edit method
-    // the cell is read-only, so it's always in the disabled state
-    this.isDisabled = function(){ return true; }
-    this.setValue=function(val){
-        // actual data processing may be placed here, for now we just set value as it is
-        this.setCValue(eXcell_ltro.moment(val).format('YYYY-MM-DD HH:mm:ss'));
-    }
-}
