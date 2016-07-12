@@ -25,8 +25,8 @@
  *           佛祖保佑       永无BUG
  */
 'use strict';
-require(['jquery', 'util', 'layer', 'moment', 'permissionsService', 'ko', 'dhtmlx', 'validator'],
-    function ($, util, layer, moment, PermissionsService, ko) {
+require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'validator', 'slimScroll'],
+    function ($, util, layer, PermissionsService, ko) {
     var viewModel = {
         menu: {
             name: ko.observable(),
@@ -53,14 +53,13 @@ require(['jquery', 'util', 'layer', 'moment', 'permissionsService', 'ko', 'dhtml
         myTreeGrid.setColumnIds('id,tree,seq,name,path,status,target,icon');
         myTreeGrid.setColAlign('left, left,center,center,center,center,center,center');
         myTreeGrid.setColTypes('ro,tree,ed,ed,ed,combo,ed,ed');
-        // myTreeGrid.setColSorting("str,str,str,str,na,str");
         myTreeGrid.setColumnHidden(0, true);
         myTreeGrid.enableValidation(false,false,true,true,false,true,false,false);
-        myTreeGrid.setColValidators(',,Number0,NotEmpty,,Boolean');
+        myTreeGrid.setColValidators(',,Number0,NotEmpty,,NotEmpty');
         myTreeGrid.enableDragAndDrop(true);
         myTreeGrid.enableTreeGridLines();
         myTreeGrid.enableTreeCellEdit(false);
-        myTreeGrid.enableAutoHeight(false, 0, true);
+        myTreeGrid.enableAutoHeight(true, 0, true);
         var menu = new dhtmlXMenuObject({
             icons_path: '/plugins/dhtmlx/imgs/dhxmenu_skyblue/',
             context: true,
@@ -75,11 +74,27 @@ require(['jquery', 'util', 'layer', 'moment', 'permissionsService', 'ko', 'dhtml
                 var pid = myTreeGrid.getRowAttribute(rowId, 'id');
                 viewModel.menu.pid(pid);
                 //捕获页
-                layer.open({
+                var addLayer = layer.open({
                     type: 1,
-                    title: false,
-                    area: ['500px'], //宽高
-                    content: $('#layer_add_menu').html()
+                    title: '新增菜单',
+                    area: ['500px', '400px'], //宽高
+                    content: $('#layer_add_menu').html(),
+                    btn: ['确定', '取消'],
+                    yes: function () {
+                        var form = $('#addMenuForm');
+                        form.data('bootstrapValidator').validate();
+                        if (form.data('bootstrapValidator').isValid()) {
+                            var deferred = PermissionsService.addMenu(ko.toJSON(viewModel.menu));
+                            util.send(deferred, function (response) {
+                                myTreeGrid.addRow(response.data.id, [
+                                    response.data.id, '', viewModel.menu.seq(), viewModel.menu.name(), viewModel.menu.path(),
+                                    viewModel.menu.status(), viewModel.menu.target(), viewModel.menu.icon()],0,rowId);
+                                myTreeGrid.openItem(rowId);
+                                form.data('bootstrapValidator').resetForm(true);
+                                layer.close(addLayer);
+                            });
+                        }
+                    }
                 });
                 util.initValidForm($('#addMenuForm'), {
                     menu_name: {
@@ -103,30 +118,15 @@ require(['jquery', 'util', 'layer', 'moment', 'permissionsService', 'ko', 'dhtml
                         validators: {
                             notEmpty: {
                                 message: '状态不能为空'
-                            },
-                            between: {
-                                min: 0,
-                                max: 1,
-                                message: '请正确选择状态',
-                                inclusive: true
                             }
                         }
                     }
-                }, function(validator, form, submitButton) {
-                    var deferred = PermissionsService.addMenu(ko.toJSON(viewModel.menu));
-                    util.send(deferred, function (response) {
-                        myTreeGrid.addRow(response.data.id, [
-                            response.data.id, {
-                                image: 'folder.gif'
-                            }, viewModel.menu.seq(), viewModel.menu.name(), viewModel.menu.path(),
-                            viewModel.menu.status(), viewModel.menu.target(), viewModel.menu.icon()],0,rowId);
-                        myTreeGrid.openItem(rowId);
-                        form.bootstrapValidator('resetForm', true);
-                    }, function () {
-                        form.bootstrapValidator('disableSubmitButtons', false);
-                    });
                 });
                 ko.applyBindings(viewModel, $('#addMenuForm')[0]);
+                $('#addMenuForm').slimScroll({
+                    height: '100%', //可滚动区域高度
+                    disableFadeOut: true
+                });
             } else if (id == 'del') {
                 var rowId = myTreeGrid.contextID.split('_')[0];
                 var did = myTreeGrid.getRowAttribute(rowId, 'id');
@@ -140,8 +140,10 @@ require(['jquery', 'util', 'layer', 'moment', 'permissionsService', 'ko', 'dhtml
                     util.send(deferred, function (response) {
                         myTreeGrid.deleteRow(rowId);
                         layer.closeAll('loading');
+                        layer.close(confirm);
                     }, function () {
                         layer.closeAll('loading');
+                        layer.close(confirm);
                     });
                 }, function(){
                     layer.close(confirm);
@@ -151,6 +153,8 @@ require(['jquery', 'util', 'layer', 'moment', 'permissionsService', 'ko', 'dhtml
         myTreeGrid.attachEvent("onEditCell", function(stage,rId,cInd,nValue,oValue){
             if (stage == 2) {
                 if (!nValue || !nValue.length || nValue == oValue)
+                    return false;
+                if (!myTreeGrid.validateCell(rId, cInd))
                     return false;
                 update(rId, cInd, nValue);
             }
@@ -167,6 +171,7 @@ require(['jquery', 'util', 'layer', 'moment', 'permissionsService', 'ko', 'dhtml
         util.initStatusCombo(combo);
         myTreeGrid.load('/permissions/menusByMgr', function () {
             layer.closeAll('loading');
+            myTreeGrid.expandAll();
             ko.applyBindings(viewModel);
         }, 'js');
         util.adjustIframeHeight();

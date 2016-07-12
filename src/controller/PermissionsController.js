@@ -30,7 +30,8 @@ const Utils = require('../util/Utils');
 const thrift = require('thrift');
 const roleService = require('../service/RoleService').instance();
 const menuService = require('../service/MenuService').instance();
-const co = require('co');
+const userService = require('../service/UserService').instance();
+const PublicStruct = require('../thrift/PublicStruct_types');
 module.exports = class PermissionsController {
     static get path() {
         return '/permissions';
@@ -47,20 +48,20 @@ module.exports = class PermissionsController {
     }
     * addRole() {
         let params = this.request.body;
-        let res = roleService.add(params.name, params.pid);
+        let res = yield roleService.add(params.name, params.pid);
         Utils.writeResult(this, new Result(res ? true : false, {
             key: 'id',
-            value: res
+            value: res.toNumber()
         }));
     }
     * updateRole() {
         let params = this.request.body;
-        let res = roleService.update(params.id, params.name, params.status, params.pid);
+        let res = yield roleService.update(params.id, params.name, params.status, params.pid);
         Utils.writeResult(this, new Result(res ? true : false));
     }
     * updateRoleStatus() {
         let params = this.request.body;
-        let res = roleService.updateStatus(params.ids);
+        let res = yield roleService.updateStatus(params.ids);
         Utils.writeResult(this, new Result(res ? true : false));
     }
     * menusByMgr() {
@@ -75,15 +76,20 @@ module.exports = class PermissionsController {
     }
     * addMenu() {
         let params = this.request.body;
-        let res = menuService.add(params);
+        let res = yield menuService.add(new PublicStruct.MenuStruct(params));
         Utils.writeResult(this, new Result(res ? true : false, {
             key: 'id',
-            value: res
+            value: res.toNumber()
         }));
     }
     * updateMenu() {
         let params = this.request.body;
-        let res = menuService.update(params);
+        let res = yield menuService.update(new PublicStruct.MenuStruct(params));
+        Utils.writeResult(this, new Result(res ? true : false));
+    }
+    * delMenu() {
+        let params = this.request.body;
+        let res = yield menuService.delMenu(params.id);
         Utils.writeResult(this, new Result(res ? true : false));
     }
     menus(ctx) {
@@ -174,5 +180,28 @@ module.exports = class PermissionsController {
             key: 'user',
             value: ctx.session.user
         }).json;
+    }
+    * users() {
+        let users = yield userService.users();
+        this.body = Utils.makeTree(users, 0, 'pid', 'id', 'rows', item => {
+            if (item.rows && item.rows.length) {
+                item.tree = {
+                    image: 'folder.gif'
+                }
+            }
+        });
+    }
+    * addUser() {
+        let params = this.request.body;
+        let res = yield userService.add(new PublicStruct.UserStruct(params));
+        Utils.writeResult(this, new Result(res ? true : false, {
+            key: 'id',
+            value: res.toNumber()
+        }));
+    }
+    * updateUser() {
+        let params = this.request.body;
+        let res = yield userService.update(new PublicStruct.UserStruct(params));
+        Utils.writeResult(this, new Result(res ? true : false));
     }
 };

@@ -26,13 +26,12 @@
  */
 'use strict';
 const ThriftClient = require('node-thrift-client');
-module.exports = class RoleService extends ThriftClient.referenceBean {
-    roles() {}
+module.exports = class UserService extends ThriftClient.referenceBean {
+    users() {}
     add() {}
     update() {}
-    rolesBySetUser() {}
-    setMenus() {}
+    setRoles() {}
     get type() {
-        return require('../thrift/RoleService');
+        return require('../thrift/UserService');
     }
 };

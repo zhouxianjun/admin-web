@@ -46,7 +46,7 @@ define(['jquery'], function ($) {
         },
         updateMenu: function(data) {
             return $.ajax({
-                url: '/permissions/addMenu',
+                url: '/permissions/updateMenu',
                 type: 'post',
                 dataType: 'json',
                 data: data,
@@ -83,6 +83,24 @@ define(['jquery'], function ($) {
         updateRoleStatus: function(data) {
             return $.ajax({
                 url: '/permissions/updateRoleStatus',
+                type: 'post',
+                dataType: 'json',
+                data: data,
+                contentType : 'application/json'
+            });
+        },
+        addUser: function(data) {
+            return $.ajax({
+                url: '/permissions/addUser',
+                type: 'post',
+                dataType: 'json',
+                data: data,
+                contentType : 'application/json'
+            });
+        },
+        updateUser: function(data) {
+            return $.ajax({
+                url: '/permissions/updateUser',
                 type: 'post',
                 dataType: 'json',
                 data: data,

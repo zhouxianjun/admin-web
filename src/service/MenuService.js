@@ -29,8 +29,10 @@ const ThriftClient = require('node-thrift-client');
 module.exports = class MenuService extends ThriftClient.referenceBean {
     menus() {}
     menusByUser() {}
+    menusBySetRole() {}
     add() {}
     update() {}
+    delMenu() {}
     get type() {
         return require('../thrift/MenuService');
     }

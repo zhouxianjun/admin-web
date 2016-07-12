@@ -16,6 +16,7 @@ RoleStruct = module.exports.RoleStruct = function(args) {
   this.create_time = null;
   this.update_time = null;
   this.status = null;
+  this.ow = null;
   if (args) {
     if (args.id !== undefined && args.id !== null) {
       this.id = args.id;
@@ -34,6 +35,9 @@ RoleStruct = module.exports.RoleStruct = function(args) {
     }
     if (args.status !== undefined && args.status !== null) {
       this.status = args.status;
+    }
+    if (args.ow !== undefined && args.ow !== null) {
+      this.ow = args.ow;
     }
   }
 };
@@ -93,6 +97,13 @@ RoleStruct.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 8:
+      if (ftype == Thrift.Type.BOOL) {
+        this.ow = input.readBool();
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -134,6 +145,11 @@ RoleStruct.prototype.write = function(output) {
     output.writeBool(this.status);
     output.writeFieldEnd();
   }
+  if (this.ow !== null && this.ow !== undefined) {
+    output.writeFieldBegin('ow', Thrift.Type.BOOL, 8);
+    output.writeBool(this.ow);
+    output.writeFieldEnd();
+  }
   output.writeFieldStop();
   output.writeStructEnd();
   return;
@@ -150,6 +166,7 @@ MenuStruct = module.exports.MenuStruct = function(args) {
   this.path = null;
   this.target = null;
   this.icon = null;
+  this.ow = null;
   if (args) {
     if (args.id !== undefined && args.id !== null) {
       this.id = args.id;
@@ -180,6 +197,9 @@ MenuStruct = module.exports.MenuStruct = function(args) {
     }
     if (args.icon !== undefined && args.icon !== null) {
       this.icon = args.icon;
+    }
+    if (args.ow !== undefined && args.ow !== null) {
+      this.ow = args.ow;
     }
   }
 };
@@ -267,6 +287,13 @@ MenuStruct.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 11:
+      if (ftype == Thrift.Type.BOOL) {
+        this.ow = input.readBool();
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -326,6 +353,431 @@ MenuStruct.prototype.write = function(output) {
   if (this.icon !== null && this.icon !== undefined) {
     output.writeFieldBegin('icon', Thrift.Type.STRING, 10);
     output.writeString(this.icon);
+    output.writeFieldEnd();
+  }
+  if (this.ow !== null && this.ow !== undefined) {
+    output.writeFieldBegin('ow', Thrift.Type.BOOL, 11);
+    output.writeBool(this.ow);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+InterfaceStruct = module.exports.InterfaceStruct = function(args) {
+  this.id = null;
+  this.name = null;
+  this.auth = null;
+  this.description = null;
+  this.seq = null;
+  this.status = null;
+  this.create_time = null;
+  this.ow = null;
+  if (args) {
+    if (args.id !== undefined && args.id !== null) {
+      this.id = args.id;
+    }
+    if (args.name !== undefined && args.name !== null) {
+      this.name = args.name;
+    }
+    if (args.auth !== undefined && args.auth !== null) {
+      this.auth = args.auth;
+    }
+    if (args.description !== undefined && args.description !== null) {
+      this.description = args.description;
+    }
+    if (args.seq !== undefined && args.seq !== null) {
+      this.seq = args.seq;
+    }
+    if (args.status !== undefined && args.status !== null) {
+      this.status = args.status;
+    }
+    if (args.create_time !== undefined && args.create_time !== null) {
+      this.create_time = args.create_time;
+    }
+    if (args.ow !== undefined && args.ow !== null) {
+      this.ow = args.ow;
+    }
+  }
+};
+InterfaceStruct.prototype = {};
+InterfaceStruct.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.I64) {
+        this.id = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.name = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.STRING) {
+        this.auth = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 4:
+      if (ftype == Thrift.Type.STRING) {
+        this.description = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 5:
+      if (ftype == Thrift.Type.I32) {
+        this.seq = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 6:
+      if (ftype == Thrift.Type.BOOL) {
+        this.status = input.readBool();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 7:
+      if (ftype == Thrift.Type.I64) {
+        this.create_time = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 8:
+      if (ftype == Thrift.Type.BOOL) {
+        this.ow = input.readBool();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+InterfaceStruct.prototype.write = function(output) {
+  output.writeStructBegin('InterfaceStruct');
+  if (this.id !== null && this.id !== undefined) {
+    output.writeFieldBegin('id', Thrift.Type.I64, 1);
+    output.writeI64(this.id);
+    output.writeFieldEnd();
+  }
+  if (this.name !== null && this.name !== undefined) {
+    output.writeFieldBegin('name', Thrift.Type.STRING, 2);
+    output.writeString(this.name);
+    output.writeFieldEnd();
+  }
+  if (this.auth !== null && this.auth !== undefined) {
+    output.writeFieldBegin('auth', Thrift.Type.STRING, 3);
+    output.writeString(this.auth);
+    output.writeFieldEnd();
+  }
+  if (this.description !== null && this.description !== undefined) {
+    output.writeFieldBegin('description', Thrift.Type.STRING, 4);
+    output.writeString(this.description);
+    output.writeFieldEnd();
+  }
+  if (this.seq !== null && this.seq !== undefined) {
+    output.writeFieldBegin('seq', Thrift.Type.I32, 5);
+    output.writeI32(this.seq);
+    output.writeFieldEnd();
+  }
+  if (this.status !== null && this.status !== undefined) {
+    output.writeFieldBegin('status', Thrift.Type.BOOL, 6);
+    output.writeBool(this.status);
+    output.writeFieldEnd();
+  }
+  if (this.create_time !== null && this.create_time !== undefined) {
+    output.writeFieldBegin('create_time', Thrift.Type.I64, 7);
+    output.writeI64(this.create_time);
+    output.writeFieldEnd();
+  }
+  if (this.ow !== null && this.ow !== undefined) {
+    output.writeFieldBegin('ow', Thrift.Type.BOOL, 8);
+    output.writeBool(this.ow);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+UserStruct = module.exports.UserStruct = function(args) {
+  this.id = null;
+  this.username = null;
+  this.password = null;
+  this.name = null;
+  this.real_name = null;
+  this.company = null;
+  this.city_id = null;
+  this.province_id = null;
+  this.email = null;
+  this.phone = null;
+  this.create_time = null;
+  this.status = null;
+  this.pid = null;
+  this.pids = null;
+  if (args) {
+    if (args.id !== undefined && args.id !== null) {
+      this.id = args.id;
+    }
+    if (args.username !== undefined && args.username !== null) {
+      this.username = args.username;
+    }
+    if (args.password !== undefined && args.password !== null) {
+      this.password = args.password;
+    }
+    if (args.name !== undefined && args.name !== null) {
+      this.name = args.name;
+    }
+    if (args.real_name !== undefined && args.real_name !== null) {
+      this.real_name = args.real_name;
+    }
+    if (args.company !== undefined && args.company !== null) {
+      this.company = args.company;
+    }
+    if (args.city_id !== undefined && args.city_id !== null) {
+      this.city_id = args.city_id;
+    }
+    if (args.province_id !== undefined && args.province_id !== null) {
+      this.province_id = args.province_id;
+    }
+    if (args.email !== undefined && args.email !== null) {
+      this.email = args.email;
+    }
+    if (args.phone !== undefined && args.phone !== null) {
+      this.phone = args.phone;
+    }
+    if (args.create_time !== undefined && args.create_time !== null) {
+      this.create_time = args.create_time;
+    }
+    if (args.status !== undefined && args.status !== null) {
+      this.status = args.status;
+    }
+    if (args.pid !== undefined && args.pid !== null) {
+      this.pid = args.pid;
+    }
+    if (args.pids !== undefined && args.pids !== null) {
+      this.pids = args.pids;
+    }
+  }
+};
+UserStruct.prototype = {};
+UserStruct.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.I64) {
+        this.id = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.username = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.STRING) {
+        this.password = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 4:
+      if (ftype == Thrift.Type.STRING) {
+        this.name = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 5:
+      if (ftype == Thrift.Type.STRING) {
+        this.real_name = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 6:
+      if (ftype == Thrift.Type.STRING) {
+        this.company = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 7:
+      if (ftype == Thrift.Type.I32) {
+        this.city_id = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 8:
+      if (ftype == Thrift.Type.I32) {
+        this.province_id = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 9:
+      if (ftype == Thrift.Type.STRING) {
+        this.email = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 10:
+      if (ftype == Thrift.Type.STRING) {
+        this.phone = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 11:
+      if (ftype == Thrift.Type.I64) {
+        this.create_time = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 12:
+      if (ftype == Thrift.Type.BOOL) {
+        this.status = input.readBool();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 13:
+      if (ftype == Thrift.Type.I64) {
+        this.pid = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 14:
+      if (ftype == Thrift.Type.STRING) {
+        this.pids = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+UserStruct.prototype.write = function(output) {
+  output.writeStructBegin('UserStruct');
+  if (this.id !== null && this.id !== undefined) {
+    output.writeFieldBegin('id', Thrift.Type.I64, 1);
+    output.writeI64(this.id);
+    output.writeFieldEnd();
+  }
+  if (this.username !== null && this.username !== undefined) {
+    output.writeFieldBegin('username', Thrift.Type.STRING, 2);
+    output.writeString(this.username);
+    output.writeFieldEnd();
+  }
+  if (this.password !== null && this.password !== undefined) {
+    output.writeFieldBegin('password', Thrift.Type.STRING, 3);
+    output.writeString(this.password);
+    output.writeFieldEnd();
+  }
+  if (this.name !== null && this.name !== undefined) {
+    output.writeFieldBegin('name', Thrift.Type.STRING, 4);
+    output.writeString(this.name);
+    output.writeFieldEnd();
+  }
+  if (this.real_name !== null && this.real_name !== undefined) {
+    output.writeFieldBegin('real_name', Thrift.Type.STRING, 5);
+    output.writeString(this.real_name);
+    output.writeFieldEnd();
+  }
+  if (this.company !== null && this.company !== undefined) {
+    output.writeFieldBegin('company', Thrift.Type.STRING, 6);
+    output.writeString(this.company);
+    output.writeFieldEnd();
+  }
+  if (this.city_id !== null && this.city_id !== undefined) {
+    output.writeFieldBegin('city_id', Thrift.Type.I32, 7);
+    output.writeI32(this.city_id);
+    output.writeFieldEnd();
+  }
+  if (this.province_id !== null && this.province_id !== undefined) {
+    output.writeFieldBegin('province_id', Thrift.Type.I32, 8);
+    output.writeI32(this.province_id);
+    output.writeFieldEnd();
+  }
+  if (this.email !== null && this.email !== undefined) {
+    output.writeFieldBegin('email', Thrift.Type.STRING, 9);
+    output.writeString(this.email);
+    output.writeFieldEnd();
+  }
+  if (this.phone !== null && this.phone !== undefined) {
+    output.writeFieldBegin('phone', Thrift.Type.STRING, 10);
+    output.writeString(this.phone);
+    output.writeFieldEnd();
+  }
+  if (this.create_time !== null && this.create_time !== undefined) {
+    output.writeFieldBegin('create_time', Thrift.Type.I64, 11);
+    output.writeI64(this.create_time);
+    output.writeFieldEnd();
+  }
+  if (this.status !== null && this.status !== undefined) {
+    output.writeFieldBegin('status', Thrift.Type.BOOL, 12);
+    output.writeBool(this.status);
+    output.writeFieldEnd();
+  }
+  if (this.pid !== null && this.pid !== undefined) {
+    output.writeFieldBegin('pid', Thrift.Type.I64, 13);
+    output.writeI64(this.pid);
+    output.writeFieldEnd();
+  }
+  if (this.pids !== null && this.pids !== undefined) {
+    output.writeFieldBegin('pids', Thrift.Type.STRING, 14);
+    output.writeString(this.pids);
     output.writeFieldEnd();
   }
   output.writeFieldStop();

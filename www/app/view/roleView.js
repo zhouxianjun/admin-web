@@ -51,13 +51,13 @@ require(['jquery', 'util', 'layer', 'moment', 'permissionsService', 'dhtmlx'],
                 myTreeGrid._h2.forEachChild(rId, function(element){
                     myTreeGrid.cellById(element.id, 3).setValue(status);
                 });
-                if (!myTreeGrid.hasChildren(oldPid)) {
+                if (typeof oldPid != 'undefined' && !myTreeGrid.hasChildren(oldPid)) {
                     myTreeGrid.setItemImage(oldPid, '/plugins/dhtmlx/imgs/dhxgrid_skyblue/tree/leaf.gif');
                     myTreeGrid.setRowAttribute(oldPid, 'tree', {
                         image: 'leaf.gif'
                     });
                 }
-                if (myTreeGrid.hasChildren(pid)) {
+                if (typeof pid != 'undefined' && myTreeGrid.hasChildren(pid)) {
                     myTreeGrid.setItemImage(pid, '/plugins/dhtmlx/imgs/dhxgrid_skyblue/tree/folder.gif');
                     myTreeGrid.setRowAttribute(pid, 'tree', {
                         image: 'folder.gif'
@@ -74,15 +74,13 @@ require(['jquery', 'util', 'layer', 'moment', 'permissionsService', 'dhtmlx'],
             myTreeGrid.setImagePath('/plugins/dhtmlx/imgs/');
             myTreeGrid.setHeader('ID,,名称,状态,创建时间,更新时间');
             myTreeGrid.setColumnIds('id,tree,name,status,create_time,update_time');
-            //myTreeGrid.setInitWidths('60');
             myTreeGrid.setColAlign('left,left,center,center,center,center');
             myTreeGrid.setColTypes('ro,tree,ed,combo,ltro,ltro');
-            // myTreeGrid.setColSorting("str,str,str,str,str");
             myTreeGrid.setColumnHidden(0, true);
             myTreeGrid.enableDragAndDrop(true);
             myTreeGrid.enableTreeGridLines();
             myTreeGrid.enableTreeCellEdit(false);
-            myTreeGrid.enableAutoHeight(false, 0, true);
+            myTreeGrid.enableAutoHeight(true, 0, true);
             var menu = new dhtmlXMenuObject({
                 icons_path: '/plugins/dhtmlx/imgs/dhxmenu_skyblue/',
                 context: true,
@@ -104,9 +102,7 @@ require(['jquery', 'util', 'layer', 'moment', 'permissionsService', 'dhtmlx'],
                         util.send(ajax, function (response) {
                             var time = new Date().getTime();
                             myTreeGrid.addRow(response.data.id,[
-                                response.data.id, {
-                                image: 'folder.gif'
-                            }, val, true, time, time],0,rowId);
+                                response.data.id, '', val, true, time, time],0,rowId);
                             myTreeGrid.openItem(rowId);
                             layer.close(prompt);
                         }, function () {
@@ -129,12 +125,12 @@ require(['jquery', 'util', 'layer', 'moment', 'permissionsService', 'dhtmlx'],
                 return true;
             });
             myTreeGrid.enableContextMenu(menu);
-            //myTreeGrid.enableAutoWidth(true);
             myTreeGrid.init();
             var combo = myTreeGrid.getColumnCombo(3);//takes the column index
             util.initStatusCombo(combo);
             myTreeGrid.load('/permissions/rolesByMgr', function () {
                 layer.closeAll('loading');
+                myTreeGrid.expandAll();
             }, 'js');
             util.adjustIframeHeight();
         });

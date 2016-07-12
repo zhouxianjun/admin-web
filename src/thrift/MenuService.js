@@ -282,6 +282,166 @@ MenuService_menusByUser_result.prototype.write = function(output) {
   return;
 };
 
+MenuService_menusBySetRole_args = function(args) {
+  this.user = null;
+  this.role = null;
+  if (args) {
+    if (args.user !== undefined && args.user !== null) {
+      this.user = args.user;
+    }
+    if (args.role !== undefined && args.role !== null) {
+      this.role = args.role;
+    }
+  }
+};
+MenuService_menusBySetRole_args.prototype = {};
+MenuService_menusBySetRole_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.I64) {
+        this.user = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.I64) {
+        this.role = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+MenuService_menusBySetRole_args.prototype.write = function(output) {
+  output.writeStructBegin('MenuService_menusBySetRole_args');
+  if (this.user !== null && this.user !== undefined) {
+    output.writeFieldBegin('user', Thrift.Type.I64, 1);
+    output.writeI64(this.user);
+    output.writeFieldEnd();
+  }
+  if (this.role !== null && this.role !== undefined) {
+    output.writeFieldBegin('role', Thrift.Type.I64, 2);
+    output.writeI64(this.role);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+MenuService_menusBySetRole_result = function(args) {
+  this.success = null;
+  this.ex = null;
+  if (args instanceof PublicStruct_ttypes.InvalidOperation) {
+    this.ex = args;
+    return;
+  }
+  if (args) {
+    if (args.success !== undefined && args.success !== null) {
+      this.success = Thrift.copyList(args.success, [PublicStruct_ttypes.MenuStruct]);
+    }
+    if (args.ex !== undefined && args.ex !== null) {
+      this.ex = args.ex;
+    }
+  }
+};
+MenuService_menusBySetRole_result.prototype = {};
+MenuService_menusBySetRole_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.LIST) {
+        var _size16 = 0;
+        var _rtmp320;
+        this.success = [];
+        var _etype19 = 0;
+        _rtmp320 = input.readListBegin();
+        _etype19 = _rtmp320.etype;
+        _size16 = _rtmp320.size;
+        for (var _i21 = 0; _i21 < _size16; ++_i21)
+        {
+          var elem22 = null;
+          elem22 = new PublicStruct_ttypes.MenuStruct();
+          elem22.read(input);
+          this.success.push(elem22);
+        }
+        input.readListEnd();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.ex = new PublicStruct_ttypes.InvalidOperation();
+        this.ex.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+MenuService_menusBySetRole_result.prototype.write = function(output) {
+  output.writeStructBegin('MenuService_menusBySetRole_result');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.LIST, 0);
+    output.writeListBegin(Thrift.Type.STRUCT, this.success.length);
+    for (var iter23 in this.success)
+    {
+      if (this.success.hasOwnProperty(iter23))
+      {
+        iter23 = this.success[iter23];
+        iter23.write(output);
+      }
+    }
+    output.writeListEnd();
+    output.writeFieldEnd();
+  }
+  if (this.ex !== null && this.ex !== undefined) {
+    output.writeFieldBegin('ex', Thrift.Type.STRUCT, 1);
+    this.ex.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 MenuService_add_args = function(args) {
   this.menu = null;
   if (args) {
@@ -656,6 +816,181 @@ MenuService_delMenu_result.prototype.write = function(output) {
   return;
 };
 
+MenuService_setInterfaces_args = function(args) {
+  this.menu = null;
+  this.user = null;
+  this.interfaces = null;
+  if (args) {
+    if (args.menu !== undefined && args.menu !== null) {
+      this.menu = args.menu;
+    }
+    if (args.user !== undefined && args.user !== null) {
+      this.user = args.user;
+    }
+    if (args.interfaces !== undefined && args.interfaces !== null) {
+      this.interfaces = Thrift.copyList(args.interfaces, [null]);
+    }
+  }
+};
+MenuService_setInterfaces_args.prototype = {};
+MenuService_setInterfaces_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.I64) {
+        this.menu = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.I64) {
+        this.user = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.LIST) {
+        var _size24 = 0;
+        var _rtmp328;
+        this.interfaces = [];
+        var _etype27 = 0;
+        _rtmp328 = input.readListBegin();
+        _etype27 = _rtmp328.etype;
+        _size24 = _rtmp328.size;
+        for (var _i29 = 0; _i29 < _size24; ++_i29)
+        {
+          var elem30 = null;
+          elem30 = input.readI64();
+          this.interfaces.push(elem30);
+        }
+        input.readListEnd();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+MenuService_setInterfaces_args.prototype.write = function(output) {
+  output.writeStructBegin('MenuService_setInterfaces_args');
+  if (this.menu !== null && this.menu !== undefined) {
+    output.writeFieldBegin('menu', Thrift.Type.I64, 1);
+    output.writeI64(this.menu);
+    output.writeFieldEnd();
+  }
+  if (this.user !== null && this.user !== undefined) {
+    output.writeFieldBegin('user', Thrift.Type.I64, 2);
+    output.writeI64(this.user);
+    output.writeFieldEnd();
+  }
+  if (this.interfaces !== null && this.interfaces !== undefined) {
+    output.writeFieldBegin('interfaces', Thrift.Type.LIST, 3);
+    output.writeListBegin(Thrift.Type.I64, this.interfaces.length);
+    for (var iter31 in this.interfaces)
+    {
+      if (this.interfaces.hasOwnProperty(iter31))
+      {
+        iter31 = this.interfaces[iter31];
+        output.writeI64(iter31);
+      }
+    }
+    output.writeListEnd();
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+MenuService_setInterfaces_result = function(args) {
+  this.success = null;
+  this.ex = null;
+  if (args instanceof PublicStruct_ttypes.InvalidOperation) {
+    this.ex = args;
+    return;
+  }
+  if (args) {
+    if (args.success !== undefined && args.success !== null) {
+      this.success = args.success;
+    }
+    if (args.ex !== undefined && args.ex !== null) {
+      this.ex = args.ex;
+    }
+  }
+};
+MenuService_setInterfaces_result.prototype = {};
+MenuService_setInterfaces_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.BOOL) {
+        this.success = input.readBool();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.ex = new PublicStruct_ttypes.InvalidOperation();
+        this.ex.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+MenuService_setInterfaces_result.prototype.write = function(output) {
+  output.writeStructBegin('MenuService_setInterfaces_result');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.BOOL, 0);
+    output.writeBool(this.success);
+    output.writeFieldEnd();
+  }
+  if (this.ex !== null && this.ex !== undefined) {
+    output.writeFieldBegin('ex', Thrift.Type.STRUCT, 1);
+    this.ex.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 MenuServiceClient = exports.Client = function(output, pClass) {
     this.output = output;
     this.pClass = pClass;
@@ -763,6 +1098,57 @@ MenuServiceClient.prototype.recv_menusByUser = function(input,mtype,rseqid) {
     return callback(null, result.success);
   }
   return callback('menusByUser failed: unknown result');
+};
+MenuServiceClient.prototype.menusBySetRole = function(user, role, callback) {
+  this._seqid = this.new_seqid();
+  if (callback === undefined) {
+    var _defer = Q.defer();
+    this._reqs[this.seqid()] = function(error, result) {
+      if (error) {
+        _defer.reject(error);
+      } else {
+        _defer.resolve(result);
+      }
+    };
+    this.send_menusBySetRole(user, role);
+    return _defer.promise;
+  } else {
+    this._reqs[this.seqid()] = callback;
+    this.send_menusBySetRole(user, role);
+  }
+};
+
+MenuServiceClient.prototype.send_menusBySetRole = function(user, role) {
+  var output = new this.pClass(this.output);
+  output.writeMessageBegin('menusBySetRole', Thrift.MessageType.CALL, this.seqid());
+  var args = new MenuService_menusBySetRole_args();
+  args.user = user;
+  args.role = role;
+  args.write(output);
+  output.writeMessageEnd();
+  return this.output.flush();
+};
+
+MenuServiceClient.prototype.recv_menusBySetRole = function(input,mtype,rseqid) {
+  var callback = this._reqs[rseqid] || function() {};
+  delete this._reqs[rseqid];
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(input);
+    input.readMessageEnd();
+    return callback(x);
+  }
+  var result = new MenuService_menusBySetRole_result();
+  result.read(input);
+  input.readMessageEnd();
+
+  if (null !== result.ex) {
+    return callback(result.ex);
+  }
+  if (null !== result.success) {
+    return callback(null, result.success);
+  }
+  return callback('menusBySetRole failed: unknown result');
 };
 MenuServiceClient.prototype.add = function(menu, callback) {
   this._seqid = this.new_seqid();
@@ -914,6 +1300,58 @@ MenuServiceClient.prototype.recv_delMenu = function(input,mtype,rseqid) {
   }
   return callback('delMenu failed: unknown result');
 };
+MenuServiceClient.prototype.setInterfaces = function(menu, user, interfaces, callback) {
+  this._seqid = this.new_seqid();
+  if (callback === undefined) {
+    var _defer = Q.defer();
+    this._reqs[this.seqid()] = function(error, result) {
+      if (error) {
+        _defer.reject(error);
+      } else {
+        _defer.resolve(result);
+      }
+    };
+    this.send_setInterfaces(menu, user, interfaces);
+    return _defer.promise;
+  } else {
+    this._reqs[this.seqid()] = callback;
+    this.send_setInterfaces(menu, user, interfaces);
+  }
+};
+
+MenuServiceClient.prototype.send_setInterfaces = function(menu, user, interfaces) {
+  var output = new this.pClass(this.output);
+  output.writeMessageBegin('setInterfaces', Thrift.MessageType.CALL, this.seqid());
+  var args = new MenuService_setInterfaces_args();
+  args.menu = menu;
+  args.user = user;
+  args.interfaces = interfaces;
+  args.write(output);
+  output.writeMessageEnd();
+  return this.output.flush();
+};
+
+MenuServiceClient.prototype.recv_setInterfaces = function(input,mtype,rseqid) {
+  var callback = this._reqs[rseqid] || function() {};
+  delete this._reqs[rseqid];
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(input);
+    input.readMessageEnd();
+    return callback(x);
+  }
+  var result = new MenuService_setInterfaces_result();
+  result.read(input);
+  input.readMessageEnd();
+
+  if (null !== result.ex) {
+    return callback(result.ex);
+  }
+  if (null !== result.success) {
+    return callback(null, result.success);
+  }
+  return callback('setInterfaces failed: unknown result');
+};
 MenuServiceProcessor = exports.Processor = function(handler) {
   this._handler = handler
 }
@@ -1004,6 +1442,46 @@ MenuServiceProcessor.prototype.process_menusByUser = function(seqid, input, outp
       } else {
         var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
         output.writeMessageBegin("menusByUser", Thrift.MessageType.EXCEPTION, seqid);
+      }
+      result.write(output);
+      output.writeMessageEnd();
+      output.flush();
+    });
+  }
+}
+
+MenuServiceProcessor.prototype.process_menusBySetRole = function(seqid, input, output) {
+  var args = new MenuService_menusBySetRole_args();
+  args.read(input);
+  input.readMessageEnd();
+  if (this._handler.menusBySetRole.length === 2) {
+    Q.fcall(this._handler.menusBySetRole, args.user, args.role)
+      .then(function(result) {
+        var result = new MenuService_menusBySetRole_result({success: result});
+        output.writeMessageBegin("menusBySetRole", Thrift.MessageType.REPLY, seqid);
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      }, function (err) {
+        if (err instanceof PublicStruct_ttypes.InvalidOperation) {
+          var result = new MenuService_menusBySetRole_result(err);
+          output.writeMessageBegin("menusBySetRole", Thrift.MessageType.REPLY, seqid);
+        } else {
+          var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+          output.writeMessageBegin("menusBySetRole", Thrift.MessageType.EXCEPTION, seqid);
+        }
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      });
+  } else {
+    this._handler.menusBySetRole(args.user, args.role, function (err, result) {
+      if (err == null || err instanceof PublicStruct_ttypes.InvalidOperation) {
+        var result = new MenuService_menusBySetRole_result((err != null ? err : {success: result}));
+        output.writeMessageBegin("menusBySetRole", Thrift.MessageType.REPLY, seqid);
+      } else {
+        var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+        output.writeMessageBegin("menusBySetRole", Thrift.MessageType.EXCEPTION, seqid);
       }
       result.write(output);
       output.writeMessageEnd();
@@ -1124,6 +1602,46 @@ MenuServiceProcessor.prototype.process_delMenu = function(seqid, input, output) 
       } else {
         var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
         output.writeMessageBegin("delMenu", Thrift.MessageType.EXCEPTION, seqid);
+      }
+      result.write(output);
+      output.writeMessageEnd();
+      output.flush();
+    });
+  }
+}
+
+MenuServiceProcessor.prototype.process_setInterfaces = function(seqid, input, output) {
+  var args = new MenuService_setInterfaces_args();
+  args.read(input);
+  input.readMessageEnd();
+  if (this._handler.setInterfaces.length === 3) {
+    Q.fcall(this._handler.setInterfaces, args.menu, args.user, args.interfaces)
+      .then(function(result) {
+        var result = new MenuService_setInterfaces_result({success: result});
+        output.writeMessageBegin("setInterfaces", Thrift.MessageType.REPLY, seqid);
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      }, function (err) {
+        if (err instanceof PublicStruct_ttypes.InvalidOperation) {
+          var result = new MenuService_setInterfaces_result(err);
+          output.writeMessageBegin("setInterfaces", Thrift.MessageType.REPLY, seqid);
+        } else {
+          var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+          output.writeMessageBegin("setInterfaces", Thrift.MessageType.EXCEPTION, seqid);
+        }
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      });
+  } else {
+    this._handler.setInterfaces(args.menu, args.user, args.interfaces, function (err, result) {
+      if (err == null || err instanceof PublicStruct_ttypes.InvalidOperation) {
+        var result = new MenuService_setInterfaces_result((err != null ? err : {success: result}));
+        output.writeMessageBegin("setInterfaces", Thrift.MessageType.REPLY, seqid);
+      } else {
+        var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+        output.writeMessageBegin("setInterfaces", Thrift.MessageType.EXCEPTION, seqid);
       }
       result.write(output);
       output.writeMessageEnd();

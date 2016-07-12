@@ -26,6 +26,31 @@
  */
 'use strict';
 define(['jquery', 'layer', 'moment', 'underscore', 'dhtmlx'], function ($, layer, moment, _) {
+    //----------------------扩展列类型---------------------------
+    window.eXcell_ltro = function(cell){ // the eXcell name is defined here
+        if (cell){            // the default pattern, just copy it
+            this.cell = cell;
+            this.grid = this.cell.parentNode.grid;
+        }
+        this.edit = function(){}; //read-only cell doesn't have edit method
+        // the cell is read-only, so it's always in the disabled state
+        this.isDisabled = function(){ return true; }
+        this.setValue=function(val){
+            // actual data processing may be placed here, for now we just set value as it is
+            this.setCValue(window.eXcell_ltro.moment(val).format('YYYY-MM-DD HH:mm:ss'));
+        }
+    };
+    window.eXcell_ltro.prototype = new eXcell;// nests all other methods from the base class
+    window.eXcell_ltro.moment = moment;
+
+    //---------------------扩展验证------------------------------
+    dhtmlxValidation.isNumber0 = function(a) {
+        return _.isNumber(a) && parseInt(a) > -1;
+    };
+    dhtmlxValidation.isBoolean=function(a) {
+        return _.isBoolean(a);
+    };
+
     return {
         send: function (deferred, callback, errorFn) {
             $.when(deferred).done(function (response) {
@@ -56,8 +81,8 @@ define(['jquery', 'layer', 'moment', 'underscore', 'dhtmlx'], function ($, layer
                 p = parent.parent;
             }
             if (p != null && typeof p != 'undefined') {
-                if ($('body').height() < 500 && !hasParent) {
-                    var height = p.window.innerHeight - 166 < 500 ? 500 : parent.window.innerHeight - 166;
+                if ($('body').height() < 400 && !hasParent) {
+                    var height = p.window.innerHeight - 166 < 400 ? 400 : parent.window.innerHeight - 166;
                     p.$('div.active iframe').height(height);
                 } else {
                     p.$('div.active iframe').height($('body').height());
@@ -84,31 +109,12 @@ define(['jquery', 'layer', 'moment', 'underscore', 'dhtmlx'], function ($, layer
                 fields: fields,
                 submitHandler: handle
             });
-        }
-    };
+        },
+        loadCityList: function() {
 
-    //----------------------扩展列类型---------------------------
-    window.eXcell_ltro = function(cell){ // the eXcell name is defined here
-        if (cell){            // the default pattern, just copy it
-            this.cell = cell;
-            this.grid = this.cell.parentNode.grid;
+        },
+        loadProvinceList: function () {
+            
         }
-        this.edit = function(){}; //read-only cell doesn't have edit method
-        // the cell is read-only, so it's always in the disabled state
-        this.isDisabled = function(){ return true; }
-        this.setValue=function(val){
-            // actual data processing may be placed here, for now we just set value as it is
-            this.setCValue(eXcell_ltro.moment(val).format('YYYY-MM-DD HH:mm:ss'));
-        }
-    };
-    window.eXcell_ltro.prototype = new eXcell;// nests all other methods from the base class
-    window.eXcell_ltro.moment = moment;
-
-    //---------------------扩展验证------------------------------
-    dhtmlxValidation.isNumber0 = function(a) {
-        return _.isNumber(a) && parseInt(a) > -1;
-    };
-    dhtmlxValidation.isBoolean=function(a) {
-        return _.isBoolean(a);
     };
 });
