@@ -136,6 +136,12 @@ UserService_users_result.prototype.write = function(output) {
 };
 
 UserService_usersByUser_args = function(args) {
+  this.user = null;
+  if (args) {
+    if (args.user !== undefined && args.user !== null) {
+      this.user = args.user;
+    }
+  }
 };
 UserService_usersByUser_args.prototype = {};
 UserService_usersByUser_args.prototype.read = function(input) {
@@ -149,7 +155,21 @@ UserService_usersByUser_args.prototype.read = function(input) {
     if (ftype == Thrift.Type.STOP) {
       break;
     }
-    input.skip(ftype);
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.I64) {
+        this.user = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
     input.readFieldEnd();
   }
   input.readStructEnd();
@@ -158,6 +178,11 @@ UserService_usersByUser_args.prototype.read = function(input) {
 
 UserService_usersByUser_args.prototype.write = function(output) {
   output.writeStructBegin('UserService_usersByUser_args');
+  if (this.user !== null && this.user !== undefined) {
+    output.writeFieldBegin('user', Thrift.Type.I64, 1);
+    output.writeI64(this.user);
+    output.writeFieldEnd();
+  }
   output.writeFieldStop();
   output.writeStructEnd();
   return;
@@ -682,6 +707,143 @@ UserService_setRoles_result.prototype.write = function(output) {
   return;
 };
 
+UserService_login_args = function(args) {
+  this.username = null;
+  this.password = null;
+  if (args) {
+    if (args.username !== undefined && args.username !== null) {
+      this.username = args.username;
+    }
+    if (args.password !== undefined && args.password !== null) {
+      this.password = args.password;
+    }
+  }
+};
+UserService_login_args.prototype = {};
+UserService_login_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.username = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.password = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+UserService_login_args.prototype.write = function(output) {
+  output.writeStructBegin('UserService_login_args');
+  if (this.username !== null && this.username !== undefined) {
+    output.writeFieldBegin('username', Thrift.Type.STRING, 1);
+    output.writeString(this.username);
+    output.writeFieldEnd();
+  }
+  if (this.password !== null && this.password !== undefined) {
+    output.writeFieldBegin('password', Thrift.Type.STRING, 2);
+    output.writeString(this.password);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+UserService_login_result = function(args) {
+  this.success = null;
+  this.ex = null;
+  if (args instanceof PublicStruct_ttypes.InvalidOperation) {
+    this.ex = args;
+    return;
+  }
+  if (args) {
+    if (args.success !== undefined && args.success !== null) {
+      this.success = args.success;
+    }
+    if (args.ex !== undefined && args.ex !== null) {
+      this.ex = args.ex;
+    }
+  }
+};
+UserService_login_result.prototype = {};
+UserService_login_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.I64) {
+        this.success = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.ex = new PublicStruct_ttypes.InvalidOperation();
+        this.ex.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+UserService_login_result.prototype.write = function(output) {
+  output.writeStructBegin('UserService_login_result');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.I64, 0);
+    output.writeI64(this.success);
+    output.writeFieldEnd();
+  }
+  if (this.ex !== null && this.ex !== undefined) {
+    output.writeFieldBegin('ex', Thrift.Type.STRUCT, 1);
+    this.ex.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 UserServiceClient = exports.Client = function(output, pClass) {
     this.output = output;
     this.pClass = pClass;
@@ -740,7 +902,7 @@ UserServiceClient.prototype.recv_users = function(input,mtype,rseqid) {
   }
   return callback('users failed: unknown result');
 };
-UserServiceClient.prototype.usersByUser = function(callback) {
+UserServiceClient.prototype.usersByUser = function(user, callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
     var _defer = Q.defer();
@@ -751,18 +913,19 @@ UserServiceClient.prototype.usersByUser = function(callback) {
         _defer.resolve(result);
       }
     };
-    this.send_usersByUser();
+    this.send_usersByUser(user);
     return _defer.promise;
   } else {
     this._reqs[this.seqid()] = callback;
-    this.send_usersByUser();
+    this.send_usersByUser(user);
   }
 };
 
-UserServiceClient.prototype.send_usersByUser = function() {
+UserServiceClient.prototype.send_usersByUser = function(user) {
   var output = new this.pClass(this.output);
   output.writeMessageBegin('usersByUser', Thrift.MessageType.CALL, this.seqid());
   var args = new UserService_usersByUser_args();
+  args.user = user;
   args.write(output);
   output.writeMessageEnd();
   return this.output.flush();
@@ -941,6 +1104,57 @@ UserServiceClient.prototype.recv_setRoles = function(input,mtype,rseqid) {
   }
   return callback('setRoles failed: unknown result');
 };
+UserServiceClient.prototype.login = function(username, password, callback) {
+  this._seqid = this.new_seqid();
+  if (callback === undefined) {
+    var _defer = Q.defer();
+    this._reqs[this.seqid()] = function(error, result) {
+      if (error) {
+        _defer.reject(error);
+      } else {
+        _defer.resolve(result);
+      }
+    };
+    this.send_login(username, password);
+    return _defer.promise;
+  } else {
+    this._reqs[this.seqid()] = callback;
+    this.send_login(username, password);
+  }
+};
+
+UserServiceClient.prototype.send_login = function(username, password) {
+  var output = new this.pClass(this.output);
+  output.writeMessageBegin('login', Thrift.MessageType.CALL, this.seqid());
+  var args = new UserService_login_args();
+  args.username = username;
+  args.password = password;
+  args.write(output);
+  output.writeMessageEnd();
+  return this.output.flush();
+};
+
+UserServiceClient.prototype.recv_login = function(input,mtype,rseqid) {
+  var callback = this._reqs[rseqid] || function() {};
+  delete this._reqs[rseqid];
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(input);
+    input.readMessageEnd();
+    return callback(x);
+  }
+  var result = new UserService_login_result();
+  result.read(input);
+  input.readMessageEnd();
+
+  if (null !== result.ex) {
+    return callback(result.ex);
+  }
+  if (null !== result.success) {
+    return callback(null, result.success);
+  }
+  return callback('login failed: unknown result');
+};
 UserServiceProcessor = exports.Processor = function(handler) {
   this._handler = handler
 }
@@ -1003,8 +1217,8 @@ UserServiceProcessor.prototype.process_usersByUser = function(seqid, input, outp
   var args = new UserService_usersByUser_args();
   args.read(input);
   input.readMessageEnd();
-  if (this._handler.usersByUser.length === 0) {
-    Q.fcall(this._handler.usersByUser)
+  if (this._handler.usersByUser.length === 1) {
+    Q.fcall(this._handler.usersByUser, args.user)
       .then(function(result) {
         var result = new UserService_usersByUser_result({success: result});
         output.writeMessageBegin("usersByUser", Thrift.MessageType.REPLY, seqid);
@@ -1024,7 +1238,7 @@ UserServiceProcessor.prototype.process_usersByUser = function(seqid, input, outp
         output.flush();
       });
   } else {
-    this._handler.usersByUser(function (err, result) {
+    this._handler.usersByUser(args.user, function (err, result) {
       if (err == null || err instanceof PublicStruct_ttypes.InvalidOperation) {
         var result = new UserService_usersByUser_result((err != null ? err : {success: result}));
         output.writeMessageBegin("usersByUser", Thrift.MessageType.REPLY, seqid);
@@ -1151,6 +1365,46 @@ UserServiceProcessor.prototype.process_setRoles = function(seqid, input, output)
       } else {
         var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
         output.writeMessageBegin("setRoles", Thrift.MessageType.EXCEPTION, seqid);
+      }
+      result.write(output);
+      output.writeMessageEnd();
+      output.flush();
+    });
+  }
+}
+
+UserServiceProcessor.prototype.process_login = function(seqid, input, output) {
+  var args = new UserService_login_args();
+  args.read(input);
+  input.readMessageEnd();
+  if (this._handler.login.length === 2) {
+    Q.fcall(this._handler.login, args.username, args.password)
+      .then(function(result) {
+        var result = new UserService_login_result({success: result});
+        output.writeMessageBegin("login", Thrift.MessageType.REPLY, seqid);
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      }, function (err) {
+        if (err instanceof PublicStruct_ttypes.InvalidOperation) {
+          var result = new UserService_login_result(err);
+          output.writeMessageBegin("login", Thrift.MessageType.REPLY, seqid);
+        } else {
+          var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+          output.writeMessageBegin("login", Thrift.MessageType.EXCEPTION, seqid);
+        }
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      });
+  } else {
+    this._handler.login(args.username, args.password, function (err, result) {
+      if (err == null || err instanceof PublicStruct_ttypes.InvalidOperation) {
+        var result = new UserService_login_result((err != null ? err : {success: result}));
+        output.writeMessageBegin("login", Thrift.MessageType.REPLY, seqid);
+      } else {
+        var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+        output.writeMessageBegin("login", Thrift.MessageType.EXCEPTION, seqid);
       }
       result.write(output);
       output.writeMessageEnd();

@@ -28,6 +28,31 @@
 require(['jquery', 'util', 'layer', 'moment', 'permissionsService', 'dhtmlx'],
     function ($, util, layer, moment, PermissionsService) {
         var myTreeGrid = null;
+        function openAdd() {
+            var prompt = layer.prompt({
+                title: '请输入角色名称'
+            }, function(val){
+                var rowId = myTreeGrid.contextID ? myTreeGrid.contextID.split('_')[0] : 0;
+                var id = rowId <= 0 ? 1 : myTreeGrid.getRowAttribute(rowId, 'id');
+                var ajax = PermissionsService.addRole(JSON.stringify({
+                    name: val,
+                    pid: id
+                }));
+                util.send(ajax, function (response) {
+                    var time = new Date().getTime();
+                    myTreeGrid.addRow(response.data.id,[
+                        response.data.id, '', val, true, time, time],0,rowId);
+                    myTreeGrid.setRowAttribute(response.data.id, 'id', response.data.id);
+                    if (rowId > 0) {
+                        myTreeGrid.openItem(rowId);
+                        myTreeGrid.setItemImage(rowId, '/plugins/dhtmlx/imgs/dhxgrid_skyblue/tree/folder.gif');
+                    }
+                    layer.close(prompt);
+                }, function () {
+                    layer.close(prompt);
+                });
+            });
+        }
         function update(rId, name, status, pid, oldPid) {
             var id = myTreeGrid.getRowAttribute(rId, 'id');
             status = typeof status == 'undefined' ? myTreeGrid.getRowAttribute(rId, 'status') : status;
@@ -90,25 +115,7 @@ require(['jquery', 'util', 'layer', 'moment', 'permissionsService', 'dhtmlx'],
             });
             menu.attachEvent("onClick", function(id, zoneId, cas){
                 if (id == 'add') {
-                    var prompt = layer.prompt({
-                        title: '请输入角色名称'
-                    }, function(val){
-                        var rowId = myTreeGrid.contextID.split('_')[0];
-                        var id = myTreeGrid.getRowAttribute(rowId, 'id');
-                        var ajax = PermissionsService.addRole(JSON.stringify({
-                            name: val,
-                            pid: id
-                        }));
-                        util.send(ajax, function (response) {
-                            var time = new Date().getTime();
-                            myTreeGrid.addRow(response.data.id,[
-                                response.data.id, '', val, true, time, time],0,rowId);
-                            myTreeGrid.openItem(rowId);
-                            layer.close(prompt);
-                        }, function () {
-                            layer.close(prompt);
-                        });
-                    });
+                    openAdd();
                 }
             });
             myTreeGrid.attachEvent("onEditCell", function(stage,rId,cInd,nValue,oValue){
@@ -131,6 +138,10 @@ require(['jquery', 'util', 'layer', 'moment', 'permissionsService', 'dhtmlx'],
             myTreeGrid.load('/permissions/rolesByMgr', function () {
                 layer.closeAll('loading');
                 myTreeGrid.expandAll();
+                var count = myTreeGrid.getRowsNum();
+                if (!count || count <= 0) {
+                    openAdd();
+                }
             }, 'js');
             util.adjustIframeHeight();
         });

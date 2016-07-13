@@ -37,8 +37,8 @@ module.exports = class PermissionsController {
         return '/permissions';
     }
     * rolesByMgr() {
-        let roles = yield roleService.roles();
-        this.body = Utils.makeTree(roles, 0, 'pid', 'id', 'rows', item => {
+        let roles = yield roleService.rolesByUser(this.session.user.id);
+        this.body = Utils.makeTree(roles, this.session.user.id, 'pid', 'id', 'rows', item => {
             if (item.rows && item.rows.length) {
                 item.tree = {
                     image: 'folder.gif'
@@ -125,6 +125,14 @@ module.exports = class PermissionsController {
                     path: '/pages/userMgr.html',
                     icon: '',
                     sub: []
+                }, {
+                    id: 1004,
+                    pid: 1000,
+                    name: '接口配置',
+                    panel: 'permissions_panel',
+                    path: '/pages/interfaceMgr.html',
+                    icon: '',
+                    sub: []
                 }]
             }, {
                 id: 1100,
@@ -182,8 +190,8 @@ module.exports = class PermissionsController {
         }).json;
     }
     * users() {
-        let users = yield userService.users();
-        this.body = Utils.makeTree(users, 0, 'pid', 'id', 'rows', item => {
+        let users = yield userService.usersByUser(this.session.user.id);
+        this.body = Utils.makeTree(users, this.session.user.id, 'pid', 'id', 'rows', item => {
             if (item.rows && item.rows.length) {
                 item.tree = {
                     image: 'folder.gif'

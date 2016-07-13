@@ -34,8 +34,8 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'valid
             company: ko.observable(),
             name: ko.observable(),
             phone: ko.observable(),
-            province: ko.observable(),
-            city: ko.observable(),
+            province_id: ko.observable(),
+            city_id: ko.observable(),
             status: ko.observable(),
             email: ko.observable(),
             pid: ko.observable()
@@ -53,26 +53,91 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'valid
             id: 0
         }]),
         initKoSubscribe: function() {
-            viewModel.user.province.subscribe(function (newValue) {
+            viewModel.user.province_id.subscribe(function (newValue) {
                 viewModel.cityOptions([]);
                 if (typeof newValue != 'undefined') {
-                    util.loadCityList(newValue, viewModel.cityOptions);
+                    viewModel.cityOptions(util.loadCityList(newValue));
                 }
             });
         },
         init: function () {
-            util.loadProvinceList(viewModel.provinceOptions);
+            viewModel.provinceOptions(util.loadProvinceList());
             viewModel.initKoSubscribe();
         },
+        updateGrid: function (myTreeGrid, rowId) {
+            myTreeGrid.cells(rowId, 1).setValue(viewModel.user.real_name());
+            myTreeGrid.setRowAttribute(rowId, 'real_name', viewModel.user.real_name());
+            myTreeGrid.cells(rowId, 2).setValue(viewModel.user.company());
+            myTreeGrid.setRowAttribute(rowId, 'company', viewModel.user.company());
+            myTreeGrid.cells(rowId, 3).setValue(viewModel.user.email());
+            myTreeGrid.setRowAttribute(rowId, 'email', viewModel.user.email());
+            myTreeGrid.cells(rowId, 5).setValue(viewModel.user.username());
+            myTreeGrid.setRowAttribute(rowId, 'username', viewModel.user.username());
+            myTreeGrid.cells(rowId, 6).setValue(viewModel.user.name());
+            myTreeGrid.setRowAttribute(rowId, 'name', viewModel.user.name());
+            myTreeGrid.cells(rowId, 7).setValue(viewModel.user.phone());
+            myTreeGrid.setRowAttribute(rowId, 'phone', viewModel.user.phone());
+            myTreeGrid.cells(rowId, 8).setValue(viewModel.user.province_id());
+            myTreeGrid.setRowAttribute(rowId, 'province_id', viewModel.user.province_id());
+            myTreeGrid.cells(rowId, 9).setValue(viewModel.user.city_id());
+            myTreeGrid.setRowAttribute(rowId, 'city_id', viewModel.user.city_id());
+            myTreeGrid.cells(rowId, 10).setValue(viewModel.user.status());
+            myTreeGrid.setRowAttribute(rowId, 'status', viewModel.user.status());
+            myTreeGrid.cells(rowId, 11).setValue(new Date().getTime());
+        },
+        clearAddForm: function () {
+            viewModel.user.id('');
+            viewModel.user.username('');
+            viewModel.user.real_name('');
+            viewModel.user.company('');
+            viewModel.user.name('');
+            viewModel.user.phone('');
+            viewModel.user.province_id('');
+            viewModel.user.city_id('');
+            viewModel.user.status('');
+            viewModel.user.email('');
+            viewModel.user.pid('');
+        },
+        addOrUpdate: function (update, rowId, myTreeGrid, form, lwin) {
+            var deferred = update ? PermissionsService.updateUser(ko.toJSON(viewModel.user)) : PermissionsService.addUser(ko.toJSON(viewModel.user));
+            util.send(deferred, function (response) {
+                if (update) {
+                    viewModel.updateGrid(myTreeGrid, rowId);
+                    myTreeGrid._h2.forEachChild(rowId, function(element){
+                        myTreeGrid.cellById(element.id, 7).setValue(viewModel.user.status());
+                    });
+                } else {
+                    myTreeGrid.addRow(response.data.id, [
+                        response.data.id, viewModel.user.real_name(), viewModel.user.company(),
+                        viewModel.user.email(), '', viewModel.user.username(), viewModel.user.name(),
+                        viewModel.user.phone(), viewModel.user.province_id(), viewModel.user.city_id(),
+                        viewModel.user.status(), new Date().getTime()], 0, rowId);
+                    viewModel.updateGrid(myTreeGrid, response.data.id);
+                    if (rowId > 0) {
+                        myTreeGrid.setRowAttribute(response.data.id, 'id', response.data.id);
+                        myTreeGrid.openItem(rowId);
+                        myTreeGrid.setItemImage(rowId, '/plugins/dhtmlx/imgs/dhxgrid_skyblue/tree/folder.gif');
+                    }
+                }
+                form.bootstrapValidator('resetForm', true);
+                layer.close(lwin);
+            }, function () {
+                form.bootstrapValidator('disableSubmitButtons', false);
+            });
+        },
         openUserForm: function (update, rowId, myTreeGrid, id) {
-            layer.open({
+            var lwin = layer.open({
                 type: 1,
                 title: update ? '修改用户' : '新增用户',
                 area: ['500px', '400px'], //宽高
                 content: $('#layer_add_user').html(),
                 btn: ['确定', '取消'],
                 yes: function () {
-                    $('#addUserForm').submit();
+                    var form = $('#addUserForm');
+                    form.data('bootstrapValidator').validate();
+                    if (form.data('bootstrapValidator').isValid()) {
+                        viewModel.addOrUpdate(update, rowId, myTreeGrid, form, lwin);
+                    }
                 }
             });
             if (update) {
@@ -82,10 +147,13 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'valid
                 viewModel.user.company(myTreeGrid.getRowAttribute(rowId, 'company'));
                 viewModel.user.name(myTreeGrid.getRowAttribute(rowId, 'name'));
                 viewModel.user.phone(myTreeGrid.getRowAttribute(rowId, 'phone'));
-                viewModel.user.province(myTreeGrid.getRowAttribute(rowId, 'province'));
-                viewModel.user.city(myTreeGrid.getRowAttribute(rowId, 'city'));
+                viewModel.user.province_id(myTreeGrid.getRowAttribute(rowId, 'province_id'));
+                viewModel.user.city_id(myTreeGrid.getRowAttribute(rowId, 'city_id'));
                 viewModel.user.status(myTreeGrid.getRowAttribute(rowId, 'status'));
                 viewModel.user.email(myTreeGrid.getRowAttribute(rowId, 'email'));
+            } else {
+                viewModel.clearAddForm();
+                viewModel.user.pid(id);
             }
             util.initValidForm($('#addUserForm'), {
                 user_username: {
@@ -155,35 +223,6 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'valid
                         }
                     }
                 }
-            }, function(validator, form, submitButton) {
-                var deferred = update ? PermissionsService.updateUser(ko.toJSON(viewModel.user)) : PermissionsService.addUser(ko.toJSON(viewModel.user));
-                util.send(deferred, function (response) {
-                    if (update) {
-                        myTreeGrid.cells(rowId, 1).setValue(viewModel.user.real_name());
-                        myTreeGrid.cells(rowId, 2).setValue(viewModel.user.company());
-                        myTreeGrid.cells(rowId, 3).setValue(viewModel.user.email());
-                        myTreeGrid.cells(rowId, 5).setValue(viewModel.user.username());
-                        myTreeGrid.cells(rowId, 6).setValue(viewModel.user.name());
-                        myTreeGrid.cells(rowId, 7).setValue(viewModel.user.phone());
-                        myTreeGrid.cells(rowId, 8).setValue(viewModel.user.province());
-                        myTreeGrid.cells(rowId, 9).setValue(viewModel.user.city());
-                        myTreeGrid.cells(rowId, 10).setValue(viewModel.user.status());
-                        myTreeGrid.cells(rowId, 11).setValue(new Date().getTime());
-                        myTreeGrid._h2.forEachChild(rowId, function(element){
-                            myTreeGrid.cellById(element.id, 7).setValue(viewModel.user.status());
-                        });
-                    } else {
-                        myTreeGrid.addRow(response.data.id, [
-                            response.data.id, {
-                                image: 'folder.gif'
-                            }, viewModel.user.username(), viewModel.user.name(), viewModel.user.phone(),
-                            viewModel.user.province(), viewModel.user.city(), viewModel.user.status(), new Date().getTime()], 0, rowId);
-                        myTreeGrid.openItem(rowId);
-                    }
-                    form.bootstrapValidator('resetForm', true);
-                }, function () {
-                    form.bootstrapValidator('disableSubmitButtons', false);
-                });
             });
             ko.applyBindings(viewModel, $('#addUserForm')[0]);
             $('#addUserForm').slimScroll({
@@ -192,14 +231,15 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'valid
             });
         }
     };
+    viewModel.init();
     $(function () {
         layer.load(2);
         var myTreeGrid = new dhtmlXGridObject('tree_user');
         myTreeGrid.setImagePath('/plugins/dhtmlx/imgs/');
         myTreeGrid.setHeader('ID,real_name,company,email,,用户名,名称,电话,省,市,状态,创建时间');
-        myTreeGrid.setColumnIds('id,real_name,company,email,tree,username,name,phone,province,city,status,create_date');
+        myTreeGrid.setColumnIds('id,real_name,company,email,tree,username,name,phone,province_id,city_id,status,create_time');
         myTreeGrid.setColAlign('left,left,left,left,left,center,center,center,center,center,center,center');
-        myTreeGrid.setColTypes('ro,ro,ro,ro,tree,ro,ro,ro,combo,combo,combo,ro');
+        myTreeGrid.setColTypes('ro,ro,ro,ro,tree,ro,ro,ro,combo,combo,combo,ltro');
         myTreeGrid.setColumnHidden(0, true);
         myTreeGrid.setColumnHidden(1, true);
         myTreeGrid.setColumnHidden(2, true);
@@ -221,12 +261,12 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'valid
             var rowId = myTreeGrid.contextID.split('_')[0];
             var myId = myTreeGrid.getRowAttribute(rowId, 'id');
             if (id == 'add') {
-                viewModel.user.pid(myId);
                 //捕获页
-                viewModel.openUserForm(false, rowId, myTreeGrid);
+                viewModel.openUserForm(false, rowId, myTreeGrid, myId);
             } else if (id == 'update') {
                 viewModel.openUserForm(true, rowId, myTreeGrid, myId);
             }
+            myTreeGrid.selectRowById(rowId);
         });
         myTreeGrid.attachEvent("onDrag", function(sId,tId,sObj,tObj,sInd,tInd){
             var id = myTreeGrid.getRowAttribute(sId, 'id');
@@ -258,12 +298,17 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'valid
         });
         myTreeGrid.enableContextMenu(menu);
         myTreeGrid.init();
-        var combo = myTreeGrid.getColumnCombo(10);//takes the column index
-        util.initStatusCombo(combo);
+        util.initStatusCombo(myTreeGrid.getColumnCombo(10));
+        util.initProvinceCombo(myTreeGrid.getColumnCombo(8));
+        util.initCityCombo(myTreeGrid.getColumnCombo(9));
         myTreeGrid.load('/permissions/users', function () {
             layer.closeAll('loading');
             myTreeGrid.expandAll();
             ko.applyBindings(viewModel);
+            var count = myTreeGrid.getRowsNum();
+            if (!count || count <= 0) {
+                viewModel.openUserForm(false, 0, myTreeGrid, 1);
+            }
         }, 'js');
         util.adjustIframeHeight();
     });

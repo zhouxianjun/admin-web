@@ -44,6 +44,8 @@ require.config({
         'moment': '/plugins/moment/moment',
         'layer': '/plugins/layer/layer',
         'underscore': '/plugins/underscore/underscore',
+        'datatables': '/plugins/datatables/jquery.dataTables',
+        'datatables-bootstrap': '/plugins/datatables/dataTables.bootstrap',
 
         // service
         'userService': 'service/UserService',
@@ -57,6 +59,7 @@ require.config({
         'validator': ['jquery', 'bootstrap'],
         'treetable': ['jquery'],
         'moment-locales': ['moment'],
-        'layer': ['jquery']
+        'layer': ['jquery'],
+        'datatables': ['jquery', 'bootstrap', 'datatables-bootstrap']
     }
 });

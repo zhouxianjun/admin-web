@@ -100,9 +100,10 @@ router.get('/', function *(next) {
     this.redirect('/pages/login.html');
 });
 
-app.on('error', (err, ctx) =>
-    logger.error('server error', err, ctx)
-);
+app.on('error', (err, ctx) => {
+    Utils.writeResult(ctx, new Result(false, err.message || '操作失败'));
+    logger.error('server error', err, ctx);
+});
 
 app.use(router.routes()).use(router.allowedMethods());
 

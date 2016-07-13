@@ -25,6 +25,7 @@
  *           佛祖保佑       永无BUG
  */
 'use strict';
+const userService = require('../service/UserService').instance();
 const Result = require('../dto/Result');
 module.exports = class {
     static get path() {
@@ -34,20 +35,21 @@ module.exports = class {
         ctx.session = null;
         ctx.redirect('/');
     }
-    login(ctx) {
-        var param = ctx.request.body;
+    * login() {
+        let param = this.request.body;
         if (!param || !param.username) {
-            ctx.throw(400);
+            this.throw(400);
             return;
         }
-        console.log(ctx.session);
-        ctx.session.user = {
-            username: param.username,
-            name: param.username
-        };
-        ctx.redirect('/pages/index.html');
-    }
-    users(ctx) {
-        ctx.body = [];
+        let userId = yield userService.login(param.username, param.password);
+        if (userId && userId.toNumber() > 0) {
+            this.session.user = {
+                id: userId.toNumber(),
+                username: param.username
+            };
+            this.redirect('/pages/index.html');
+        } else {
+            this.redirect('/pages/login.html?error=500');
+        }
     }
 };

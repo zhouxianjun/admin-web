@@ -25,61 +25,40 @@
  *           佛祖保佑       永无BUG
  */
 'use strict';
-require(['jquery', 'ko', 'userService', 'bootstrap', 'icheck', 'validator'], function ($, ko, UserService) {
+require(['jquery', 'ko', 'userService', 'util', 'bootstrap', 'icheck', 'validator'], function ($, ko, UserService, util) {
     var viewModel = {
         username: ko.observable(),
-        password: ko.observable()
+        password: ko.observable(),
+        error: ko.observable(util.getUrlParam('error'))
     };
     ko.applyBindings(viewModel);
     $(function () {
-        console.log(UserService);
         $('input').iCheck({
             checkboxClass: 'icheckbox_square-blue',
             radioClass: 'iradio_square-blue',
             increaseArea: '20%' // optional
         });
-
-        $('#loginForm').bootstrapValidator({
-            message: 'This value is not valid',
-            live: 'enabled',
-            trigger: 'blur',
-            feedbackIcons: {
-                valid: 'glyphicon glyphicon-ok',
-                invalid: 'glyphicon glyphicon-remove',
-                validating: 'glyphicon glyphicon-refresh'
-            },
-            /*submitHandler: function(validator, form, submitButton) {
-                var deferred = UserService.login(ko.toJSON(viewModel));
-                $.when(deferred).done(function (response) {
-                    console.log(response);
-                    window.location.href = './index.html';
-                }).fail(function (error) {
-                    alert('登录失败');
-                });
-            },*/
-            fields: {
-                username: {
-                    validators: {
-                        notEmpty: {
-                            message: 'The username is required and can\'t be empty'
-                        },
-                        stringLength: {
-                            min: 3,
-                            max: 20,
-                            message: 'The full name must be less than 20 characters'
-                        }
+        util.initValidForm($('#loginForm'), {
+            username: {
+                validators: {
+                    notEmpty: {
+                        message: '不能为空'
+                    },
+                    stringLength: {
+                        min: 3,
+                        max: 20,
+                        message: '必须是3～20个字符之间'
+                    },
+                    regexp: {
+                        regexp: /^[a-zA-Z0-9_]{3,16}$/,
+                        message: '只能为字母数字字符或下划线'
                     }
-                },
-                password: {
-                    validators: {
-                        notEmpty: {
-                            message: 'The password is required and can\'t be empty'
-                        },
-                        stringLength: {
-                            min: 6,
-                            max: 20,
-                            message: 'The full name must be less than 20 characters'
-                        }
+                }
+            },
+            password: {
+                validators: {
+                    notEmpty: {
+                        message: '不能为空'
                     }
                 }
             }

@@ -30,6 +30,7 @@ module.exports = class RoleService extends ThriftClient.referenceBean {
     roles() {}
     add() {}
     update() {}
+    rolesByUser() {}
     rolesBySetUser() {}
     setMenus() {}
     get type() {
