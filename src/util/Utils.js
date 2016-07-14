@@ -186,4 +186,13 @@ module.exports = class Utils {
         }
         return result;
     }
+    static makeList(array) {
+        for(let item of array){
+            Reflect.ownKeys(item).forEach(key => {
+                if (item[key] instanceof thrift.Int64)
+                    item[key] = item[key].toNumber();
+            });
+        }
+        return array;
+    }
 };

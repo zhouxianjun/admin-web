@@ -106,6 +106,14 @@ define(['jquery'], function ($) {
                 data: data,
                 contentType : 'application/json'
             });
+        },
+        interfaceByMgr: function() {
+            return $.ajax({
+                url: '/permissions/interfaceByMgr',
+                type: 'get',
+                dataType: 'json',
+                contentType : 'application/json'
+            });
         }
     };
 });

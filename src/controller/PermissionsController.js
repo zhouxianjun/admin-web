@@ -31,6 +31,7 @@ const thrift = require('thrift');
 const roleService = require('../service/RoleService').instance();
 const menuService = require('../service/MenuService').instance();
 const userService = require('../service/UserService').instance();
+const interfaceService = require('../service/InterfaceService').instance();
 const PublicStruct = require('../thrift/PublicStruct_types');
 module.exports = class PermissionsController {
     static get path() {
@@ -211,5 +212,12 @@ module.exports = class PermissionsController {
         let params = this.request.body;
         let res = yield userService.update(new PublicStruct.UserStruct(params));
         Utils.writeResult(this, new Result(res ? true : false));
+    }
+    * interfaceByMgr() {
+        let res = yield interfaceService.interfaces();
+        Utils.writeResult(this, new Result(true, {
+            key: 'list',
+            value: Utils.makeList(res)
+        }));
     }
 };

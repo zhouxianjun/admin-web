@@ -25,8 +25,8 @@
  *           佛祖保佑       永无BUG
  */
 'use strict';
-require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'datatables', 'validator', 'slimScroll'],
-    function ($, util, layer, PermissionsService, ko) {
+require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'moment', 'merge', 'datatables', 'validator', 'slimScroll'],
+    function ($, util, layer, PermissionsService, ko, moment) {
     var viewModel = {
         interface: {
             name: ko.observable(),
@@ -94,7 +94,48 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'datatables', 'v
     $(function () {
         layer.load(2);
         layer.closeAll('loading');
-        $("#example1").DataTable();
+        /*editor = new $.fn.dataTable.Editor( {
+            ajax: "../php/staff.php",
+            table: "#example",
+            fields: [ {
+                label: "名称:",
+                name: "name"
+            }, {
+                label: "URL:",
+                name: "auth"
+            }, {
+                label: "描述:",
+                name: "position"
+            }, {
+                label: "状态:",
+                name: "status"
+            }
+            ]
+        } );*/
+
+        var table;
+        util.send(PermissionsService.interfaceByMgr(), function(response) {
+            table = $('#interface-table').dataTable(merge(util.dataTableSettings, {
+                data: response.data.list,
+                columns: [{
+                    data: 'name'
+                }, {
+                    data: 'auth'
+                }, {
+                    data: 'description'
+                }, {
+                    data: 'status',
+                    render: function(data) {
+                        return data.status == 1 ? '启用' : '禁用';
+                    }
+                }, {
+                    data: 'create_time',
+                    render: function(data) {
+                        return moment(data.create_time).format('YYYY-MM-DD HH:mm:ss');
+                    }
+                }]
+            }));
+        });
         ko.applyBindings(viewModel);
         util.adjustIframeHeight();
     });

@@ -37,7 +37,7 @@ define(['jquery', 'layer', 'moment', 'underscore', 'dhtmlx'], function ($, layer
         // the cell is read-only, so it's always in the disabled state
         this.isDisabled = function () {
             return true;
-        }
+        };
         this.setValue = function (val) {
             // actual data processing may be placed here, for now we just set value as it is
             this.setCValue(window.eXcell_ltro.moment(val).format('YYYY-MM-DD HH:mm:ss'));
@@ -155,6 +155,24 @@ define(['jquery', 'layer', 'moment', 'underscore', 'dhtmlx'], function ($, layer
         },
         loadProvinceList: function () {
             return _p_data;
+        },
+        dataTableSettings: {
+            lengthChange: false,
+            searching: false,
+            language: {
+                paginate: {//分页的样式内容。
+                    previous: "上一页",
+                    next: "下一页",
+                    first: "第一页",
+                    last: "最后"
+                },
+
+                zeroRecords: "没有内容",//table tbody内容为空时，tbody的内容。
+                //下面三者构成了总体的左下角的内容。
+                info: "总共_PAGES_ 页，显示第_START_ 到第 _END_ ，筛选之后得到 _TOTAL_ 条，初始_MAX_ 条 ",//左下角的信息显示，大写的词为关键字。
+                infoEmpty: "没有记录",//筛选为空时左下角的显示。
+                infoFiltered: ""//筛选之后的左下角筛选提示，
+            }
         }
     };
 });

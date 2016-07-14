@@ -9,18 +9,19 @@
   "author": "Gary",
   "license": "ISC",
   "dependencies": {
+    "co": "latest",
     "koa": "^1.2.0",
     "koa-bodyparser": "^2.2.0",
     "koa-generic-session": "^1.11.1",
     "koa-redis": "^2.1.1",
     "koa-router": "^5.4.0",
     "koa-static": "^2.0.0",
+    "merge": "^1.2.0",
     "node-thrift-client": "^1.0.0",
+    "thrift": "latest",
     "tracer": "^0.8.3",
     "underscore": "^1.8.3",
     "walk": "^2.3.9",
-    "watch": "^0.19.1",
-    "thrift": "latest",
-    "co": "latest"
+    "watch": "^0.19.1"
   }
 }

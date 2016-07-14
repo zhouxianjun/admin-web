@@ -44,8 +44,9 @@ require.config({
         'moment': '/plugins/moment/moment',
         'layer': '/plugins/layer/layer',
         'underscore': '/plugins/underscore/underscore',
-        'datatables': '/plugins/datatables/jquery.dataTables',
-        'datatables-bootstrap': '/plugins/datatables/dataTables.bootstrap',
+        'jquery-datatables': '/plugins/datatables/jquery.dataTables',
+        'datatables': '/plugins/datatables/dataTables.bootstrap',
+        'merge': '/plugins/merge',
 
         // service
         'userService': 'service/UserService',
@@ -60,6 +61,7 @@ require.config({
         'treetable': ['jquery'],
         'moment-locales': ['moment'],
         'layer': ['jquery'],
-        'datatables': ['jquery', 'bootstrap', 'datatables-bootstrap']
+        'jquery-datatables': ['jquery'],
+        'datatables': ['jquery-datatables', 'bootstrap']
     }
 });
