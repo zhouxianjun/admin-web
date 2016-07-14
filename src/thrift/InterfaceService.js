@@ -135,6 +135,132 @@ InterfaceService_interfaces_result.prototype.write = function(output) {
   return;
 };
 
+InterfaceService_interfacesByPage_args = function(args) {
+  this.page = null;
+  if (args) {
+    if (args.page !== undefined && args.page !== null) {
+      this.page = new PublicStruct_ttypes.PageParamStruct(args.page);
+    }
+  }
+};
+InterfaceService_interfacesByPage_args.prototype = {};
+InterfaceService_interfacesByPage_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.page = new PublicStruct_ttypes.PageParamStruct();
+        this.page.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+InterfaceService_interfacesByPage_args.prototype.write = function(output) {
+  output.writeStructBegin('InterfaceService_interfacesByPage_args');
+  if (this.page !== null && this.page !== undefined) {
+    output.writeFieldBegin('page', Thrift.Type.STRUCT, 1);
+    this.page.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+InterfaceService_interfacesByPage_result = function(args) {
+  this.success = null;
+  this.ex = null;
+  if (args instanceof PublicStruct_ttypes.InvalidOperation) {
+    this.ex = args;
+    return;
+  }
+  if (args) {
+    if (args.success !== undefined && args.success !== null) {
+      this.success = new PublicStruct_ttypes.PageStruct(args.success);
+    }
+    if (args.ex !== undefined && args.ex !== null) {
+      this.ex = args.ex;
+    }
+  }
+};
+InterfaceService_interfacesByPage_result.prototype = {};
+InterfaceService_interfacesByPage_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.success = new PublicStruct_ttypes.PageStruct();
+        this.success.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.ex = new PublicStruct_ttypes.InvalidOperation();
+        this.ex.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+InterfaceService_interfacesByPage_result.prototype.write = function(output) {
+  output.writeStructBegin('InterfaceService_interfacesByPage_result');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.STRUCT, 0);
+    this.success.write(output);
+    output.writeFieldEnd();
+  }
+  if (this.ex !== null && this.ex !== undefined) {
+    output.writeFieldBegin('ex', Thrift.Type.STRUCT, 1);
+    this.ex.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 InterfaceService_interfacesByUser_args = function(args) {
   this.user = null;
   if (args) {
@@ -750,6 +876,56 @@ InterfaceServiceClient.prototype.recv_interfaces = function(input,mtype,rseqid) 
   }
   return callback('interfaces failed: unknown result');
 };
+InterfaceServiceClient.prototype.interfacesByPage = function(page, callback) {
+  this._seqid = this.new_seqid();
+  if (callback === undefined) {
+    var _defer = Q.defer();
+    this._reqs[this.seqid()] = function(error, result) {
+      if (error) {
+        _defer.reject(error);
+      } else {
+        _defer.resolve(result);
+      }
+    };
+    this.send_interfacesByPage(page);
+    return _defer.promise;
+  } else {
+    this._reqs[this.seqid()] = callback;
+    this.send_interfacesByPage(page);
+  }
+};
+
+InterfaceServiceClient.prototype.send_interfacesByPage = function(page) {
+  var output = new this.pClass(this.output);
+  output.writeMessageBegin('interfacesByPage', Thrift.MessageType.CALL, this.seqid());
+  var args = new InterfaceService_interfacesByPage_args();
+  args.page = page;
+  args.write(output);
+  output.writeMessageEnd();
+  return this.output.flush();
+};
+
+InterfaceServiceClient.prototype.recv_interfacesByPage = function(input,mtype,rseqid) {
+  var callback = this._reqs[rseqid] || function() {};
+  delete this._reqs[rseqid];
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(input);
+    input.readMessageEnd();
+    return callback(x);
+  }
+  var result = new InterfaceService_interfacesByPage_result();
+  result.read(input);
+  input.readMessageEnd();
+
+  if (null !== result.ex) {
+    return callback(result.ex);
+  }
+  if (null !== result.success) {
+    return callback(null, result.success);
+  }
+  return callback('interfacesByPage failed: unknown result');
+};
 InterfaceServiceClient.prototype.interfacesByUser = function(user, callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
@@ -1001,6 +1177,46 @@ InterfaceServiceProcessor.prototype.process_interfaces = function(seqid, input, 
       } else {
         var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
         output.writeMessageBegin("interfaces", Thrift.MessageType.EXCEPTION, seqid);
+      }
+      result.write(output);
+      output.writeMessageEnd();
+      output.flush();
+    });
+  }
+}
+
+InterfaceServiceProcessor.prototype.process_interfacesByPage = function(seqid, input, output) {
+  var args = new InterfaceService_interfacesByPage_args();
+  args.read(input);
+  input.readMessageEnd();
+  if (this._handler.interfacesByPage.length === 1) {
+    Q.fcall(this._handler.interfacesByPage, args.page)
+      .then(function(result) {
+        var result = new InterfaceService_interfacesByPage_result({success: result});
+        output.writeMessageBegin("interfacesByPage", Thrift.MessageType.REPLY, seqid);
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      }, function (err) {
+        if (err instanceof PublicStruct_ttypes.InvalidOperation) {
+          var result = new InterfaceService_interfacesByPage_result(err);
+          output.writeMessageBegin("interfacesByPage", Thrift.MessageType.REPLY, seqid);
+        } else {
+          var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+          output.writeMessageBegin("interfacesByPage", Thrift.MessageType.EXCEPTION, seqid);
+        }
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      });
+  } else {
+    this._handler.interfacesByPage(args.page, function (err, result) {
+      if (err == null || err instanceof PublicStruct_ttypes.InvalidOperation) {
+        var result = new InterfaceService_interfacesByPage_result((err != null ? err : {success: result}));
+        output.writeMessageBegin("interfacesByPage", Thrift.MessageType.REPLY, seqid);
+      } else {
+        var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+        output.writeMessageBegin("interfacesByPage", Thrift.MessageType.EXCEPTION, seqid);
       }
       result.write(output);
       output.writeMessageEnd();

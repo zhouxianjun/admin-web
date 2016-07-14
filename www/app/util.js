@@ -61,7 +61,7 @@ define(['jquery', 'layer', 'moment', 'underscore', 'dhtmlx'], function ($, layer
                     window.location.href = '/';
                     return;
                 }
-                if (response.code != 1) {
+                if (response.code != 1 && typeof response.code != 'undefined') {
                     layer.msg(response.msg || '操作失败', {icon: 2});
                     if (typeof errorFn === 'function') {
                         errorFn(response);
@@ -156,6 +156,29 @@ define(['jquery', 'layer', 'moment', 'underscore', 'dhtmlx'], function ($, layer
         loadProvinceList: function () {
             return _p_data;
         },
+        setViewModelData: function (viewModel, data) {
+            if (!data) return;
+            for (var key in data) {
+                if (viewModel[key]) {
+                    viewModel[key](data[key]);
+                }
+            }
+        },
+        clearViewModel: function (viewModel) {
+            for (var key in viewModel) {
+                if (viewModel[key]) {
+                    viewModel[key](null);
+                }
+            }
+        },
+        getSortParam: function (data, columns) {
+            var param = {};
+            if (data.order && data.order.length && data.order[0]) {
+                param.sortName = columns[data.order[0].column];
+                param.sortDir = data.order[0].dir;
+            }
+            return param;
+        },
         dataTableSettings: {
             lengthChange: false,
             searching: false,
@@ -169,10 +192,13 @@ define(['jquery', 'layer', 'moment', 'underscore', 'dhtmlx'], function ($, layer
 
                 zeroRecords: "没有内容",//table tbody内容为空时，tbody的内容。
                 //下面三者构成了总体的左下角的内容。
-                info: "总共_PAGES_ 页，显示第_START_ 到第 _END_ ，筛选之后得到 _TOTAL_ 条，初始_MAX_ 条 ",//左下角的信息显示，大写的词为关键字。
+                info: "总共_PAGES_ 页，显示第_START_ 到第 _END_  ",//左下角的信息显示，大写的词为关键字。
                 infoEmpty: "没有记录",//筛选为空时左下角的显示。
                 infoFiltered: ""//筛选之后的左下角筛选提示，
-            }
+            },
+            pagingType: 'simple_numbers',
+            processing: false,  //隐藏加载提示,自行处理
+            serverSide: true
         }
     };
 });

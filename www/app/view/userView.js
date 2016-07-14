@@ -86,17 +86,7 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'valid
             myTreeGrid.cells(rowId, 11).setValue(new Date().getTime());
         },
         clearAddForm: function () {
-            viewModel.user.id('');
-            viewModel.user.username('');
-            viewModel.user.real_name('');
-            viewModel.user.company('');
-            viewModel.user.name('');
-            viewModel.user.phone('');
-            viewModel.user.province_id('');
-            viewModel.user.city_id('');
-            viewModel.user.status('');
-            viewModel.user.email('');
-            viewModel.user.pid('');
+            util.clearViewModel(viewModel.user);
         },
         addOrUpdate: function (update, rowId, myTreeGrid, form, lwin) {
             var deferred = update ? PermissionsService.updateUser(ko.toJSON(viewModel.user)) : PermissionsService.addUser(ko.toJSON(viewModel.user));
@@ -123,6 +113,61 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'valid
                 layer.close(lwin);
             }, function () {
                 form.bootstrapValidator('disableSubmitButtons', false);
+            });
+        },
+        openRoles: function (id) {
+            var tree;
+            var roleswin = layer.open({
+                type: 1,
+                title: '设置用户角色',
+                area: ['300px', '400px'], //宽高
+                content: $('#show_roles').html(),
+                btn: ['确定', '取消'],
+                yes: function () {
+                    alert(tree.getAllChecked());
+                    return;
+                    var setRoleLoad = layer.load(2);
+                    util.send(PermissionsService.setRoles(JSON.stringify({
+                        id: id,
+                        roles: tree.getAllChecked().split(',')
+                    })), function() {
+                        layer.close(setRoleLoad);
+                        layer.close(roleswin);
+                    }, function() {
+                        layer.close(setRoleLoad);
+                    });
+                }
+            });
+            util.send(PermissionsService.rolesBySetUser(JSON.stringify({id: id})), function(response) {
+                var checked = [];
+                (function(fn) {
+                    response = fn.call(fn, response.data.roles);
+                })(function(data) {
+                    var items = [];
+                    for (var i = 0; i < data.length; i++) {
+                        items.push({
+                            id: data[i].id,
+                            text: data[i].name,
+                            item: (data[i].rows && data[i].rows.length) ? this.call(this, data[i].rows) : []
+                        });
+                        if (data[i].ow) checked.push(data[i].id);
+                    }
+                    return items;
+                });
+                tree = new dhtmlXTreeObject("roles_list", "100%", "100%", 0);
+                tree.setImagePath("/plugins/dhtmlx/imgs/dhxtree_skyblue/");
+                tree.enableCheckBoxes(true);
+                //tree.enableThreeStateCheckboxes(true);
+                response[0].open = 1;
+                tree.loadJSONObject({id: 0, item: [response[0]]}, function () {
+                    $('#role_list').slimScroll({
+                        height: '100%', //可滚动区域高度
+                        disableFadeOut: true
+                    });
+                    for (var i = 0; i < checked.length; i++) {
+                        tree.setCheck(checked[i], true);
+                    }
+                });
             });
         },
         openUserForm: function (update, rowId, myTreeGrid, id) {
@@ -254,7 +299,8 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'valid
             context: true,
             items: [
                 {id: 'add', text: '新增'},
-                {id: 'update', text: '修改'}
+                {id: 'update', text: '修改'},
+                {id: 'setRole', text: '配置角色'}
             ]
         });
         menu.attachEvent("onClick", function(id, zoneId, cas) {
@@ -265,6 +311,8 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'valid
                 viewModel.openUserForm(false, rowId, myTreeGrid, myId);
             } else if (id == 'update') {
                 viewModel.openUserForm(true, rowId, myTreeGrid, myId);
+            } else if (id == 'setRole') {
+                viewModel.openRoles(myId);
             }
             myTreeGrid.selectRowById(rowId);
         });

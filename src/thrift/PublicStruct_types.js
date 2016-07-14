@@ -785,6 +785,240 @@ UserStruct.prototype.write = function(output) {
   return;
 };
 
+PageParamStruct = module.exports.PageParamStruct = function(args) {
+  this.page = 1;
+  this.pageSize = 15;
+  this.sortName = null;
+  this.sortDir = null;
+  if (args) {
+    if (args.page !== undefined && args.page !== null) {
+      this.page = args.page;
+    }
+    if (args.pageSize !== undefined && args.pageSize !== null) {
+      this.pageSize = args.pageSize;
+    }
+    if (args.sortName !== undefined && args.sortName !== null) {
+      this.sortName = args.sortName;
+    }
+    if (args.sortDir !== undefined && args.sortDir !== null) {
+      this.sortDir = args.sortDir;
+    }
+  }
+};
+PageParamStruct.prototype = {};
+PageParamStruct.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.I32) {
+        this.page = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.I32) {
+        this.pageSize = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.STRING) {
+        this.sortName = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 4:
+      if (ftype == Thrift.Type.STRING) {
+        this.sortDir = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+PageParamStruct.prototype.write = function(output) {
+  output.writeStructBegin('PageParamStruct');
+  if (this.page !== null && this.page !== undefined) {
+    output.writeFieldBegin('page', Thrift.Type.I32, 1);
+    output.writeI32(this.page);
+    output.writeFieldEnd();
+  }
+  if (this.pageSize !== null && this.pageSize !== undefined) {
+    output.writeFieldBegin('pageSize', Thrift.Type.I32, 2);
+    output.writeI32(this.pageSize);
+    output.writeFieldEnd();
+  }
+  if (this.sortName !== null && this.sortName !== undefined) {
+    output.writeFieldBegin('sortName', Thrift.Type.STRING, 3);
+    output.writeString(this.sortName);
+    output.writeFieldEnd();
+  }
+  if (this.sortDir !== null && this.sortDir !== undefined) {
+    output.writeFieldBegin('sortDir', Thrift.Type.STRING, 4);
+    output.writeString(this.sortDir);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+PageStruct = module.exports.PageStruct = function(args) {
+  this.pageNum = null;
+  this.pageSize = null;
+  this.count = null;
+  this.current = null;
+  this.items = null;
+  if (args) {
+    if (args.pageNum !== undefined && args.pageNum !== null) {
+      this.pageNum = args.pageNum;
+    }
+    if (args.pageSize !== undefined && args.pageSize !== null) {
+      this.pageSize = args.pageSize;
+    }
+    if (args.count !== undefined && args.count !== null) {
+      this.count = args.count;
+    }
+    if (args.current !== undefined && args.current !== null) {
+      this.current = args.current;
+    }
+    if (args.items !== undefined && args.items !== null) {
+      this.items = Thrift.copyList(args.items, [null]);
+    }
+  }
+};
+PageStruct.prototype = {};
+PageStruct.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.I32) {
+        this.pageNum = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.I32) {
+        this.pageSize = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.I32) {
+        this.count = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 4:
+      if (ftype == Thrift.Type.I32) {
+        this.current = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 5:
+      if (ftype == Thrift.Type.LIST) {
+        var _size0 = 0;
+        var _rtmp34;
+        this.items = [];
+        var _etype3 = 0;
+        _rtmp34 = input.readListBegin();
+        _etype3 = _rtmp34.etype;
+        _size0 = _rtmp34.size;
+        for (var _i5 = 0; _i5 < _size0; ++_i5)
+        {
+          var elem6 = null;
+          elem6 = input.readString();
+          this.items.push(elem6);
+        }
+        input.readListEnd();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+PageStruct.prototype.write = function(output) {
+  output.writeStructBegin('PageStruct');
+  if (this.pageNum !== null && this.pageNum !== undefined) {
+    output.writeFieldBegin('pageNum', Thrift.Type.I32, 1);
+    output.writeI32(this.pageNum);
+    output.writeFieldEnd();
+  }
+  if (this.pageSize !== null && this.pageSize !== undefined) {
+    output.writeFieldBegin('pageSize', Thrift.Type.I32, 2);
+    output.writeI32(this.pageSize);
+    output.writeFieldEnd();
+  }
+  if (this.count !== null && this.count !== undefined) {
+    output.writeFieldBegin('count', Thrift.Type.I32, 3);
+    output.writeI32(this.count);
+    output.writeFieldEnd();
+  }
+  if (this.current !== null && this.current !== undefined) {
+    output.writeFieldBegin('current', Thrift.Type.I32, 4);
+    output.writeI32(this.current);
+    output.writeFieldEnd();
+  }
+  if (this.items !== null && this.items !== undefined) {
+    output.writeFieldBegin('items', Thrift.Type.LIST, 5);
+    output.writeListBegin(Thrift.Type.STRING, this.items.length);
+    for (var iter7 in this.items)
+    {
+      if (this.items.hasOwnProperty(iter7))
+      {
+        iter7 = this.items[iter7];
+        output.writeString(iter7);
+      }
+    }
+    output.writeListEnd();
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 InvalidOperation = module.exports.InvalidOperation = function(args) {
   Thrift.TException.call(this, "InvalidOperation")
   this.name = "InvalidOperation"

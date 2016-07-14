@@ -33,6 +33,7 @@ module.exports = class MenuService extends ThriftClient.referenceBean {
     add() {}
     update() {}
     delMenu() {}
+    setInterfaces() {}
     get type() {
         return require('../thrift/MenuService');
     }

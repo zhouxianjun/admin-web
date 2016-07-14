@@ -26,6 +26,7 @@
  */
 'use strict';
 const userService = require('../service/UserService').instance();
+const interfaceService = require('../service/InterfaceService').instance();
 const Result = require('../dto/Result');
 module.exports = class {
     static get path() {
@@ -41,12 +42,12 @@ module.exports = class {
             this.throw(400);
             return;
         }
-        let userId = yield userService.login(param.username, param.password);
-        if (userId && userId.toNumber() > 0) {
-            this.session.user = {
-                id: userId.toNumber(),
-                username: param.username
-            };
+        let user = yield userService.login(param.username, param.password);
+        if (user && user.id.toNumber() > 0) {
+            let res = yield interfaceService.interfaces();
+            user.id = user.id.toNumber();
+            this.session.user = user;
+            this.session.interfaces = res;
             this.redirect('/pages/index.html');
         } else {
             this.redirect('/pages/login.html?error=500');

@@ -30,6 +30,7 @@ module.exports = class InterfaceService extends ThriftClient.referenceBean {
     interfaces() {}
     interfacesByUser() {}
     interfacesBySetMenu() {}
+    interfacesByPage() {}
     add() {}
     update() {}
     get type() {

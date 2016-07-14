@@ -444,9 +444,13 @@ MenuService_menusBySetRole_result.prototype.write = function(output) {
 
 MenuService_add_args = function(args) {
   this.menu = null;
+  this.user = null;
   if (args) {
     if (args.menu !== undefined && args.menu !== null) {
       this.menu = new PublicStruct_ttypes.MenuStruct(args.menu);
+    }
+    if (args.user !== undefined && args.user !== null) {
+      this.user = args.user;
     }
   }
 };
@@ -472,9 +476,13 @@ MenuService_add_args.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
-      case 0:
+      case 2:
+      if (ftype == Thrift.Type.I64) {
+        this.user = input.readI64();
+      } else {
         input.skip(ftype);
-        break;
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -489,6 +497,11 @@ MenuService_add_args.prototype.write = function(output) {
   if (this.menu !== null && this.menu !== undefined) {
     output.writeFieldBegin('menu', Thrift.Type.STRUCT, 1);
     this.menu.write(output);
+    output.writeFieldEnd();
+  }
+  if (this.user !== null && this.user !== undefined) {
+    output.writeFieldBegin('user', Thrift.Type.I64, 2);
+    output.writeI64(this.user);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
@@ -1150,7 +1163,7 @@ MenuServiceClient.prototype.recv_menusBySetRole = function(input,mtype,rseqid) {
   }
   return callback('menusBySetRole failed: unknown result');
 };
-MenuServiceClient.prototype.add = function(menu, callback) {
+MenuServiceClient.prototype.add = function(menu, user, callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
     var _defer = Q.defer();
@@ -1161,19 +1174,20 @@ MenuServiceClient.prototype.add = function(menu, callback) {
         _defer.resolve(result);
       }
     };
-    this.send_add(menu);
+    this.send_add(menu, user);
     return _defer.promise;
   } else {
     this._reqs[this.seqid()] = callback;
-    this.send_add(menu);
+    this.send_add(menu, user);
   }
 };
 
-MenuServiceClient.prototype.send_add = function(menu) {
+MenuServiceClient.prototype.send_add = function(menu, user) {
   var output = new this.pClass(this.output);
   output.writeMessageBegin('add', Thrift.MessageType.CALL, this.seqid());
   var args = new MenuService_add_args();
   args.menu = menu;
+  args.user = user;
   args.write(output);
   output.writeMessageEnd();
   return this.output.flush();
@@ -1494,8 +1508,8 @@ MenuServiceProcessor.prototype.process_add = function(seqid, input, output) {
   var args = new MenuService_add_args();
   args.read(input);
   input.readMessageEnd();
-  if (this._handler.add.length === 1) {
-    Q.fcall(this._handler.add, args.menu)
+  if (this._handler.add.length === 2) {
+    Q.fcall(this._handler.add, args.menu, args.user)
       .then(function(result) {
         var result = new MenuService_add_result({success: result});
         output.writeMessageBegin("add", Thrift.MessageType.REPLY, seqid);
@@ -1515,7 +1529,7 @@ MenuServiceProcessor.prototype.process_add = function(seqid, input, output) {
         output.flush();
       });
   } else {
-    this._handler.add(args.menu, function (err, result) {
+    this._handler.add(args.menu, args.user, function (err, result) {
       if (err == null || err instanceof PublicStruct_ttypes.InvalidOperation) {
         var result = new MenuService_add_result((err != null ? err : {success: result}));
         output.writeMessageBegin("add", Thrift.MessageType.REPLY, seqid);

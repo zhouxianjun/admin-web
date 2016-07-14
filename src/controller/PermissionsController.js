@@ -47,6 +47,20 @@ module.exports = class PermissionsController {
             }
         });
     }
+    * rolesBySetUser() {
+        let params = this.request.body;
+        let roles = yield roleService.rolesBySetUser(params.id, this.session.user.id);
+        Utils.writeResult(this, new Result(true, {
+            key: 'roles',
+            value: Utils.makeTree(roles, this.session.user.id, 'pid', 'id', 'rows', item => {
+                if (item.rows && item.rows.length) {
+                    item.tree = {
+                        image: 'folder.gif'
+                    }
+                }
+            })
+        }));
+    }
     * addRole() {
         let params = this.request.body;
         let res = yield roleService.add(params.name, params.pid);
@@ -58,6 +72,11 @@ module.exports = class PermissionsController {
     * updateRole() {
         let params = this.request.body;
         let res = yield roleService.update(params.id, params.name, params.status, params.pid);
+        Utils.writeResult(this, new Result(res ? true : false));
+    }
+    * setMenus() {
+        let params = this.request.body;
+        let res = yield roleService.setMenus(params.id, this.session.user.id, params.menus);
         Utils.writeResult(this, new Result(res ? true : false));
     }
     * updateRoleStatus() {
@@ -75,9 +94,23 @@ module.exports = class PermissionsController {
             }
         });
     }
+    * menusBySetRole() {
+        let params = this.request.body;
+        let menus = yield menuService.menusBySetRole(this.session.user.id, params.role);
+        Utils.writeResult(this, new Result(true, {
+            key: 'menus',
+            value: Utils.makeTree(menus, 0, 'pid', 'id', 'rows', item => {
+                if (item.rows && item.rows.length) {
+                    item.tree = {
+                        image: 'folder.gif'
+                    }
+                }
+            })
+        }));
+    }
     * addMenu() {
         let params = this.request.body;
-        let res = yield menuService.add(new PublicStruct.MenuStruct(params));
+        let res = yield menuService.add(new PublicStruct.MenuStruct(params), this.session.user.id);
         Utils.writeResult(this, new Result(res ? true : false, {
             key: 'id',
             value: res.toNumber()
@@ -93,102 +126,18 @@ module.exports = class PermissionsController {
         let res = yield menuService.delMenu(params.id);
         Utils.writeResult(this, new Result(res ? true : false));
     }
-    menus(ctx) {
-        ctx.body = new Result(true, {
+    * menus(ctx) {
+        let menus = yield menuService.menusByUser(this.session.user.id);
+        Utils.writeResult(this, new Result(true, {
             key: 'menus',
-            value: [{
-                id: 1000,
-                pid: 0,
-                name: '权限管理',
-                icon: 'fa-dashboard',
-                panel: 'permissions_panel',
-                sub: [{
-                    id: 1001,
-                    pid: 1000,
-                    name: '菜单配置',
-                    panel: 'permissions_panel',
-                    path: '/pages/menuMgr.html',
-                    icon: '',
-                    sub: []
-                }, {
-                    id: 1002,
-                    pid: 1000,
-                    name: '角色配置',
-                    panel: 'permissions_panel',
-                    path: '/pages/roleMgr.html',
-                    icon: '',
-                    sub: []
-                }, {
-                    id: 1003,
-                    pid: 1000,
-                    name: '用户配置',
-                    panel: 'permissions_panel',
-                    path: '/pages/userMgr.html',
-                    icon: '',
-                    sub: []
-                }, {
-                    id: 1004,
-                    pid: 1000,
-                    name: '接口配置',
-                    panel: 'permissions_panel',
-                    path: '/pages/interfaceMgr.html',
-                    icon: '',
-                    sub: []
-                }]
-            }, {
-                id: 1100,
-                pid: 0,
-                name: '设备管理',
-                icon: 'fa-dashboard',
-                panel: 'device_panel',
-                sub: []
-            }, {
-                id: 1200,
-                pid: 0,
-                name: '数据统计',
-                icon: 'fa-dashboard',
-                panel: 'statistics_panel',
-                sub: [{
-                    d: 1201,
-                    pid: 0,
-                    name: '产线数据列表',
-                    icon: 'fa-dashboard',
-                    panel: 'statistics_panel',
-                    sub: []
-                }, {
-                    d: 1202,
-                    pid: 0,
-                    name: '终端数据列表',
-                    icon: 'fa-dashboard',
-                    panel: 'statistics_panel',
-                    sub: []
-                }, {
-                    d: 1203,
-                    pid: 0,
-                    name: '应用数据列表',
-                    icon: 'fa-dashboard',
-                    panel: 'statistics_panel',
-                    sub: []
-                }]
-            }, {
-                id: 1300,
-                pid: 0,
-                name: '装机管理',
-                icon: 'fa-dashboard',
-                panel: 'apps_panel',
-                sub: []
-            }, {
-                id: 1400,
-                pid: 0,
-                name: '数据推送',
-                icon: 'fa-dashboard',
-                panel: 'data_send_panel',
-                sub: []
-            }]
+            value: Utils.makeTree(menus, 0, 'pid', 'id', 'sub', item => {
+                if (!item.sub) item.sub = [];
+                if (!item.panel) item.panel = 'panel_' + item.id;
+            })
         }, {
             key: 'user',
-            value: ctx.session.user
-        }).json;
+            value: this.session.user
+        }));
     }
     * users() {
         let users = yield userService.usersByUser(this.session.user.id);
@@ -213,11 +162,43 @@ module.exports = class PermissionsController {
         let res = yield userService.update(new PublicStruct.UserStruct(params));
         Utils.writeResult(this, new Result(res ? true : false));
     }
+    * setRoles() {
+        let params = this.request.body;
+        let res = yield userService.setRoles(params.id, this.session.user.id, params.roles);
+        Utils.writeResult(this, new Result(res ? true : false));
+    }
     * interfaceByMgr() {
-        let res = yield interfaceService.interfaces();
+        let params = this.request.body;
+        let res = yield interfaceService.interfacesByPage(new PublicStruct.PageParamStruct(params));
         Utils.writeResult(this, new Result(true, {
-            key: 'list',
-            value: Utils.makeList(res)
+            key: 'interfaces',
+            value: res
         }));
+    }
+    * addInterface() {
+        let params = this.request.body;
+        let res = yield interfaceService.add(new PublicStruct.InterfaceStruct(params));
+        Utils.writeResult(this, new Result(res ? true : false, {
+            key: 'id',
+            value: res.toNumber()
+        }));
+    }
+    * updateInterface() {
+        let params = this.request.body;
+        let res = yield interfaceService.update(new PublicStruct.InterfaceStruct(params));
+        Utils.writeResult(this, new Result(res ? true : false));
+    }
+    * interfacesBySetMenu() {
+        let params = this.request.body;
+        let interfaces = yield interfaceService.interfacesBySetMenu(this.session.user.id, params.menu);
+        Utils.writeResult(this, new Result(true, {
+            key: 'interfaces',
+            value: Utils.makeList(interfaces)
+        }));
+    }
+    * setInterfaces() {
+        let params = this.request.body;
+        let res = yield menuService.setInterfaces(params.id, this.session.user.id, params.interfaces);
+        Utils.writeResult(this, new Result(res ? true : false));
     }
 };

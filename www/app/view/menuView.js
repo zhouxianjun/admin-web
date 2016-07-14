@@ -43,7 +43,59 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'valid
         }, {
             name: '禁用',
             id: 0
-        }])
+        }]),
+        openInterface: function(id) {
+            var tree;
+            var interfaceswin = layer.open({
+                type: 1,
+                title: '设置菜单接口',
+                area: ['300px', '400px'], //宽高
+                content: $('#show_interfaces').html(),
+                btn: ['确定', '取消'],
+                yes: function () {
+                    var setInterfaceLoad = layer.load(2);
+                    util.send(PermissionsService.setInterfaces(JSON.stringify({
+                        id: id,
+                        interfaces: tree.getAllChecked().split(',')
+                    })), function() {
+                        layer.close(setInterfaceLoad);
+                        layer.close(interfaceswin);
+                    }, function() {
+                        layer.close(setInterfaceLoad);
+                    });
+                }
+            });
+            util.send(PermissionsService.interfacesBySetMenu(JSON.stringify({menu: id})), function(response) {
+                var checked = [];
+                (function(fn) {
+                    response = fn.call(fn, response.data.interfaces);
+                })(function(data) {
+                    var items = [];
+                    for (var i = 0; i < data.length; i++) {
+                        items.push({
+                            id: data[i].id,
+                            text: data[i].name,
+                            item: (data[i].rows && data[i].rows.length) ? this.call(this, data[i].rows) : []
+                        });
+                        if (data[i].ow) checked.push(data[i].id);
+                    }
+                    return items;
+                });
+                tree = new dhtmlXTreeObject("interfaces_list", "100%", "100%", 0);
+                tree.setImagePath("/plugins/dhtmlx/imgs/dhxtree_skyblue/");
+                tree.enableCheckBoxes(true);
+                tree.enableThreeStateCheckboxes(true);
+                tree.loadJSONObject({id: 0, item: response}, function () {
+                    $('#interfaces_list').slimScroll({
+                        height: '100%', //可滚动区域高度
+                        disableFadeOut: true
+                    });
+                    for (var i = 0; i < checked.length; i++) {
+                        tree.setCheck(checked[i], true);
+                    }
+                });
+            });
+        }
     };
     $(function () {
         layer.load(2);
@@ -55,7 +107,7 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'valid
         myTreeGrid.setColTypes('ro,tree,ed,ed,ed,combo,ed,ed');
         myTreeGrid.setColumnHidden(0, true);
         myTreeGrid.enableValidation(false,false,true,true,false,true,false,false);
-        myTreeGrid.setColValidators(',,Number0,NotEmpty,,NotEmpty');
+        myTreeGrid.setColValidators(',,NotEmpty,NotEmpty,,NotEmpty');
         myTreeGrid.enableDragAndDrop(true);
         myTreeGrid.enableTreeGridLines();
         myTreeGrid.enableTreeCellEdit(false);
@@ -65,7 +117,8 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'valid
             context: true,
             items: [
                 {id: 'add', text: '新增'},
-                {id: 'del', text: '删除'}
+                {id: 'del', text: '删除'},
+                {id: 'setInterface', text: '配置接口'}
             ]
         });
         menu.attachEvent("onClick", function(id, zoneId, cas){
@@ -148,6 +201,10 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'valid
                 }, function(){
                     layer.close(confirm);
                 });
+            } else if (id == 'setInterface') {
+                var rowId = myTreeGrid.contextID.split('_')[0];
+                var myid = myTreeGrid.getRowAttribute(rowId, 'id');
+                viewModel.openInterface(myid);
             }
         });
         myTreeGrid.attachEvent("onEditCell", function(stage,rId,cInd,nValue,oValue){

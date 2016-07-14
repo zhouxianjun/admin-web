@@ -76,10 +76,21 @@ app.use(function* rbac(next) {
             Utils.writeResult(this, new Result(Result.CODE.NO_LOGIN));
             return;
         }
-        /*if (ignoreUrl.indexOf(this.path) == -1 && urls.indexOf(this.path) == -1) {
-            Utils.writeResult(new Result(Result.CODE.NO_ACCESS));
-            return;
-        }*/
+        console.log(this.path);
+        console.log(this.session.interfaces);
+        if (ignoreUrl.indexOf(this.path) == -1) {
+            /*let have = false;
+            this.session.interfaces.forEach(auth => {
+                if (auth.auth == this.path) {
+                    have = true;
+                    return false;
+                }
+            });
+            if (!have) {
+                Utils.writeResult(this, new Result(Result.CODE.NO_ACCESS));
+                return;
+            }*/
+        }
     }
     yield next;
 });

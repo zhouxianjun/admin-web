@@ -62,6 +62,24 @@ define(['jquery'], function ($) {
                 contentType : 'application/json'
             });
         },
+        menusBySetRole: function(data) {
+            return $.ajax({
+                url: '/permissions/menusBySetRole',
+                type: 'post',
+                dataType: 'json',
+                data: data,
+                contentType : 'application/json'
+            });
+        },
+        setMenus: function (data) {
+            return $.ajax({
+                url: '/permissions/setMenus',
+                type: 'post',
+                dataType: 'json',
+                data: data,
+                contentType : 'application/json'
+            });
+        },
         addRole: function(data) {
             return $.ajax({
                 url: '/permissions/addRole',
@@ -74,6 +92,23 @@ define(['jquery'], function ($) {
         updateRole: function(data) {
             return $.ajax({
                 url: '/permissions/updateRole',
+                type: 'post',
+                dataType: 'json',
+                data: data,
+                contentType : 'application/json'
+            });
+        },
+        rolesByMgr: function () {
+            return $.ajax({
+                url: '/permissions/rolesByMgr',
+                type: 'get',
+                dataType: 'json',
+                contentType : 'application/json'
+            });
+        },
+        rolesBySetUser: function(data) {
+            return $.ajax({
+                url: '/permissions/rolesBySetUser',
                 type: 'post',
                 dataType: 'json',
                 data: data,
@@ -107,11 +142,57 @@ define(['jquery'], function ($) {
                 contentType : 'application/json'
             });
         },
-        interfaceByMgr: function() {
+        setRoles: function(data) {
+            return $.ajax({
+                url: '/permissions/setRoles',
+                type: 'post',
+                dataType: 'json',
+                data: data,
+                contentType : 'application/json'
+            });
+        },
+        interfaceByMgr: function(data) {
             return $.ajax({
                 url: '/permissions/interfaceByMgr',
-                type: 'get',
+                type: 'post',
                 dataType: 'json',
+                data: data,
+                contentType : 'application/json'
+            });
+        },
+        updateInterface: function(data) {
+            return $.ajax({
+                url: '/permissions/updateInterface',
+                type: 'post',
+                dataType: 'json',
+                data: data,
+                contentType : 'application/json'
+            });
+        },
+        addInterface: function(data) {
+            return $.ajax({
+                url: '/permissions/addInterface',
+                type: 'post',
+                dataType: 'json',
+                data: data,
+                contentType : 'application/json'
+            });
+        },
+        interfacesBySetMenu: function(data) {
+            return $.ajax({
+                url: '/permissions/interfacesBySetMenu',
+                type: 'post',
+                dataType: 'json',
+                data: data,
+                contentType : 'application/json'
+            });
+        },
+        setInterfaces: function (data) {
+            return $.ajax({
+                url: '/permissions/setInterfaces',
+                type: 'post',
+                dataType: 'json',
+                data: data,
                 contentType : 'application/json'
             });
         }

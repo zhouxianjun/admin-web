@@ -782,7 +782,7 @@ UserService_login_result = function(args) {
   }
   if (args) {
     if (args.success !== undefined && args.success !== null) {
-      this.success = args.success;
+      this.success = new PublicStruct_ttypes.UserStruct(args.success);
     }
     if (args.ex !== undefined && args.ex !== null) {
       this.ex = args.ex;
@@ -804,8 +804,9 @@ UserService_login_result.prototype.read = function(input) {
     switch (fid)
     {
       case 0:
-      if (ftype == Thrift.Type.I64) {
-        this.success = input.readI64();
+      if (ftype == Thrift.Type.STRUCT) {
+        this.success = new PublicStruct_ttypes.UserStruct();
+        this.success.read(input);
       } else {
         input.skip(ftype);
       }
@@ -830,8 +831,8 @@ UserService_login_result.prototype.read = function(input) {
 UserService_login_result.prototype.write = function(output) {
   output.writeStructBegin('UserService_login_result');
   if (this.success !== null && this.success !== undefined) {
-    output.writeFieldBegin('success', Thrift.Type.I64, 0);
-    output.writeI64(this.success);
+    output.writeFieldBegin('success', Thrift.Type.STRUCT, 0);
+    this.success.write(output);
     output.writeFieldEnd();
   }
   if (this.ex !== null && this.ex !== undefined) {

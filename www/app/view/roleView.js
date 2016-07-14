@@ -25,9 +25,62 @@
  *           佛祖保佑       永无BUG
  */
 'use strict';
-require(['jquery', 'util', 'layer', 'moment', 'permissionsService', 'dhtmlx'],
+require(['jquery', 'util', 'layer', 'moment', 'permissionsService', 'dhtmlx', 'slimScroll'],
     function ($, util, layer, moment, PermissionsService) {
         var myTreeGrid = null;
+        function openMenus(id) {
+            var tree;
+            var menuswin = layer.open({
+                type: 1,
+                title: '设置角色菜单',
+                area: ['300px', '400px'], //宽高
+                content: $('#show_menus').html(),
+                btn: ['确定', '取消'],
+                yes: function () {
+                    var setMenuLoad = layer.load(2);
+                    util.send(PermissionsService.setMenus(JSON.stringify({
+                        id: id,
+                        menus: tree.getAllChecked().split(',')
+                    })), function() {
+                        layer.close(setMenuLoad);
+                        layer.close(menuswin);
+                    }, function() {
+                        layer.close(setMenuLoad);
+                    });
+                }
+            });
+            util.send(PermissionsService.menusBySetRole(JSON.stringify({role: id})), function(response) {
+                var checked = [];
+                (function(fn) {
+                    response = fn.call(fn, response.data.menus);
+                })(function(data) {
+                    var items = [];
+                    for (var i = 0; i < data.length; i++) {
+                        items.push({
+                            id: data[i].id,
+                            text: data[i].name,
+                            item: (data[i].rows && data[i].rows.length) ? this.call(this, data[i].rows) : []
+                        });
+                        if (data[i].ow) checked.push(data[i].id);
+                    }
+                    return items;
+                });
+                tree = new dhtmlXTreeObject("menus_list", "100%", "100%", 0);
+                tree.setImagePath("/plugins/dhtmlx/imgs/dhxtree_skyblue/");
+                tree.enableCheckBoxes(true);
+                tree.enableThreeStateCheckboxes(true);
+                response[0].open = 1;
+                tree.loadJSONObject({id: 0, item: [response[0]]}, function () {
+                    $('#menus_list').slimScroll({
+                        height: '100%', //可滚动区域高度
+                        disableFadeOut: true
+                    });
+                    for (var i = 0; i < checked.length; i++) {
+                        tree.setCheck(checked[i], true);
+                    }
+                });
+            });
+        }
         function openAdd() {
             var prompt = layer.prompt({
                 title: '请输入角色名称'
@@ -110,12 +163,17 @@ require(['jquery', 'util', 'layer', 'moment', 'permissionsService', 'dhtmlx'],
                 icons_path: '/plugins/dhtmlx/imgs/dhxmenu_skyblue/',
                 context: true,
                 items: [
-                    {id: 'add', text: 'add'}
+                    {id: 'add', text: 'add'},
+                    {id: 'setMenu', text: '配置菜单'}
                 ]
             });
             menu.attachEvent("onClick", function(id, zoneId, cas){
+                var rowId = myTreeGrid.contextID.split('_')[0];
+                var myId = myTreeGrid.getRowAttribute(rowId, 'id');
                 if (id == 'add') {
                     openAdd();
+                } else if (id == 'setMenu') {
+                    openMenus(myId);
                 }
             });
             myTreeGrid.attachEvent("onEditCell", function(stage,rId,cInd,nValue,oValue){

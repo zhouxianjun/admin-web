@@ -28,7 +28,9 @@
 require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'moment', 'merge', 'datatables', 'validator', 'slimScroll'],
     function ($, util, layer, PermissionsService, ko, moment) {
     var viewModel = {
+        table: null,
         interface: {
+            id: ko.observable(),
             name: ko.observable(),
             auth: ko.observable(''),
             status: ko.observable(1),
@@ -41,27 +43,29 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'moment', 'merge
             name: '禁用',
             id: 0
         }]),
-        openForm: function () {
-            var addLayer = layer.open({
+        openForm: function (id) {
+            var interfaceLayer = layer.open({
                 type: 1,
-                title: '新增接口',
-                area: ['500px', '400px'], //宽高
-                content: $('#layer_add_interfacen').html(),
+                title: id ? '修改接口' : '新增接口',
+                area: ['450px'], //宽高
+                content: $('#layer_interface').html(),
                 btn: ['确定', '取消'],
                 yes: function () {
-                    var form = $('#addInterfaceForm');
+                    var form = $('#interfaceForm');
                     form.data('bootstrapValidator').validate();
                     if (form.data('bootstrapValidator').isValid()) {
-                        var deferred = PermissionsService.addInterface(ko.toJSON(viewModel.interface));
+                        id && viewModel.interface.id(id);
+                        id || viewModel.interface.id(null);
+                        var deferred = id ? PermissionsService.updateInterface(ko.toJSON(viewModel.interface)) : PermissionsService.addInterface(ko.toJSON(viewModel.interface));
                         util.send(deferred, function (response) {
-
+                            viewModel.table.draw(false);
                             form.data('bootstrapValidator').resetForm(true);
-                            layer.close(addLayer);
+                            layer.close(interfaceLayer);
                         });
                     }
                 }
             });
-            util.initValidForm($('#addInterfaceForm'), {
+            util.initValidForm($('#interfaceForm'), {
                 interface_name: {
                     validators: {
                         notEmpty: {
@@ -84,58 +88,72 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'moment', 'merge
                     }
                 }
             });
-            ko.applyBindings(viewModel, $('#addInterfaceForm')[0]);
-            $('#addInterfaceForm').slimScroll({
-                height: '100%', //可滚动区域高度
-                disableFadeOut: true
-            });
+            id || util.clearViewModel(viewModel.interface);
+            ko.applyBindings(viewModel, $('#interfaceForm')[0]);
         }
     };
     $(function () {
-        layer.load(2);
-        layer.closeAll('loading');
-        /*editor = new $.fn.dataTable.Editor( {
-            ajax: "../php/staff.php",
-            table: "#example",
-            fields: [ {
-                label: "名称:",
-                name: "name"
-            }, {
-                label: "URL:",
-                name: "auth"
-            }, {
-                label: "描述:",
-                name: "position"
-            }, {
-                label: "状态:",
-                name: "status"
-            }
-            ]
-        } );*/
-
-        var table;
-        util.send(PermissionsService.interfaceByMgr(), function(response) {
-            table = $('#interface-table').dataTable(merge(util.dataTableSettings, {
-                data: response.data.list,
-                columns: [{
-                    data: 'name'
-                }, {
-                    data: 'auth'
-                }, {
-                    data: 'description'
-                }, {
-                    data: 'status',
-                    render: function(data) {
-                        return data.status == 1 ? '启用' : '禁用';
+        viewModel.table = $('#interface-table').DataTable(merge(util.dataTableSettings, {
+            ajax: function (data, callback, settings) {
+                console.log(data);
+                var sortParam = util.getSortParam(data, ['name', 'auth', 'description', 'status']);
+                var dataTableLoad = layer.load(2);
+                util.send(PermissionsService.interfaceByMgr(JSON.stringify(merge(sortParam, {
+                    page: Math.floor(data.start / 10) + 1,
+                    pageSize: 10
+                }))), function(response) {
+                    var returnData = {};
+                    var interfaces = response.data.interfaces;
+                    returnData.draw = interfaces.current;
+                    returnData.recordsTotal = interfaces.count;
+                    returnData.recordsFiltered = interfaces.count;//后台不实现过滤功能，每次查询均视作全部结果
+                    var items = [];
+                    for (var i = 0; i < interfaces.items.length; i++) {
+                        var item = JSON.parse(interfaces.items[i]);
+                        items.push(item);
+                        if (!item.description)
+                            item.description = ''
                     }
-                }, {
-                    data: 'create_time',
-                    render: function(data) {
-                        return moment(data.create_time).format('YYYY-MM-DD HH:mm:ss');
-                    }
-                }]
-            }));
-        });
+                    console.log(items);
+                    returnData.data = items;
+                    callback(returnData);
+                    layer.close(dataTableLoad);
+                }, function () {
+                    layer.close(dataTableLoad);
+                });
+            },
+            drawCallback: function (setting) {
+                $('._data_table_update').click(function () {
+                    var item = viewModel.table.row($(this).closest('tr')).data();
+                    util.setViewModelData(viewModel.interface, item);
+                    viewModel.openForm(item.id);
+                });
+                util.adjustIframeHeight();
+            },
+            columns: [{
+                data: 'name'
+            }, {
+                data: 'auth'
+            }, {
+                data: 'description'
+            }, {
+                data: 'status',
+                render: function(status) {
+                    return status ? '<span class="text-green">启用</span>' : '<span class="text-muted">禁用</span>';
+                }
+            }, {
+                data: 'create_time',
+                render: function(data) {
+                    return moment(data.create_time).format('YYYY-MM-DD HH:mm:ss');
+                }
+            }, {
+                data: null,
+                orderable: false,
+                render: function(data) {
+                    return '<button type="button" class="_data_table_update btn btn-small btn-primary">修改</button>';
+                }
+            }]
+        }));
         ko.applyBindings(viewModel);
         util.adjustIframeHeight();
     });

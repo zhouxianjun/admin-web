@@ -31,6 +31,7 @@
         </div>
         <div class="panel-body">
             <legend>接口信息</legend>
+            <button type="button" class="btn btn-primary" data-bind="click: function() {$root.openForm();}"><i class="fa fa-plus"></i> 添加</button>
             <table id="interface-table" class="table table-bordered table-striped table-hover">
                 <thead>
                 <tr>
@@ -39,55 +40,47 @@
                     <th>描述</th>
                     <th>状态</th>
                     <th>创建时间</th>
+                    <th>操作</th>
                 </tr>
                 </thead>
-                <tfoot>
-                <tr>
-                    <th>名称</th>
-                    <th>URL</th>
-                    <th>描述</th>
-                    <th>状态</th>
-                    <th>创建时间</th>
-                </tr>
-                </tfoot>
             </table>
         </div>
     </div>
 
-<script type="text/html" id="layer_add_interface">
-    <div class="box box-info" style="overflow: hidden" id="addInterfaceForm">
+<script type="text/html" id="layer_interface">
+    <div class="box box-info" style="overflow: hidden" id="interfaceForm">
         <!-- form start -->
         <form class="form-horizontal">
             <div class="box-body">
                 <div class="form-group">
-                    <label for="interface_name" class="col-sm-2 control-label">
+                    <label for="interface_name" class="col-sm-3 control-label">
                         <span class="icon-require">*</span>名称
                     </label>
 
-                    <div class="col-sm-10">
+                    <div class="col-sm-8">
                         <input type="text" name="interface_name" data-bind="value: interface.name" class="form-control" id="interface_name" placeholder="名称">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="interface_auth" class="col-sm-2 control-label"><span class="icon-require">*</span>URL</label>
+                    <label for="interface_auth" class="col-sm-3 control-label"><span class="icon-require">*</span>URL</label>
 
-                    <div class="col-sm-10">
+                    <div class="col-sm-8">
                         <input type="text" class="form-control" name="interface_auth" data-bind="value: interface.auth" id="interface_auth" placeholder="授权接口地址">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="interface_description" class="col-sm-2 control-label">描述</label>
+                    <label for="interface_description" class="col-sm-3 control-label">描述</label>
 
-                    <div class="col-sm-10">
+                    <div class="col-sm-8">
                         <input type="text" min="0" class="form-control" data-bind="value: interface.description" id="interface_description" placeholder="描述">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-md-2 col-sm-2 col-lg-2 control-label">
+                    <label class="col-sm-3 control-label">
                         <span class="icon-require">*</span>
                         状态：
                     </label>
-                    <div class="col-md-10">
+                    <div class="col-sm-8">
                         <select class="form-control" name="interface_status"
                                 data-bind="options:statusOptions,optionsText:'name',optionsValue:'id',value: interface.status,optionsCaption: '-选择-'"></select>
                     </div>
