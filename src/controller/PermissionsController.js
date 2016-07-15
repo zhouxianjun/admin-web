@@ -126,7 +126,7 @@ module.exports = class PermissionsController {
         let res = yield menuService.delMenu(params.id);
         Utils.writeResult(this, new Result(res ? true : false));
     }
-    * menus(ctx) {
+    * menus() {
         let menus = yield menuService.menusByUser(this.session.user.id);
         Utils.writeResult(this, new Result(true, {
             key: 'menus',
@@ -190,7 +190,7 @@ module.exports = class PermissionsController {
     }
     * interfacesBySetMenu() {
         let params = this.request.body;
-        let interfaces = yield interfaceService.interfacesBySetMenu(this.session.user.id, params.menu);
+        let interfaces = yield interfaceService.interfacesBySetMenu(0, params.menu);
         Utils.writeResult(this, new Result(true, {
             key: 'interfaces',
             value: Utils.makeList(interfaces)

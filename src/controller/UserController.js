@@ -44,9 +44,9 @@ module.exports = class {
         }
         let user = yield userService.login(param.username, param.password);
         if (user && user.id.toNumber() > 0) {
-            let res = yield interfaceService.interfaces();
             user.id = user.id.toNumber();
             this.session.user = user;
+            let res = yield interfaceService.interfacesByUser(this.session.user.id);
             this.session.interfaces = res;
             this.redirect('/pages/index.html');
         } else {
