@@ -44,6 +44,67 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'valid
             name: '禁用',
             id: 0
         }]),
+        openAddMenu: function (isRoot) {
+            var rowId = isRoot || viewModel.grid.contextID.split('_')[0];
+            var pid = isRoot || viewModel.grid.getRowAttribute(rowId, 'id');
+            viewModel.menu.pid(isRoot ? 0 : pid);
+            //捕获页
+            var addLayer = layer.open({
+                type: 1,
+                title: '新增菜单',
+                area: ['500px', '400px'], //宽高
+                content: $('#layer_add_menu').html(),
+                btn: ['确定', '取消'],
+                yes: function () {
+                    var form = $('#addMenuForm');
+                    form.data('bootstrapValidator').validate();
+                    if (form.data('bootstrapValidator').isValid()) {
+                        var deferred = PermissionsService.addMenu(ko.toJSON(viewModel.menu));
+                        util.send(deferred, function (response) {
+                            viewModel.grid.addRow(response.data.id, [
+                                response.data.id, '', viewModel.menu.seq(), viewModel.menu.name(), viewModel.menu.path(),
+                                viewModel.menu.status(), viewModel.menu.target(), viewModel.menu.icon()],0,isRoot ? 0 : rowId);
+                            isRoot || viewModel.grid.openItem(rowId);
+                            viewModel.grid.setRowAttribute(response.data.id, 'id', response.data.id);
+                            form.data('bootstrapValidator').resetForm(true);
+                            layer.close(addLayer);
+                            util.adjustIframeHeight();
+                        });
+                    }
+                }
+            });
+            util.initValidForm($('#addMenuForm'), {
+                menu_name: {
+                    validators: {
+                        notEmpty: {
+                            message: '菜单名不能为空'
+                        }
+                    }
+                },
+                menu_seq: {
+                    validators: {
+                        notEmpty: {
+                            message: '序号不能为空'
+                        },
+                        integer: {
+                            message: '必须是数字'
+                        }
+                    }
+                },
+                menu_status: {
+                    validators: {
+                        notEmpty: {
+                            message: '状态不能为空'
+                        }
+                    }
+                }
+            });
+            ko.applyBindings(viewModel, $('#addMenuForm')[0]);
+            $('#addMenuForm').slimScroll({
+                height: '100%', //可滚动区域高度
+                disableFadeOut: true
+            });
+        },
         openInterface: function(id) {
             var tree;
             var interfaceswin = layer.open({
@@ -93,13 +154,14 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'valid
                     for (var i = 0; i < checked.length; i++) {
                         tree.setCheck(checked[i], true);
                     }
+                    util.adjustIframeHeight();
                 });
             });
         }
     };
     $(function () {
         layer.load(2);
-        var myTreeGrid = new dhtmlXGridObject('menu-grid');
+        var myTreeGrid = viewModel.grid = new dhtmlXGridObject('menu-grid');
         myTreeGrid.setImagePath('/plugins/dhtmlx/imgs/');
         myTreeGrid.setHeader('ID,,序号,名称,路径,状态,选项卡,图标');
         myTreeGrid.setColumnIds('id,tree,seq,name,path,status,target,icon');
@@ -123,63 +185,7 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'valid
         });
         menu.attachEvent("onClick", function(id, zoneId, cas){
             if (id == 'add') {
-                var rowId = myTreeGrid.contextID.split('_')[0];
-                var pid = myTreeGrid.getRowAttribute(rowId, 'id');
-                viewModel.menu.pid(pid);
-                //捕获页
-                var addLayer = layer.open({
-                    type: 1,
-                    title: '新增菜单',
-                    area: ['500px', '400px'], //宽高
-                    content: $('#layer_add_menu').html(),
-                    btn: ['确定', '取消'],
-                    yes: function () {
-                        var form = $('#addMenuForm');
-                        form.data('bootstrapValidator').validate();
-                        if (form.data('bootstrapValidator').isValid()) {
-                            var deferred = PermissionsService.addMenu(ko.toJSON(viewModel.menu));
-                            util.send(deferred, function (response) {
-                                myTreeGrid.addRow(response.data.id, [
-                                    response.data.id, '', viewModel.menu.seq(), viewModel.menu.name(), viewModel.menu.path(),
-                                    viewModel.menu.status(), viewModel.menu.target(), viewModel.menu.icon()],0,rowId);
-                                myTreeGrid.openItem(rowId);
-                                form.data('bootstrapValidator').resetForm(true);
-                                layer.close(addLayer);
-                            });
-                        }
-                    }
-                });
-                util.initValidForm($('#addMenuForm'), {
-                    menu_name: {
-                        validators: {
-                            notEmpty: {
-                                message: '菜单名不能为空'
-                            }
-                        }
-                    },
-                    menu_seq: {
-                        validators: {
-                            notEmpty: {
-                                message: '序号不能为空'
-                            },
-                            integer: {
-                                message: '必须是数字'
-                            }
-                        }
-                    },
-                    menu_status: {
-                        validators: {
-                            notEmpty: {
-                                message: '状态不能为空'
-                            }
-                        }
-                    }
-                });
-                ko.applyBindings(viewModel, $('#addMenuForm')[0]);
-                $('#addMenuForm').slimScroll({
-                    height: '100%', //可滚动区域高度
-                    disableFadeOut: true
-                });
+                viewModel.openAddMenu(false);
             } else if (id == 'del') {
                 var rowId = myTreeGrid.contextID.split('_')[0];
                 var did = myTreeGrid.getRowAttribute(rowId, 'id');
@@ -230,8 +236,8 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'valid
             layer.closeAll('loading');
             myTreeGrid.expandAll();
             ko.applyBindings(viewModel);
+            util.adjustIframeHeight();
         }, 'js');
-        util.adjustIframeHeight();
 
         function update(rId, cInd, nValue, pid, oldPid) {
             var id = myTreeGrid.getRowAttribute(rId, 'id');

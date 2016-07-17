@@ -38,6 +38,7 @@ const bodyParser = require('koa-bodyparser');
 const app = new Koa();
 
 const ignoreUrl = ['/user/login', '/'];
+const loginUrl = ['/permissions/menus', '/user/logout'];
 
 //logger
 app.use(function* log(next) {
@@ -67,7 +68,6 @@ app.use(function *session(next){
 //static
 app.use(Static('./www'));
 
-const urls = ['/demo'];
 app.use(function* rbac(next) {
     if (this.path.indexOf('.') != -1){
         yield next;
@@ -76,10 +76,14 @@ app.use(function* rbac(next) {
             Utils.writeResult(this, new Result(Result.CODE.NO_LOGIN));
             return;
         }
+        if (loginUrl.indexOf(this.path) != -1 && this.session.user) {
+            yield next;
+            return;
+        }
         console.log(this.path);
         console.log(this.session.interfaces);
         if (ignoreUrl.indexOf(this.path) == -1) {
-            /*let have = false;
+            let have = false;
             this.session.interfaces.forEach(auth => {
                 if (auth.auth == this.path) {
                     have = true;
@@ -89,7 +93,7 @@ app.use(function* rbac(next) {
             if (!have) {
                 Utils.writeResult(this, new Result(Result.CODE.NO_ACCESS));
                 return;
-            }*/
+            }
         }
     }
     yield next;

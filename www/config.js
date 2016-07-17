@@ -46,11 +46,15 @@ require.config({
         'underscore': '/plugins/underscore/underscore',
         'jquery-datatables': '/plugins/datatables/jquery.dataTables',
         'datatables': '/plugins/datatables/dataTables.bootstrap',
+        'datatables-tabletools': '/plugins/datatables/extensions/TableTools/js/dataTables.tableTools.min',
         'merge': '/plugins/merge',
+        'fileinput': '/plugins/fileinput/js/fileinput.min',
+        'fileupload': '/plugins/ajaxfileupload',
 
         // service
         'userService': 'service/UserService',
-        'permissionsService': 'service/PermissionsService'
+        'permissionsService': 'service/PermissionsService',
+        'boxService': 'service/BoxService'
     },
     shim: {
         'jquery-tmpl': ['jquery'],
@@ -62,6 +66,9 @@ require.config({
         'moment-locales': ['moment'],
         'layer': ['jquery'],
         'jquery-datatables': ['jquery'],
-        'datatables': ['jquery-datatables', 'bootstrap']
+        'datatables': ['jquery-datatables', 'bootstrap'],
+        'datatables-tabletools': ['datatables'],
+        'fileinput': ['jquery'],
+        'fileupload': ['jquery']
     }
 });

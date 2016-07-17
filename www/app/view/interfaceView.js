@@ -95,7 +95,6 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'moment', 'merge
     $(function () {
         viewModel.table = $('#interface-table').DataTable(merge(util.dataTableSettings, {
             ajax: function (data, callback, settings) {
-                console.log(data);
                 var sortParam = util.getSortParam(data, ['name', 'auth', 'description', 'status']);
                 var dataTableLoad = layer.load(2);
                 util.send(PermissionsService.interfaceByMgr(JSON.stringify(merge(sortParam, {
@@ -104,18 +103,10 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'moment', 'merge
                 }))), function(response) {
                     var returnData = {};
                     var interfaces = response.data.interfaces;
-                    returnData.draw = interfaces.current;
+                    returnData.draw = data.draw;
                     returnData.recordsTotal = interfaces.count;
-                    returnData.recordsFiltered = interfaces.count;//后台不实现过滤功能，每次查询均视作全部结果
-                    var items = [];
-                    for (var i = 0; i < interfaces.items.length; i++) {
-                        var item = JSON.parse(interfaces.items[i]);
-                        items.push(item);
-                        if (!item.description)
-                            item.description = ''
-                    }
-                    console.log(items);
-                    returnData.data = items;
+                    returnData.recordsFiltered = interfaces.count;
+                    returnData.data = interfaces.count == 0 ? [] : JSON.parse(interfaces.items);
                     callback(returnData);
                     layer.close(dataTableLoad);
                 }, function () {
@@ -143,8 +134,8 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'moment', 'merge
                 }
             }, {
                 data: 'create_time',
-                render: function(data) {
-                    return moment(data.create_time).format('YYYY-MM-DD HH:mm:ss');
+                render: function(create_time) {
+                    return moment(create_time).format('YYYY-MM-DD HH:mm:ss');
                 }
             }, {
                 data: null,

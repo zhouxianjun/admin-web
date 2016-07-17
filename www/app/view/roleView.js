@@ -70,7 +70,7 @@ require(['jquery', 'util', 'layer', 'moment', 'permissionsService', 'dhtmlx', 's
                 tree.enableCheckBoxes(true);
                 tree.enableThreeStateCheckboxes(true);
                 response[0].open = 1;
-                tree.loadJSONObject({id: 0, item: [response[0]]}, function () {
+                tree.loadJSONObject({id: 0, item: response}, function () {
                     $('#menus_list').slimScroll({
                         height: '100%', //可滚动区域高度
                         disableFadeOut: true
@@ -101,6 +101,7 @@ require(['jquery', 'util', 'layer', 'moment', 'permissionsService', 'dhtmlx', 's
                         myTreeGrid.setItemImage(rowId, '/plugins/dhtmlx/imgs/dhxgrid_skyblue/tree/folder.gif');
                     }
                     layer.close(prompt);
+                    util.adjustIframeHeight();
                 }, function () {
                     layer.close(prompt);
                 });

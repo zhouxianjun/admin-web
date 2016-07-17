@@ -33,6 +33,10 @@ require(['jquery', 'ko', 'userService', 'util', 'bootstrap', 'icheck', 'validato
     };
     ko.applyBindings(viewModel);
     $(function () {
+        var error = util.getUrlParam('error');
+        if (error) {
+            alert('登录失败');
+        }
         $('input').iCheck({
             checkboxClass: 'icheckbox_square-blue',
             radioClass: 'iradio_square-blue',

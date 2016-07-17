@@ -903,7 +903,7 @@ PageStruct = module.exports.PageStruct = function(args) {
       this.current = args.current;
     }
     if (args.items !== undefined && args.items !== null) {
-      this.items = Thrift.copyList(args.items, [null]);
+      this.items = args.items;
     }
   }
 };
@@ -950,21 +950,8 @@ PageStruct.prototype.read = function(input) {
       }
       break;
       case 5:
-      if (ftype == Thrift.Type.LIST) {
-        var _size0 = 0;
-        var _rtmp34;
-        this.items = [];
-        var _etype3 = 0;
-        _rtmp34 = input.readListBegin();
-        _etype3 = _rtmp34.etype;
-        _size0 = _rtmp34.size;
-        for (var _i5 = 0; _i5 < _size0; ++_i5)
-        {
-          var elem6 = null;
-          elem6 = input.readString();
-          this.items.push(elem6);
-        }
-        input.readListEnd();
+      if (ftype == Thrift.Type.STRING) {
+        this.items = input.readString();
       } else {
         input.skip(ftype);
       }
@@ -1001,17 +988,672 @@ PageStruct.prototype.write = function(output) {
     output.writeFieldEnd();
   }
   if (this.items !== null && this.items !== undefined) {
-    output.writeFieldBegin('items', Thrift.Type.LIST, 5);
-    output.writeListBegin(Thrift.Type.STRING, this.items.length);
-    for (var iter7 in this.items)
-    {
-      if (this.items.hasOwnProperty(iter7))
-      {
-        iter7 = this.items[iter7];
-        output.writeString(iter7);
-      }
+    output.writeFieldBegin('items', Thrift.Type.STRING, 5);
+    output.writeString(this.items);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+ResourcesStruct = module.exports.ResourcesStruct = function(args) {
+  this.id = null;
+  this.path = null;
+  this.md5 = null;
+  this.size = null;
+  this.name = null;
+  this.create_time = null;
+  if (args) {
+    if (args.id !== undefined && args.id !== null) {
+      this.id = args.id;
     }
-    output.writeListEnd();
+    if (args.path !== undefined && args.path !== null) {
+      this.path = args.path;
+    }
+    if (args.md5 !== undefined && args.md5 !== null) {
+      this.md5 = args.md5;
+    }
+    if (args.size !== undefined && args.size !== null) {
+      this.size = args.size;
+    }
+    if (args.name !== undefined && args.name !== null) {
+      this.name = args.name;
+    }
+    if (args.create_time !== undefined && args.create_time !== null) {
+      this.create_time = args.create_time;
+    }
+  }
+};
+ResourcesStruct.prototype = {};
+ResourcesStruct.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.I64) {
+        this.id = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.path = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.STRING) {
+        this.md5 = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 4:
+      if (ftype == Thrift.Type.I32) {
+        this.size = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 5:
+      if (ftype == Thrift.Type.STRING) {
+        this.name = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 6:
+      if (ftype == Thrift.Type.I64) {
+        this.create_time = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+ResourcesStruct.prototype.write = function(output) {
+  output.writeStructBegin('ResourcesStruct');
+  if (this.id !== null && this.id !== undefined) {
+    output.writeFieldBegin('id', Thrift.Type.I64, 1);
+    output.writeI64(this.id);
+    output.writeFieldEnd();
+  }
+  if (this.path !== null && this.path !== undefined) {
+    output.writeFieldBegin('path', Thrift.Type.STRING, 2);
+    output.writeString(this.path);
+    output.writeFieldEnd();
+  }
+  if (this.md5 !== null && this.md5 !== undefined) {
+    output.writeFieldBegin('md5', Thrift.Type.STRING, 3);
+    output.writeString(this.md5);
+    output.writeFieldEnd();
+  }
+  if (this.size !== null && this.size !== undefined) {
+    output.writeFieldBegin('size', Thrift.Type.I32, 4);
+    output.writeI32(this.size);
+    output.writeFieldEnd();
+  }
+  if (this.name !== null && this.name !== undefined) {
+    output.writeFieldBegin('name', Thrift.Type.STRING, 5);
+    output.writeString(this.name);
+    output.writeFieldEnd();
+  }
+  if (this.create_time !== null && this.create_time !== undefined) {
+    output.writeFieldBegin('create_time', Thrift.Type.I64, 6);
+    output.writeI64(this.create_time);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+BoxStruct = module.exports.BoxStruct = function(args) {
+  this.id = null;
+  this.user_id = null;
+  this.box_id = null;
+  this.status = null;
+  this.province_id = null;
+  this.city_id = null;
+  if (args) {
+    if (args.id !== undefined && args.id !== null) {
+      this.id = args.id;
+    }
+    if (args.user_id !== undefined && args.user_id !== null) {
+      this.user_id = args.user_id;
+    }
+    if (args.box_id !== undefined && args.box_id !== null) {
+      this.box_id = args.box_id;
+    }
+    if (args.status !== undefined && args.status !== null) {
+      this.status = args.status;
+    }
+    if (args.province_id !== undefined && args.province_id !== null) {
+      this.province_id = args.province_id;
+    }
+    if (args.city_id !== undefined && args.city_id !== null) {
+      this.city_id = args.city_id;
+    }
+  }
+};
+BoxStruct.prototype = {};
+BoxStruct.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.I64) {
+        this.id = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.I64) {
+        this.user_id = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.STRING) {
+        this.box_id = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 4:
+      if (ftype == Thrift.Type.BOOL) {
+        this.status = input.readBool();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 5:
+      if (ftype == Thrift.Type.I32) {
+        this.province_id = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 6:
+      if (ftype == Thrift.Type.I32) {
+        this.city_id = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+BoxStruct.prototype.write = function(output) {
+  output.writeStructBegin('BoxStruct');
+  if (this.id !== null && this.id !== undefined) {
+    output.writeFieldBegin('id', Thrift.Type.I64, 1);
+    output.writeI64(this.id);
+    output.writeFieldEnd();
+  }
+  if (this.user_id !== null && this.user_id !== undefined) {
+    output.writeFieldBegin('user_id', Thrift.Type.I64, 2);
+    output.writeI64(this.user_id);
+    output.writeFieldEnd();
+  }
+  if (this.box_id !== null && this.box_id !== undefined) {
+    output.writeFieldBegin('box_id', Thrift.Type.STRING, 3);
+    output.writeString(this.box_id);
+    output.writeFieldEnd();
+  }
+  if (this.status !== null && this.status !== undefined) {
+    output.writeFieldBegin('status', Thrift.Type.BOOL, 4);
+    output.writeBool(this.status);
+    output.writeFieldEnd();
+  }
+  if (this.province_id !== null && this.province_id !== undefined) {
+    output.writeFieldBegin('province_id', Thrift.Type.I32, 5);
+    output.writeI32(this.province_id);
+    output.writeFieldEnd();
+  }
+  if (this.city_id !== null && this.city_id !== undefined) {
+    output.writeFieldBegin('city_id', Thrift.Type.I32, 6);
+    output.writeI32(this.city_id);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+VersionStruct = module.exports.VersionStruct = function(args) {
+  this.id = null;
+  this.resource = null;
+  this.version = null;
+  this.version_code = null;
+  this.desc = null;
+  if (args) {
+    if (args.id !== undefined && args.id !== null) {
+      this.id = args.id;
+    }
+    if (args.resource !== undefined && args.resource !== null) {
+      this.resource = args.resource;
+    }
+    if (args.version !== undefined && args.version !== null) {
+      this.version = args.version;
+    }
+    if (args.version_code !== undefined && args.version_code !== null) {
+      this.version_code = args.version_code;
+    }
+    if (args.desc !== undefined && args.desc !== null) {
+      this.desc = args.desc;
+    }
+  }
+};
+VersionStruct.prototype = {};
+VersionStruct.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.I64) {
+        this.id = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.I64) {
+        this.resource = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.STRING) {
+        this.version = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 4:
+      if (ftype == Thrift.Type.I32) {
+        this.version_code = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 5:
+      if (ftype == Thrift.Type.STRING) {
+        this.desc = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+VersionStruct.prototype.write = function(output) {
+  output.writeStructBegin('VersionStruct');
+  if (this.id !== null && this.id !== undefined) {
+    output.writeFieldBegin('id', Thrift.Type.I64, 1);
+    output.writeI64(this.id);
+    output.writeFieldEnd();
+  }
+  if (this.resource !== null && this.resource !== undefined) {
+    output.writeFieldBegin('resource', Thrift.Type.I64, 2);
+    output.writeI64(this.resource);
+    output.writeFieldEnd();
+  }
+  if (this.version !== null && this.version !== undefined) {
+    output.writeFieldBegin('version', Thrift.Type.STRING, 3);
+    output.writeString(this.version);
+    output.writeFieldEnd();
+  }
+  if (this.version_code !== null && this.version_code !== undefined) {
+    output.writeFieldBegin('version_code', Thrift.Type.I32, 4);
+    output.writeI32(this.version_code);
+    output.writeFieldEnd();
+  }
+  if (this.desc !== null && this.desc !== undefined) {
+    output.writeFieldBegin('desc', Thrift.Type.STRING, 5);
+    output.writeString(this.desc);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+AppStruct = module.exports.AppStruct = function(args) {
+  this.id = null;
+  this.name = null;
+  this.zh_name = null;
+  this.cp_name = null;
+  this.price = null;
+  this.network = null;
+  this.open_network = null;
+  this.memo = null;
+  this.require = null;
+  this.white = null;
+  this.black = null;
+  this.active_open_count = null;
+  this.active_flow = null;
+  this.active_stay_days = null;
+  this.active_show_time = null;
+  this.active_open_network = null;
+  if (args) {
+    if (args.id !== undefined && args.id !== null) {
+      this.id = args.id;
+    }
+    if (args.name !== undefined && args.name !== null) {
+      this.name = args.name;
+    }
+    if (args.zh_name !== undefined && args.zh_name !== null) {
+      this.zh_name = args.zh_name;
+    }
+    if (args.cp_name !== undefined && args.cp_name !== null) {
+      this.cp_name = args.cp_name;
+    }
+    if (args.price !== undefined && args.price !== null) {
+      this.price = args.price;
+    }
+    if (args.network !== undefined && args.network !== null) {
+      this.network = args.network;
+    }
+    if (args.open_network !== undefined && args.open_network !== null) {
+      this.open_network = args.open_network;
+    }
+    if (args.memo !== undefined && args.memo !== null) {
+      this.memo = args.memo;
+    }
+    if (args.require !== undefined && args.require !== null) {
+      this.require = args.require;
+    }
+    if (args.white !== undefined && args.white !== null) {
+      this.white = args.white;
+    }
+    if (args.black !== undefined && args.black !== null) {
+      this.black = args.black;
+    }
+    if (args.active_open_count !== undefined && args.active_open_count !== null) {
+      this.active_open_count = args.active_open_count;
+    }
+    if (args.active_flow !== undefined && args.active_flow !== null) {
+      this.active_flow = args.active_flow;
+    }
+    if (args.active_stay_days !== undefined && args.active_stay_days !== null) {
+      this.active_stay_days = args.active_stay_days;
+    }
+    if (args.active_show_time !== undefined && args.active_show_time !== null) {
+      this.active_show_time = args.active_show_time;
+    }
+    if (args.active_open_network !== undefined && args.active_open_network !== null) {
+      this.active_open_network = args.active_open_network;
+    }
+  }
+};
+AppStruct.prototype = {};
+AppStruct.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.I64) {
+        this.id = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.name = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.STRING) {
+        this.zh_name = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 4:
+      if (ftype == Thrift.Type.STRING) {
+        this.cp_name = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 5:
+      if (ftype == Thrift.Type.DOUBLE) {
+        this.price = input.readDouble();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 6:
+      if (ftype == Thrift.Type.BOOL) {
+        this.network = input.readBool();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 7:
+      if (ftype == Thrift.Type.BOOL) {
+        this.open_network = input.readBool();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 8:
+      if (ftype == Thrift.Type.STRING) {
+        this.memo = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 9:
+      if (ftype == Thrift.Type.BOOL) {
+        this.require = input.readBool();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 10:
+      if (ftype == Thrift.Type.BOOL) {
+        this.white = input.readBool();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 11:
+      if (ftype == Thrift.Type.BOOL) {
+        this.black = input.readBool();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 12:
+      if (ftype == Thrift.Type.I32) {
+        this.active_open_count = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 13:
+      if (ftype == Thrift.Type.I32) {
+        this.active_flow = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 14:
+      if (ftype == Thrift.Type.I32) {
+        this.active_stay_days = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 15:
+      if (ftype == Thrift.Type.I32) {
+        this.active_show_time = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 16:
+      if (ftype == Thrift.Type.BOOL) {
+        this.active_open_network = input.readBool();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+AppStruct.prototype.write = function(output) {
+  output.writeStructBegin('AppStruct');
+  if (this.id !== null && this.id !== undefined) {
+    output.writeFieldBegin('id', Thrift.Type.I64, 1);
+    output.writeI64(this.id);
+    output.writeFieldEnd();
+  }
+  if (this.name !== null && this.name !== undefined) {
+    output.writeFieldBegin('name', Thrift.Type.STRING, 2);
+    output.writeString(this.name);
+    output.writeFieldEnd();
+  }
+  if (this.zh_name !== null && this.zh_name !== undefined) {
+    output.writeFieldBegin('zh_name', Thrift.Type.STRING, 3);
+    output.writeString(this.zh_name);
+    output.writeFieldEnd();
+  }
+  if (this.cp_name !== null && this.cp_name !== undefined) {
+    output.writeFieldBegin('cp_name', Thrift.Type.STRING, 4);
+    output.writeString(this.cp_name);
+    output.writeFieldEnd();
+  }
+  if (this.price !== null && this.price !== undefined) {
+    output.writeFieldBegin('price', Thrift.Type.DOUBLE, 5);
+    output.writeDouble(this.price);
+    output.writeFieldEnd();
+  }
+  if (this.network !== null && this.network !== undefined) {
+    output.writeFieldBegin('network', Thrift.Type.BOOL, 6);
+    output.writeBool(this.network);
+    output.writeFieldEnd();
+  }
+  if (this.open_network !== null && this.open_network !== undefined) {
+    output.writeFieldBegin('open_network', Thrift.Type.BOOL, 7);
+    output.writeBool(this.open_network);
+    output.writeFieldEnd();
+  }
+  if (this.memo !== null && this.memo !== undefined) {
+    output.writeFieldBegin('memo', Thrift.Type.STRING, 8);
+    output.writeString(this.memo);
+    output.writeFieldEnd();
+  }
+  if (this.require !== null && this.require !== undefined) {
+    output.writeFieldBegin('require', Thrift.Type.BOOL, 9);
+    output.writeBool(this.require);
+    output.writeFieldEnd();
+  }
+  if (this.white !== null && this.white !== undefined) {
+    output.writeFieldBegin('white', Thrift.Type.BOOL, 10);
+    output.writeBool(this.white);
+    output.writeFieldEnd();
+  }
+  if (this.black !== null && this.black !== undefined) {
+    output.writeFieldBegin('black', Thrift.Type.BOOL, 11);
+    output.writeBool(this.black);
+    output.writeFieldEnd();
+  }
+  if (this.active_open_count !== null && this.active_open_count !== undefined) {
+    output.writeFieldBegin('active_open_count', Thrift.Type.I32, 12);
+    output.writeI32(this.active_open_count);
+    output.writeFieldEnd();
+  }
+  if (this.active_flow !== null && this.active_flow !== undefined) {
+    output.writeFieldBegin('active_flow', Thrift.Type.I32, 13);
+    output.writeI32(this.active_flow);
+    output.writeFieldEnd();
+  }
+  if (this.active_stay_days !== null && this.active_stay_days !== undefined) {
+    output.writeFieldBegin('active_stay_days', Thrift.Type.I32, 14);
+    output.writeI32(this.active_stay_days);
+    output.writeFieldEnd();
+  }
+  if (this.active_show_time !== null && this.active_show_time !== undefined) {
+    output.writeFieldBegin('active_show_time', Thrift.Type.I32, 15);
+    output.writeI32(this.active_show_time);
+    output.writeFieldEnd();
+  }
+  if (this.active_open_network !== null && this.active_open_network !== undefined) {
+    output.writeFieldBegin('active_open_network', Thrift.Type.BOOL, 16);
+    output.writeBool(this.active_open_network);
     output.writeFieldEnd();
   }
   output.writeFieldStop();

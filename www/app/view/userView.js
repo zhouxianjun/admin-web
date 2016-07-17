@@ -108,6 +108,7 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'valid
                         myTreeGrid.openItem(rowId);
                         myTreeGrid.setItemImage(rowId, '/plugins/dhtmlx/imgs/dhxgrid_skyblue/tree/folder.gif');
                     }
+                    util.adjustIframeHeight();
                 }
                 form.bootstrapValidator('resetForm', true);
                 layer.close(lwin);

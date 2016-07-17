@@ -55,23 +55,26 @@ define(['jquery', 'layer', 'moment', 'underscore', 'dhtmlx'], function ($, layer
     };
 
     return {
-        send: function (deferred, callback, errorFn) {
-            $.when(deferred).done(function (response) {
-                if (response.code == 99) {
-                    window.location.href = '/';
+        ajaxResponse: function(response, callback, errorFn) {
+            if (response.code == 99) {
+                window.location.href = '/';
+                return;
+            }
+            if (response.code != 1 && typeof response.code != 'undefined') {
+                layer.msg(response.msg || '操作失败', {icon: 2});
+                if (typeof errorFn === 'function') {
+                    errorFn(response);
                     return;
                 }
-                if (response.code != 1 && typeof response.code != 'undefined') {
-                    layer.msg(response.msg || '操作失败', {icon: 2});
-                    if (typeof errorFn === 'function') {
-                        errorFn(response);
-                        return;
-                    }
-                }
-                if (typeof callback === 'function') {
-                    callback(response);
-                }
-            }).fail(function (error) {
+            }
+            if (typeof callback === 'function') {
+                callback(response);
+            }
+        },
+        send: function (deferred, callback, errorFn) {
+            $.when(deferred).done(function (response) {
+                this.ajaxResponse(response, callback, errorFn);
+            }.bind(this)).fail(function (error) {
                 layer.msg('操作失败', {icon: 2});
                 if (typeof errorFn === 'function') {
                     errorFn(error);
@@ -156,6 +159,18 @@ define(['jquery', 'layer', 'moment', 'underscore', 'dhtmlx'], function ($, layer
         loadProvinceList: function () {
             return _p_data;
         },
+        getCityNameById: function (id) {
+            for (var i = 0; i < _c_data.length; i++) {
+                if (_c_data[i].id == id) return _c_data[i].cname;
+            }
+            return null;
+        },
+        getProvinceNameById: function (id) {
+            for (var i = 0; i < _p_data.length; i++) {
+                if (_p_data[i].id == id) return _p_data[i].pname;
+            }
+            return null;
+        },
         setViewModelData: function (viewModel, data) {
             if (!data) return;
             for (var key in data) {
@@ -166,7 +181,7 @@ define(['jquery', 'layer', 'moment', 'underscore', 'dhtmlx'], function ($, layer
         },
         clearViewModel: function (viewModel) {
             for (var key in viewModel) {
-                if (viewModel[key]) {
+                if (typeof viewModel[key] == 'function') {
                     viewModel[key](null);
                 }
             }
@@ -179,26 +194,49 @@ define(['jquery', 'layer', 'moment', 'underscore', 'dhtmlx'], function ($, layer
             }
             return param;
         },
+        buildAjax: function (url, data, type) {
+            return $.ajax({
+                url: url,
+                type: type || 'POST',
+                dataType: 'json',
+                data: data,
+                contentType : 'application/json'
+            });
+        },
         dataTableSettings: {
-            lengthChange: false,
-            searching: false,
             language: {
-                paginate: {//分页的样式内容。
-                    previous: "上一页",
-                    next: "下一页",
-                    first: "第一页",
-                    last: "最后"
+                "sProcessing":   "处理中...",
+                "sLengthMenu":   "每页 _MENU_ 项",
+                "sZeroRecords":  "没有匹配结果",
+                "sInfo":         "当前显示第 _START_ 至 _END_ 项，共 _TOTAL_ 项。",
+                "sInfoEmpty":    "当前显示第 0 至 0 项，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix":  "",
+                "sSearch":       false,
+                "sUrl":          "",
+                "sEmptyTable":     "表中数据为空",
+                "sLoadingRecords": "载入中...",
+                "sInfoThousands":  ",",
+                "oPaginate": {
+                    "sFirst":    "首页",
+                    "sPrevious": "上页",
+                    "sNext":     "下页",
+                    "sLast":     "末页",
+                    "sJump":     "跳转"
                 },
-
-                zeroRecords: "没有内容",//table tbody内容为空时，tbody的内容。
-                //下面三者构成了总体的左下角的内容。
-                info: "总共_PAGES_ 页，显示第_START_ 到第 _END_  ",//左下角的信息显示，大写的词为关键字。
-                infoEmpty: "没有记录",//筛选为空时左下角的显示。
-                infoFiltered: ""//筛选之后的左下角筛选提示，
+                "oAria": {
+                    "sSortAscending":  ": 以升序排列此列",
+                    "sSortDescending": ": 以降序排列此列"
+                }
             },
-            pagingType: 'simple_numbers',
-            processing: false,  //隐藏加载提示,自行处理
-            serverSide: true
+            autoWidth: false,   //禁用自动调整列宽
+            stripeClasses: ["odd", "even"],//为奇偶行加上样式，兼容不支持CSS伪类的场合
+            order: [],          //取消默认排序查询,否则复选框一列会出现小箭头
+            processing: false,  //隐藏加载提示,自行处理
+            serverSide: true,   //启用服务器端分页
+            searching: false,    //禁用原生搜索
+            lengthChange: false,
+            pagingType: 'full_numbers'
         }
     };
 });
