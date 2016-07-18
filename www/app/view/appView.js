@@ -267,10 +267,6 @@ require(['jquery', 'util', 'layer', 'appService', 'ko', 'moment', 'merge', 'data
                 {"index":4,"afterCut": viewModel.afterCut},
                 {"index":5,"afterCut": viewModel.afterCut}
             ]);
-        },
-        test: function() {
-            console.log(arguments);
-            return '123';
         }
     };
     $(function () {

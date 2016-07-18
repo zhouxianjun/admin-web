@@ -130,7 +130,7 @@ define(['jquery', 'layer', 'moment', 'underscore', 'dhtmlx'], function ($, layer
                 live: 'enabled',
                 trigger: 'blur',
                 feedbackIcons: {
-                    valid: 'glyphicon glyphicon-ok',
+                    //valid: 'glyphicon glyphicon-ok',
                     invalid: 'glyphicon glyphicon-remove',
                     validating: 'glyphicon glyphicon-refresh'
                 },
