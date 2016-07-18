@@ -1489,8 +1489,8 @@ AppStruct.prototype.read = function(input) {
       }
       break;
       case 6:
-      if (ftype == Thrift.Type.BOOL) {
-        this.network = input.readBool();
+      if (ftype == Thrift.Type.I32) {
+        this.network = input.readI32();
       } else {
         input.skip(ftype);
       }
@@ -1602,8 +1602,8 @@ AppStruct.prototype.write = function(output) {
     output.writeFieldEnd();
   }
   if (this.network !== null && this.network !== undefined) {
-    output.writeFieldBegin('network', Thrift.Type.BOOL, 6);
-    output.writeBool(this.network);
+    output.writeFieldBegin('network', Thrift.Type.I32, 6);
+    output.writeI32(this.network);
     output.writeFieldEnd();
   }
   if (this.open_network !== null && this.open_network !== undefined) {

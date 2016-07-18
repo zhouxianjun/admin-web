@@ -50,11 +50,13 @@ require.config({
         'merge': '/plugins/merge',
         'fileinput': '/plugins/fileinput/js/fileinput.min',
         'fileupload': '/plugins/ajaxfileupload',
+        'bootstrap-upload': '/plugins/bootstrap-fileupload.min',
 
         // service
         'userService': 'service/UserService',
         'permissionsService': 'service/PermissionsService',
-        'boxService': 'service/BoxService'
+        'boxService': 'service/BoxService',
+        'appService': 'service/AppService'
     },
     shim: {
         'jquery-tmpl': ['jquery'],
@@ -69,6 +71,7 @@ require.config({
         'datatables': ['jquery-datatables', 'bootstrap'],
         'datatables-tabletools': ['datatables'],
         'fileinput': ['jquery'],
-        'fileupload': ['jquery']
+        'fileupload': ['jquery'],
+        'bootstrap-upload': ['bootstrap']
     }
 });

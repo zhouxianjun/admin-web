@@ -174,7 +174,7 @@ define(['jquery', 'layer', 'moment', 'underscore', 'dhtmlx'], function ($, layer
         setViewModelData: function (viewModel, data) {
             if (!data) return;
             for (var key in data) {
-                if (viewModel[key]) {
+                if (typeof viewModel[key] == 'function') {
                     viewModel[key](data[key]);
                 }
             }
@@ -202,6 +202,15 @@ define(['jquery', 'layer', 'moment', 'underscore', 'dhtmlx'], function ($, layer
                 data: data,
                 contentType : 'application/json'
             });
+        },
+        doWhenImgError: function (data, event) {
+            var oldSrc = event.target.src;
+            var self = event.target;
+            self.src = '';
+            $(event.target).unbind('error');
+            /*setTimeout(function () {
+                me.reloadImg(self, oldSrc)
+            }, 30000);*/
         },
         dataTableSettings: {
             language: {

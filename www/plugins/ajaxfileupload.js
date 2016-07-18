@@ -40,11 +40,21 @@ jQuery.extend({
         var formId = 'jUploadForm' + id;
         var fileId = 'jUploadFile' + id;
         var form = jQuery('<form  action="" method="POST" name="' + formId + '" id="' + formId + '" enctype="multipart/form-data"></form>');
-        var oldElement = jQuery('#' + fileElementId);
-        var newElement = jQuery(oldElement).clone();
-        jQuery(oldElement).attr('id', fileId);
-        jQuery(oldElement).before(newElement);
-        jQuery(oldElement).appendTo(form);
+        if (fileElementId && typeof fileElementId != 'string' && fileElementId.length) {
+            for(var i in fileElementId){
+                var oldElement = jQuery('#' + fileElementId[i]);
+                var newElement = jQuery(oldElement).clone();
+                jQuery(oldElement).attr('id', fileId);
+                jQuery(oldElement).before(newElement);
+                jQuery(oldElement).appendTo(form);
+            }
+        } else {
+            var oldElement = jQuery('#' + fileElementId);
+            var newElement = jQuery(oldElement).clone();
+            jQuery(oldElement).attr('id', fileId);
+            jQuery(oldElement).before(newElement);
+            jQuery(oldElement).appendTo(form);
+        }
 
         //add data
         if(data) {
