@@ -1383,11 +1383,7 @@ AppStruct = module.exports.AppStruct = function(args) {
   this.require = null;
   this.white = null;
   this.black = null;
-  this.active_open_count = null;
-  this.active_flow = null;
-  this.active_stay_days = null;
-  this.active_show_time = null;
-  this.active_open_network = null;
+  this.active_id = null;
   if (args) {
     if (args.id !== undefined && args.id !== null) {
       this.id = args.id;
@@ -1422,20 +1418,8 @@ AppStruct = module.exports.AppStruct = function(args) {
     if (args.black !== undefined && args.black !== null) {
       this.black = args.black;
     }
-    if (args.active_open_count !== undefined && args.active_open_count !== null) {
-      this.active_open_count = args.active_open_count;
-    }
-    if (args.active_flow !== undefined && args.active_flow !== null) {
-      this.active_flow = args.active_flow;
-    }
-    if (args.active_stay_days !== undefined && args.active_stay_days !== null) {
-      this.active_stay_days = args.active_stay_days;
-    }
-    if (args.active_show_time !== undefined && args.active_show_time !== null) {
-      this.active_show_time = args.active_show_time;
-    }
-    if (args.active_open_network !== undefined && args.active_open_network !== null) {
-      this.active_open_network = args.active_open_network;
+    if (args.active_id !== undefined && args.active_id !== null) {
+      this.active_id = args.active_id;
     }
   }
 };
@@ -1531,36 +1515,8 @@ AppStruct.prototype.read = function(input) {
       }
       break;
       case 12:
-      if (ftype == Thrift.Type.I32) {
-        this.active_open_count = input.readI32();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 13:
-      if (ftype == Thrift.Type.I32) {
-        this.active_flow = input.readI32();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 14:
-      if (ftype == Thrift.Type.I32) {
-        this.active_stay_days = input.readI32();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 15:
-      if (ftype == Thrift.Type.I32) {
-        this.active_show_time = input.readI32();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 16:
-      if (ftype == Thrift.Type.BOOL) {
-        this.active_open_network = input.readBool();
+      if (ftype == Thrift.Type.I64) {
+        this.active_id = input.readI64();
       } else {
         input.skip(ftype);
       }
@@ -1631,29 +1587,155 @@ AppStruct.prototype.write = function(output) {
     output.writeBool(this.black);
     output.writeFieldEnd();
   }
-  if (this.active_open_count !== null && this.active_open_count !== undefined) {
-    output.writeFieldBegin('active_open_count', Thrift.Type.I32, 12);
-    output.writeI32(this.active_open_count);
+  if (this.active_id !== null && this.active_id !== undefined) {
+    output.writeFieldBegin('active_id', Thrift.Type.I64, 12);
+    output.writeI64(this.active_id);
     output.writeFieldEnd();
   }
-  if (this.active_flow !== null && this.active_flow !== undefined) {
-    output.writeFieldBegin('active_flow', Thrift.Type.I32, 13);
-    output.writeI32(this.active_flow);
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+AppActiveStruct = module.exports.AppActiveStruct = function(args) {
+  this.id = null;
+  this.name = null;
+  this.open_count = null;
+  this.flow = null;
+  this.stay_days = null;
+  this.show_time = null;
+  this.open_network = null;
+  if (args) {
+    if (args.id !== undefined && args.id !== null) {
+      this.id = args.id;
+    }
+    if (args.name !== undefined && args.name !== null) {
+      this.name = args.name;
+    }
+    if (args.open_count !== undefined && args.open_count !== null) {
+      this.open_count = args.open_count;
+    }
+    if (args.flow !== undefined && args.flow !== null) {
+      this.flow = args.flow;
+    }
+    if (args.stay_days !== undefined && args.stay_days !== null) {
+      this.stay_days = args.stay_days;
+    }
+    if (args.show_time !== undefined && args.show_time !== null) {
+      this.show_time = args.show_time;
+    }
+    if (args.open_network !== undefined && args.open_network !== null) {
+      this.open_network = args.open_network;
+    }
+  }
+};
+AppActiveStruct.prototype = {};
+AppActiveStruct.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.I64) {
+        this.id = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.name = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.I32) {
+        this.open_count = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 4:
+      if (ftype == Thrift.Type.I32) {
+        this.flow = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 5:
+      if (ftype == Thrift.Type.I32) {
+        this.stay_days = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 6:
+      if (ftype == Thrift.Type.I32) {
+        this.show_time = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 7:
+      if (ftype == Thrift.Type.BOOL) {
+        this.open_network = input.readBool();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+AppActiveStruct.prototype.write = function(output) {
+  output.writeStructBegin('AppActiveStruct');
+  if (this.id !== null && this.id !== undefined) {
+    output.writeFieldBegin('id', Thrift.Type.I64, 1);
+    output.writeI64(this.id);
     output.writeFieldEnd();
   }
-  if (this.active_stay_days !== null && this.active_stay_days !== undefined) {
-    output.writeFieldBegin('active_stay_days', Thrift.Type.I32, 14);
-    output.writeI32(this.active_stay_days);
+  if (this.name !== null && this.name !== undefined) {
+    output.writeFieldBegin('name', Thrift.Type.STRING, 2);
+    output.writeString(this.name);
     output.writeFieldEnd();
   }
-  if (this.active_show_time !== null && this.active_show_time !== undefined) {
-    output.writeFieldBegin('active_show_time', Thrift.Type.I32, 15);
-    output.writeI32(this.active_show_time);
+  if (this.open_count !== null && this.open_count !== undefined) {
+    output.writeFieldBegin('open_count', Thrift.Type.I32, 3);
+    output.writeI32(this.open_count);
     output.writeFieldEnd();
   }
-  if (this.active_open_network !== null && this.active_open_network !== undefined) {
-    output.writeFieldBegin('active_open_network', Thrift.Type.BOOL, 16);
-    output.writeBool(this.active_open_network);
+  if (this.flow !== null && this.flow !== undefined) {
+    output.writeFieldBegin('flow', Thrift.Type.I32, 4);
+    output.writeI32(this.flow);
+    output.writeFieldEnd();
+  }
+  if (this.stay_days !== null && this.stay_days !== undefined) {
+    output.writeFieldBegin('stay_days', Thrift.Type.I32, 5);
+    output.writeI32(this.stay_days);
+    output.writeFieldEnd();
+  }
+  if (this.show_time !== null && this.show_time !== undefined) {
+    output.writeFieldBegin('show_time', Thrift.Type.I32, 6);
+    output.writeI32(this.show_time);
+    output.writeFieldEnd();
+  }
+  if (this.open_network !== null && this.open_network !== undefined) {
+    output.writeFieldBegin('open_network', Thrift.Type.BOOL, 7);
+    output.writeBool(this.open_network);
     output.writeFieldEnd();
   }
   output.writeFieldStop();

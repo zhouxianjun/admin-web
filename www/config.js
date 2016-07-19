@@ -56,7 +56,8 @@ require.config({
         'userService': 'service/UserService',
         'permissionsService': 'service/PermissionsService',
         'boxService': 'service/BoxService',
-        'appService': 'service/AppService'
+        'appService': 'service/AppService',
+        'appActiveService': 'service/AppActiveService'
     },
     shim: {
         'jquery-tmpl': ['jquery'],

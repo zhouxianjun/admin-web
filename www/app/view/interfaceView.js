@@ -93,11 +93,10 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'moment', 'merge
         }
     };
     $(function () {
-        viewModel.table = $('#interface-table').DataTable(merge(util.dataTableSettings, {
+        viewModel.table = $('#interface-table').DataTable(merge(true, util.dataTableSettings, {
             ajax: function (data, callback, settings) {
                 var sortParam = util.getSortParam(data, ['name', 'auth', 'description', 'status']);
-                var dataTableLoad = layer.load(2);
-                util.send(PermissionsService.interfaceByMgr(JSON.stringify(merge(sortParam, {
+                util.send(PermissionsService.interfaceByMgr(JSON.stringify(merge(true, sortParam, {
                     page: Math.floor(data.start / 10) + 1,
                     pageSize: 10
                 }))), function(response) {
@@ -108,9 +107,6 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'moment', 'merge
                     returnData.recordsFiltered = interfaces.count;
                     returnData.data = interfaces.count == 0 ? [] : JSON.parse(interfaces.items);
                     callback(returnData);
-                    layer.close(dataTableLoad);
-                }, function () {
-                    layer.close(dataTableLoad);
                 });
             },
             drawCallback: function (setting) {

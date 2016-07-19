@@ -27,14 +27,16 @@
 'use strict';
 const PublicStruct = require('../thrift/PublicStruct_types');
 const logger = require('../util/LogUtils').log();
+const Utils = require('../util/Utils');
 const fs = require("fs");
 const path = require("path");
 const crypt = require('crypto');
 const Q = require('q');
+const localPath = '/root/IdeaProjects/admin-web/upload';
 module.exports = class LocalFileStoreService {
     static * save(part) {
         let defer = Q.defer();
-        let stream = fs.createWriteStream(path.join(__dirname, part.filename));
+        let stream = fs.createWriteStream(path.join(localPath, part.filename));
         let length = 0;
         part.on('data', data => {
             length += data.length;

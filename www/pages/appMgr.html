@@ -55,7 +55,6 @@
         <!-- form start -->
         <form class="form-horizontal">
             <div class="box-body">
-                <legend>基本信息</legend>
                 <div class="form-group">
                     <label for="app_name" class="col-sm-3 control-label">
                         <span class="icon-require">*</span>名称
@@ -115,50 +114,29 @@
                         <textarea rows="4" data-bind="value: app.memo" class="form-control" style="resize:none"></textarea>
                     </div>
                 </div>
-                <legend>激活信息</legend>
-                <div class="form-group">
-                    <label class="col-sm-3 control-label">
-                        <span class="icon-require">*</span>
-                        打开次数：
-                    </label>
-                    <div class="col-sm-8 input-group input-large">
-                        <input type="number" min="0" name="app_active_open_count" data-bind="value: app.active_open_count" class="form-control" id="app_active_open_count" placeholder="">
-                        <span class="input-group-addon">或流量大于</span>
-                        <input type="number" min="0" name="app_active_flow" data-bind="value: app.active_flow" class="form-control" id="app_active_flow" placeholder="">
-                        <span class="input-group-addon">KB</span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-3 control-label">
-                        <span class="icon-require">*</span>
-                        存留天数：
-                    </label>
-                    <div class="col-sm-8">
-                        <input type="number" min="0" name="app_active_stay_days" data-bind="value: app.active_stay_days" class="form-control" id="app_active_stay_days" placeholder="">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-3 control-label">
-                        <span class="icon-require">*</span>
-                        展示时间：
-                    </label>
-                    <div class="col-sm-8">
-                        <input type="number" min="0" name="app_active_show_time" data-bind="value: app.active_show_time" class="form-control" id="app_active_show_time" placeholder="">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-3 control-label"><span class="icon-require">*</span>联网打开</label>
-                    <div class="col-sm-8">
-                        <label class="radio-inline">
-                            <input type="radio" name="app_active_open_network" value="1" data-bind="checked: app.active_open_network">是
-                        </label>
-                        <label class="radio-inline">
-                            <input type="radio" name="app_active_open_network" value="0" data-bind="checked: app.active_open_network">否
-                        </label>
-                    </div>
-                </div>
             </div>
         </form>
+    </div>
+</script>
+<script type="text/html" id="layer_active">
+    <div class="box box-info" style="overflow: hidden" id="activeBox">
+        <div class="box-body">
+            <label class="label-info">正在使用:</label>
+            <span class="text-green" data-bind="text: active_name"></span>
+            <table id="active-table" class="table table-bordered table-striped table-hover">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>名称</th>
+                    <th>次数</th>
+                    <th>流量</th>
+                    <th>天数</th>
+                    <th>打开时间</th>
+                    <th>网络</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
     </div>
 </script>
 <script type="text/html" id="layer_app_file">

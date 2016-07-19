@@ -72,9 +72,12 @@ define(['jquery', 'layer', 'moment', 'underscore', 'dhtmlx'], function ($, layer
             }
         },
         send: function (deferred, callback, errorFn) {
+            var loading = layer.load(2);
             $.when(deferred).done(function (response) {
+                layer.close(loading);
                 this.ajaxResponse(response, callback, errorFn);
             }.bind(this)).fail(function (error) {
+                layer.close(loading);
                 layer.msg('操作失败', {icon: 2});
                 if (typeof errorFn === 'function') {
                     errorFn(error);

@@ -194,12 +194,11 @@ require(['jquery', 'util', 'layer', 'boxService', 'ko', 'moment', 'merge', 'data
         }
     };
     $(function () {
-        viewModel.table = $('#box-table').DataTable(merge(util.dataTableSettings, {
+        viewModel.table = $('#box-table').DataTable(merge(true, util.dataTableSettings, {
             dom: 'T<"clear">lfrtip',
             ajax: function (data, callback, settings) {
                 var sortParam = util.getSortParam(data, ['box_id', 'ow', 'version', 'status', 'province_id', 'city_id', 'create_time', 'update_time']);
-                var dataTableLoad = layer.load(2);
-                util.send(BoxService.listByPage(JSON.stringify(merge(sortParam, {
+                util.send(BoxService.listByPage(JSON.stringify(merge(true, sortParam, {
                     page: Math.floor(data.start / 10) + 1,
                     pageSize: 10
                 }))), function(response) {
@@ -210,9 +209,6 @@ require(['jquery', 'util', 'layer', 'boxService', 'ko', 'moment', 'merge', 'data
                     returnData.recordsFiltered = boxs.count;
                     returnData.data = boxs.count == 0 ? [] : JSON.parse(boxs.items);
                     callback(returnData);
-                    layer.close(dataTableLoad);
-                }, function () {
-                    layer.close(dataTableLoad);
                 });
             },
             drawCallback: function (setting) {

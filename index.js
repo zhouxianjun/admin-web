@@ -80,8 +80,6 @@ app.use(function* rbac(next) {
             yield next;
             return;
         }
-        console.log(this.path);
-        console.log(this.session.interfaces);
         if (ignoreUrl.indexOf(this.path) == -1) {
             let have = false;
             this.session.interfaces.forEach(auth => {
