@@ -198,16 +198,14 @@
             </div>
             <div class="fileupload-preview fileupload-exists thumbnail" data-bind="style:{width:$data.width+'px', height:$data.height+'px'}"></div>
             <div>
-        <span class="btn btn-default btn-file">
-            <span class="fileupload-new"><i class="fa fa-paper-clip"></i>选择</span>
-            <span class="fileupload-exists"><i class="fa fa-undo"></i>更换</span>
-            <input type="file" class="default" data-bind="attr:{'id':'pic'+$data.index}" name="uploadFile" />
-        </span>
-                <a class="btn btn-success fileupload-exists" data-bind="click:function(){$root.showCutView('pic'+$data.index+'Modal',$element)}">
-                    <i class="fa fa-trash"></i> 裁剪
-                </a> <a href="#" class="btn btn-danger fileupload-exists" data-dismiss="fileupload">
-                <i class="fa fa-trash"></i> 移除
-            </a>
+                <span class="btn btn-default btn-file">
+                    <span class="fileupload-new"><i class="fa fa-paper-clip"></i>选择</span>
+                    <span class="fileupload-exists"><i class="fa fa-undo"></i>更换</span>
+                    <input type="file" class="default" data-bind="attr:{'id':'pic'+$data.index}" name="uploadFile" />
+                </span>
+                    <a href="#" class="btn btn-danger fileupload-exists" data-dismiss="fileupload">
+                        <i class="fa fa-trash"></i> 移除
+                    </a>
             </div>
         </div>
     </li>

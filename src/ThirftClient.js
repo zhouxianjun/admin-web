@@ -37,7 +37,9 @@ module.exports = function(callback) {
             new ThriftClient.invoker.factory.PoolInvokerFactory(
                 ThriftClient.thrift.TFramedTransport,
                 ThriftClient.thrift.TCompactProtocol,
-                100, 1000 * 60 * 5
+                100,
+                1000 * 60 * 5,
+                1000 * 60
             ),
             'demo'
         );
