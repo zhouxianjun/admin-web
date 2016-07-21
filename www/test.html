@@ -5,33 +5,44 @@
     <title>Title</title>
 </head>
 <body>
-<!-- ko template: {name: 'menus-template'} -->
-<!-- /ko -->
-<!--<div data-bind="template: { name: 'menus-template'}"></div>-->
-<script type="text/html" id="menus-template">
-    {{each menus}}
-    <li>
-        ${name}
-    </li>
-    {{/each}}
-</script>
+<input type="file" name="file" id="fileTest"/>
+<input type="button" id="ok" value="上传"/>
 <script src="plugins/jQuery/jQuery-2.2.0.min.js"></script>
-<script src="plugins/jquery.tmpl.min.js"></script>
-<script src="plugins/knockout-3.4.0.js"></script>
+<script src="plugins/ajaxfileupload.js"></script>
+<script src="plugins/qiniu.js"></script>
 </body>
 <script>
-    var viewModel = {
-        menus: ko.observableArray([{
-            id: 1000,
-            pid: 0,
-            name: 'test',
-            sub: [{
-                id: 1001,
-                pid: 1000,
-                name: 'test11'
-            }]
-        }])
-    };
-    ko.applyBindings(viewModel);
+    $(function () {
+        $('#ok').click(function () {
+            $.when($.ajax({
+                url: '/resources/uptoken',
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({
+                    key: '测试.jpg'
+                }),
+                contentType: 'application/json'
+            })).done(function (response) {
+                var formData = new FormData();
+                //formData.append('key', '测试.jpg');
+                formData.append('token', response.data.token);
+                formData.append('file', $('#fileTest')[0].files[0]);
+                $.when($.ajax({
+                    url: 'http://up.qiniu.com',
+                    type: 'POST',
+                    processData: false,
+                    contentType: false,
+                    data: formData
+                })).done(function (response) {
+                    console.dir(response);
+                }).fail(function (error) {
+                    console.error(error);
+                });
+            }).fail(function (error) {
+                console.error(error);
+            });
+        });
+    })
+    ;
 </script>
 </html>

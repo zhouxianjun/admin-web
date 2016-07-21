@@ -72,7 +72,7 @@ app.use(function* rbac(next) {
     if (this.path.indexOf('.') != -1){
         yield next;
     } else {
-        if (ignoreUrl.indexOf(this.path) == -1 && !this.session.user) {
+        /*if (ignoreUrl.indexOf(this.path) == -1 && !this.session.user) {
             Utils.writeResult(this, new Result(Result.CODE.NO_LOGIN));
             return;
         }
@@ -92,7 +92,7 @@ app.use(function* rbac(next) {
                 Utils.writeResult(this, new Result(Result.CODE.NO_ACCESS));
                 return;
             }
-        }
+        }*/
     }
     yield next;
 });
@@ -109,12 +109,20 @@ app.use(function *pageNotFound(next){
     Utils.writeResult(this, new Result(Result.CODE.NOT_FOUND));
 });
 
+app.use(function *error(next){
+    try {
+        yield next;
+    } catch (err) {
+        Utils.writeResult(this, new Result(false, err.message || '操作失败'));
+        logger.error('router error', err, this);
+    }
+});
+
 router.get('/', function *(next) {
     this.redirect('/pages/login.html');
 });
 
 app.on('error', (err, ctx) => {
-    Utils.writeResult(ctx, new Result(false, err.message || '操作失败'));
     logger.error('server error', err, ctx);
 });
 

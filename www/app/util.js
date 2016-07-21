@@ -206,6 +206,19 @@ define(['jquery', 'layer', 'moment', 'underscore', 'dhtmlx'], function ($, layer
                 contentType : 'application/json'
             });
         },
+        buildUploadAjax: function (url, data) {
+            var formData = new FormData();
+            for (var key in data) {
+                formData.append(key, data[key]);
+            }
+            return $.ajax({
+                url: url,
+                type: 'POST',
+                processData: false,
+                contentType: false,
+                data: formData
+            });
+        },
         doWhenImgError: function (data, event) {
             var oldSrc = event.target.src;
             var self = event.target;

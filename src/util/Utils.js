@@ -155,14 +155,14 @@ module.exports = class Utils {
                     return;
                 }
                 ctx.type = 'html';
-                ctx.body = `<p>${result.json.msg}</p>`;
+                ctx.body = `<p>${JSON.stringify(result.json)}</p>`;
                 break;
             case 'json':
                 ctx.body = result.json;
                 break;
             default:
                 ctx.type = 'text';
-                ctx.body = result.json.msg;
+                ctx.body = JSON.stringify(result.json);
         }
     }
 

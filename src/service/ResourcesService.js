@@ -28,6 +28,7 @@
 const ThriftClient = require('node-thrift-client');
 module.exports = class ResourcesService extends ThriftClient.referenceBean {
     getByVersion() {}
+    getByMD5() {}
     get type() {
         return require('../thrift/ResourcesService');
     }
