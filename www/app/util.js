@@ -56,33 +56,40 @@ define(['jquery', 'layer', 'moment', 'underscore', 'dhtmlx'], function ($, layer
 
     return {
         ajaxResponse: function(response, callback, errorFn) {
+            var defer = $.Deferred();
             if (response.code == 99) {
                 window.location.href = '/';
                 return;
             }
             if (response.code != 1 && typeof response.code != 'undefined') {
                 layer.msg(response.msg || '操作失败', {icon: 2});
+                defer.reject(response);
                 if (typeof errorFn === 'function') {
                     errorFn(response);
                     return;
                 }
             }
+            defer.resolve(response);
             if (typeof callback === 'function') {
                 callback(response);
             }
+            return defer.promise();
         },
         send: function (deferred, callback, errorFn) {
+            var defer = $.Deferred();
             var loading = layer.load(2);
             $.when(deferred).done(function (response) {
                 layer.close(loading);
-                this.ajaxResponse(response, callback, errorFn);
+                this.ajaxResponse(response, callback, errorFn).then(defer.resolve, defer.reject);
             }.bind(this)).fail(function (error) {
                 layer.close(loading);
                 layer.msg('操作失败', {icon: 2});
+                defer.reject(error);
                 if (typeof errorFn === 'function') {
                     errorFn(error);
                 }
             });
+            return defer.promise();
         },
         adjustIframeHeight: function (hasParent) {
             var p = parent;

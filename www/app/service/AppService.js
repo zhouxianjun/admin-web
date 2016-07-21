@@ -38,6 +38,15 @@ define(['jquery', 'util'], function ($, util) {
         },
         remove: function (data) {
             return util.buildAjax('/app/remove', data);
+        },
+        updateFile: function (data) {
+            return util.buildAjax('/app/updateFile', data);
+        },
+        updateImg: function (data) {
+            return util.buildAjax('/app/updateImg', data);
+        },
+        imgs: function (data) {
+            return util.buildAjax('/app/imgs', data);
         }
     };
 });

@@ -58,22 +58,28 @@ module.exports = class {
         }));
     }
     * updateFile() {
-        let params = this.query;
-        let part = yield fileParse(this);
-        let resources = yield LocalFileStoreService.save(part);
-        let res = yield appService.changeAppFile(params.id, resources);
+        let params = this.request.body;
+        let res = yield appService.changeAppFile(params.id, new PublicStruct.ResourcesStruct(params.resources));
         this.body = new Result(res ? true : false).json;
     }
     * updateImg() {
-        let params = this.query;
-        let parts = fileParse(this);
-        let part, resourcesList = [];
-        while (part = yield parts) {
-            let resources = yield LocalFileStoreService.save(part);
-            resourcesList.push(resources);
+        let params = this.request.body;
+        let list = [];
+        if (params.resources && params.resources.length) {
+            params.resources.forEach(r => {
+                list.push(new PublicStruct.ResourcesStruct(r));
+            });
         }
-        let res = yield appService.changeAppImg(params.id, resourcesList);
+        let res = yield appService.changeAppImg(params.id, list);
         this.body = new Result(res ? true : false).json;
+    }
+    * imgs() {
+        let params = this.request.body;
+        let res = yield appService.imgs(params.id);
+        Utils.writeResult(this, new Result(true, {
+            key: 'list',
+            value: Utils.makeList(res)
+        }));
     }
     * remove() {
         let params = this.request.body;

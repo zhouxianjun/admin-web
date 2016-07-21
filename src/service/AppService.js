@@ -33,6 +33,7 @@ module.exports = class AppService extends ThriftClient.referenceBean {
     changeAppFile() {}
     changeAppImg() {}
     remove() {}
+    imgs() {}
     get type() {
         return require('../thrift/AppService');
     }

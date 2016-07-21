@@ -58,7 +58,8 @@ require.config({
         'boxService': 'service/BoxService',
         'appService': 'service/AppService',
         'appActiveService': 'service/AppActiveService',
-        'modelMgrService': 'service/ModelMgrService'
+        'modelMgrService': 'service/ModelMgrService',
+        'resourcesService': 'service/ResourcesService'
     },
     shim: {
         'jquery-tmpl': ['jquery'],

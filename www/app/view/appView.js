@@ -25,8 +25,8 @@
  *           佛祖保佑       永无BUG
  */
 'use strict';
-require(['jquery', 'util', 'layer', 'appService', 'appActiveService', 'ko', 'moment', 'merge', 'datatables', 'validator', 'slimScroll', 'datatables-tabletools', 'bootstrap-upload', 'fileupload'],
-    function ($, util, layer, AppService, AppActiveService, ko, moment) {
+require(['jquery', 'util', 'layer', 'appService', 'appActiveService', 'resourcesService', 'ko', 'moment', 'merge', 'datatables', 'validator', 'slimScroll', 'datatables-tabletools', 'bootstrap-upload', 'fileupload'],
+    function ($, util, layer, AppService, AppActiveService, ResourcesService, ko, moment) {
     var viewModel = {
         table: null,
         util: util,
@@ -49,19 +49,7 @@ require(['jquery', 'util', 'layer', 'appService', 'appActiveService', 'ko', 'mom
             resources_size: ko.observable(0),
             resources_time: ko.observable()
         },
-        app_img_array: ko.observableArray([
-            {"index":1,"width":"160","height":"120","showPicUrl": ''},
-            {"index":2,"width":"160","height":"120","showPicUrl": ''},
-            {"index":3,"width":"160","height":"120","showPicUrl": ''},
-            {"index":4,"width":"160","height":"120","showPicUrl": ''}
-        ]),
-        imgCutArray: ko.observableArray(),
-        showCutView: function() {
-
-        },
-        afterCut: function() {
-
-        },
+        app_img_array: ko.observableArray([]),
         active_name: ko.observable('none'),
         networkOptions: ko.observableArray([{
             name: '联网',
@@ -152,26 +140,19 @@ require(['jquery', 'util', 'layer', 'appService', 'appActiveService', 'ko', 'mom
                     var form = $('#appFileForm');
                     form.data('bootstrapValidator').validate();
                     if (form.data('bootstrapValidator').isValid()) {
-                        var vAjaxLoad = layer.load(2);
                         viewModel.app_file.id(id);
-                        $.ajaxFileUpload({
-                            url: '/app/updateFile?id=' + id,
-                            secureuri: false,
-                            fileElementId: 'app_file_resource',//file标签的id
-                            dataType: 'json',//返回数据的类型
-                            success: function(response) {
-                                util.ajaxResponse(response, function() {
-                                    layer.close(vAjaxLoad);
-                                    viewModel.table.draw(false);
-                                    util.clearViewModel(viewModel.app_file);
-                                    layer.close(fileLayer);
-                                });
-                            },
-                            error: function () {
-                                layer.msg('操作失败', {icon: 2});
-                                layer.close(vAjaxLoad);
+                        ResourcesService.uploadFile([$('#app_file_resource')[0].files[0]]).then(function(resList) {
+                            util.send(AppService.updateFile(JSON.stringify({
+                                id: id,
+                                resources: resList[0]
+                            }))).then(function() {
+                                viewModel.table.draw(false);
+                                util.clearViewModel(viewModel.app_file);
                                 layer.close(fileLayer);
-                            }
+                            }, function() {
+                                layer.msg('操作失败', {icon: 2});
+                                layer.close(fileLayer);
+                            });
                         });
                     }
                 }
@@ -193,6 +174,31 @@ require(['jquery', 'util', 'layer', 'appService', 'appActiveService', 'ko', 'mom
             });
         },
         openImg: function (id) {
+            viewModel.app_img_array([]);
+            util.send(AppService.imgs(JSON.stringify({id: id}))).then(function(response) {
+                for (var i = 0; i < response.data.list.length; i++) {
+                    console.log(response.data.list[i].id);
+                    viewModel.app_img_array.push({
+                        index: i,
+                        width: 200,
+                        height: 150,
+                        resource_id: response.data.list[i].id,
+                        showPicUrl: '/resources/qiniuDownload?key=' + response.data.list[i].md5 + '-thumb&show=true'
+                    });
+                }
+                var length = 4 - viewModel.app_img_array().length;
+                if (length > 0) {
+                    for (var j = viewModel.app_img_array().length; j < 4; j++) {
+                        viewModel.app_img_array.push({
+                            index: j,
+                            width: 200,
+                            height: 150,
+                            resource_id: '',
+                            showPicUrl: ''
+                        });
+                    }
+                }
+            });
             var imgLayer = layer.open({
                 type: 1,
                 title: '应用图片',
@@ -200,26 +206,41 @@ require(['jquery', 'util', 'layer', 'appService', 'appActiveService', 'ko', 'mom
                 content: $('#layer_app_img').html(),
                 btn: ['确定', '取消'],
                 yes: function () {
-                    var vAjaxLoad = layer.load(2);
-                    $.ajaxFileUpload({
-                        url: '/app/updateImg?id=' + id,
-                        secureuri: false,
-                        fileElementId: ['pic1', 'pic2'],//file标签的id
-                        dataType: 'json',//返回数据的类型
-                        success: function (response) {
-                            util.ajaxResponse(response, function () {
-                                layer.close(vAjaxLoad);
-                                viewModel.table.draw(false);
-                                util.clearViewModel(viewModel.app_file);
-                                layer.close(imgLayer);
-                                layer.close(vAjaxLoad);
-                            });
-                        },
-                        error: function () {
+                    var files = [], ids = [];
+                    for (var i = 0; i < viewModel.app_img_array().length; i++) {
+                        var imgid = '#pic' + viewModel.app_img_array()[i].index;
+                        if ($(imgid)[0].files.length > 0)
+                            files.push($(imgid)[0].files[0]);
+                        else {
+                            var rid = $(imgid).attr('r_id');
+                            if (rid) {
+                                ids.push({
+                                    id: rid
+                                });
+                            }
+                        }
+                    }
+                    if (files.length <= 0) {
+                        layer.close(imgLayer);
+                        return;
+                    }
+                    ResourcesService.uploadFile(files).then(function(resList) {
+                        if (resList.length + ids.length <= 4) {
+                            for (var j = 0; j < ids.length; j++) {
+                                resList.push(ids[j]);
+                            }
+                        }
+                        util.send(AppService.updateImg(JSON.stringify({
+                            id: id,
+                            resources: resList
+                        }))).then(function() {
+                            viewModel.table.draw(false);
+                            util.clearViewModel(viewModel.app_file);
+                            layer.close(imgLayer);
+                        }, function() {
                             layer.msg('操作失败', {icon: 2});
                             layer.close(imgLayer);
-                            layer.close(vAjaxLoad);
-                        }
+                        });
                     });
                 }
             });
@@ -300,13 +321,6 @@ require(['jquery', 'util', 'layer', 'appService', 'appActiveService', 'ko', 'mom
             }));
         },
         init: function () {
-            viewModel.imgCutArray([
-                {"index":1,"afterCut": viewModel.afterCut},
-                {"index":2,"afterCut": viewModel.afterCut},
-                {"index":3,"afterCut": viewModel.afterCut},
-                {"index":4,"afterCut": viewModel.afterCut},
-                {"index":5,"afterCut": viewModel.afterCut}
-            ]);
         }
     };
     $(function () {

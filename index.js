@@ -37,8 +37,8 @@ const redisStore = require('koa-redis');
 const bodyParser = require('koa-bodyparser');
 const app = new Koa();
 
-const ignoreUrl = ['/user/login', '/'];
-const loginUrl = ['/permissions/menus', '/user/logout'];
+const ignoreUrl = ['/user/login', '/', '/resources/qiniuCallback'];
+const loginUrl = ['/permissions/menus', '/user/logout', '/resources/uptoken', '/resources/qiniuDownload'];
 
 //logger
 app.use(function* log(next) {
@@ -72,7 +72,7 @@ app.use(function* rbac(next) {
     if (this.path.indexOf('.') != -1){
         yield next;
     } else {
-        /*if (ignoreUrl.indexOf(this.path) == -1 && !this.session.user) {
+        if (ignoreUrl.indexOf(this.path) == -1 && !this.session.user) {
             Utils.writeResult(this, new Result(Result.CODE.NO_LOGIN));
             return;
         }
@@ -92,7 +92,7 @@ app.use(function* rbac(next) {
                 Utils.writeResult(this, new Result(Result.CODE.NO_ACCESS));
                 return;
             }
-        }*/
+        }
     }
     yield next;
 });

@@ -29,6 +29,7 @@ const resourcesService = require('../service/ResourcesService').instance();
 const Result = require('../dto/Result');
 const Utils = require('../util/Utils');
 const _ = require('underscore');
+const querystring = require('querystring');
 const fs = require("fs");
 const qiniu = require('qiniu');
 //需要填写你的 Access Key 和 Secret Key
@@ -63,6 +64,8 @@ module.exports = class {
         res.name = params.filename;
         res.size = params.filesize;
         res.md5 = params.md5;
+        res.id = res.id.toNumber();
+        res.create_time = parseInt(res.create_time);
         this.status = 200;
         this.body = new Result(true, {
             key: 'res',
@@ -80,20 +83,28 @@ module.exports = class {
         }));
     }
     * qiniuDownload() {
-        let key = this.query.key || this.request.body.key;
+        let params = this.query || this.request.body;
+        let key = params.key;
         if (!key) this.throw(404);
-        let urls = buildUrl(key);
-        this.redirect(`${urls[0]}`);
+        let res = {};
+        if (!params.show) {
+            res = yield resourcesService.getByMD5(key);
+        }
+        let urls = buildUrl(key, res.name);
+        this.redirect(urls[0]);
     }
 };
-function buildUrl(key) {
+function buildUrl(key, name) {
     let urls = [];
 
     if (!_.isArray(key)) {
         key = [key];
     }
     key.forEach(k => {
-        urls.push(getPolicy.makeRequest(`${baseUrl}${k}?attname=${"xx.xlsx"}`));
+        if (!_.isEmpty(name) && name)
+            urls.push(getPolicy.makeRequest(`${baseUrl}${k}?attname=${querystring.escape(name)}`));
+        else
+            urls.push(getPolicy.makeRequest(`${baseUrl}${k}`));
     });
     return urls;
 }

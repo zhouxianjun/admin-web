@@ -811,6 +811,153 @@ AppService_changeAppImg_result.prototype.write = function(output) {
   return;
 };
 
+AppService_imgs_args = function(args) {
+  this.id = null;
+  if (args) {
+    if (args.id !== undefined && args.id !== null) {
+      this.id = args.id;
+    }
+  }
+};
+AppService_imgs_args.prototype = {};
+AppService_imgs_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.I64) {
+        this.id = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+AppService_imgs_args.prototype.write = function(output) {
+  output.writeStructBegin('AppService_imgs_args');
+  if (this.id !== null && this.id !== undefined) {
+    output.writeFieldBegin('id', Thrift.Type.I64, 1);
+    output.writeI64(this.id);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+AppService_imgs_result = function(args) {
+  this.success = null;
+  this.ex = null;
+  if (args instanceof PublicStruct_ttypes.InvalidOperation) {
+    this.ex = args;
+    return;
+  }
+  if (args) {
+    if (args.success !== undefined && args.success !== null) {
+      this.success = Thrift.copyList(args.success, [PublicStruct_ttypes.ResourcesStruct]);
+    }
+    if (args.ex !== undefined && args.ex !== null) {
+      this.ex = args.ex;
+    }
+  }
+};
+AppService_imgs_result.prototype = {};
+AppService_imgs_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.LIST) {
+        var _size8 = 0;
+        var _rtmp312;
+        this.success = [];
+        var _etype11 = 0;
+        _rtmp312 = input.readListBegin();
+        _etype11 = _rtmp312.etype;
+        _size8 = _rtmp312.size;
+        for (var _i13 = 0; _i13 < _size8; ++_i13)
+        {
+          var elem14 = null;
+          elem14 = new PublicStruct_ttypes.ResourcesStruct();
+          elem14.read(input);
+          this.success.push(elem14);
+        }
+        input.readListEnd();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.ex = new PublicStruct_ttypes.InvalidOperation();
+        this.ex.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+AppService_imgs_result.prototype.write = function(output) {
+  output.writeStructBegin('AppService_imgs_result');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.LIST, 0);
+    output.writeListBegin(Thrift.Type.STRUCT, this.success.length);
+    for (var iter15 in this.success)
+    {
+      if (this.success.hasOwnProperty(iter15))
+      {
+        iter15 = this.success[iter15];
+        iter15.write(output);
+      }
+    }
+    output.writeListEnd();
+    output.writeFieldEnd();
+  }
+  if (this.ex !== null && this.ex !== undefined) {
+    output.writeFieldBegin('ex', Thrift.Type.STRUCT, 1);
+    this.ex.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 AppServiceClient = exports.Client = function(output, pClass) {
     this.output = output;
     this.pClass = pClass;
@@ -1122,6 +1269,56 @@ AppServiceClient.prototype.recv_changeAppImg = function(input,mtype,rseqid) {
   }
   return callback('changeAppImg failed: unknown result');
 };
+AppServiceClient.prototype.imgs = function(id, callback) {
+  this._seqid = this.new_seqid();
+  if (callback === undefined) {
+    var _defer = Q.defer();
+    this._reqs[this.seqid()] = function(error, result) {
+      if (error) {
+        _defer.reject(error);
+      } else {
+        _defer.resolve(result);
+      }
+    };
+    this.send_imgs(id);
+    return _defer.promise;
+  } else {
+    this._reqs[this.seqid()] = callback;
+    this.send_imgs(id);
+  }
+};
+
+AppServiceClient.prototype.send_imgs = function(id) {
+  var output = new this.pClass(this.output);
+  output.writeMessageBegin('imgs', Thrift.MessageType.CALL, this.seqid());
+  var args = new AppService_imgs_args();
+  args.id = id;
+  args.write(output);
+  output.writeMessageEnd();
+  return this.output.flush();
+};
+
+AppServiceClient.prototype.recv_imgs = function(input,mtype,rseqid) {
+  var callback = this._reqs[rseqid] || function() {};
+  delete this._reqs[rseqid];
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(input);
+    input.readMessageEnd();
+    return callback(x);
+  }
+  var result = new AppService_imgs_result();
+  result.read(input);
+  input.readMessageEnd();
+
+  if (null !== result.ex) {
+    return callback(result.ex);
+  }
+  if (null !== result.success) {
+    return callback(null, result.success);
+  }
+  return callback('imgs failed: unknown result');
+};
 AppServiceProcessor = exports.Processor = function(handler) {
   this._handler = handler
 }
@@ -1372,6 +1569,46 @@ AppServiceProcessor.prototype.process_changeAppImg = function(seqid, input, outp
       } else {
         var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
         output.writeMessageBegin("changeAppImg", Thrift.MessageType.EXCEPTION, seqid);
+      }
+      result.write(output);
+      output.writeMessageEnd();
+      output.flush();
+    });
+  }
+}
+
+AppServiceProcessor.prototype.process_imgs = function(seqid, input, output) {
+  var args = new AppService_imgs_args();
+  args.read(input);
+  input.readMessageEnd();
+  if (this._handler.imgs.length === 1) {
+    Q.fcall(this._handler.imgs, args.id)
+      .then(function(result) {
+        var result = new AppService_imgs_result({success: result});
+        output.writeMessageBegin("imgs", Thrift.MessageType.REPLY, seqid);
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      }, function (err) {
+        if (err instanceof PublicStruct_ttypes.InvalidOperation) {
+          var result = new AppService_imgs_result(err);
+          output.writeMessageBegin("imgs", Thrift.MessageType.REPLY, seqid);
+        } else {
+          var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+          output.writeMessageBegin("imgs", Thrift.MessageType.EXCEPTION, seqid);
+        }
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      });
+  } else {
+    this._handler.imgs(args.id, function (err, result) {
+      if (err == null || err instanceof PublicStruct_ttypes.InvalidOperation) {
+        var result = new AppService_imgs_result((err != null ? err : {success: result}));
+        output.writeMessageBegin("imgs", Thrift.MessageType.REPLY, seqid);
+      } else {
+        var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+        output.writeMessageBegin("imgs", Thrift.MessageType.EXCEPTION, seqid);
       }
       result.write(output);
       output.writeMessageEnd();
