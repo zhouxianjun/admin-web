@@ -2545,6 +2545,446 @@ RequirePackageStruct.prototype.write = function(output) {
   return;
 };
 
+RootModelStruct = module.exports.RootModelStruct = function(args) {
+  this.id = null;
+  this.brand_id = null;
+  this.model_id = null;
+  this.version_id = null;
+  this.base_version_id = null;
+  if (args) {
+    if (args.id !== undefined && args.id !== null) {
+      this.id = args.id;
+    }
+    if (args.brand_id !== undefined && args.brand_id !== null) {
+      this.brand_id = args.brand_id;
+    }
+    if (args.model_id !== undefined && args.model_id !== null) {
+      this.model_id = args.model_id;
+    }
+    if (args.version_id !== undefined && args.version_id !== null) {
+      this.version_id = args.version_id;
+    }
+    if (args.base_version_id !== undefined && args.base_version_id !== null) {
+      this.base_version_id = args.base_version_id;
+    }
+  }
+};
+RootModelStruct.prototype = {};
+RootModelStruct.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.I64) {
+        this.id = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.I64) {
+        this.brand_id = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.I64) {
+        this.model_id = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 4:
+      if (ftype == Thrift.Type.I64) {
+        this.version_id = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 5:
+      if (ftype == Thrift.Type.I64) {
+        this.base_version_id = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+RootModelStruct.prototype.write = function(output) {
+  output.writeStructBegin('RootModelStruct');
+  if (this.id !== null && this.id !== undefined) {
+    output.writeFieldBegin('id', Thrift.Type.I64, 1);
+    output.writeI64(this.id);
+    output.writeFieldEnd();
+  }
+  if (this.brand_id !== null && this.brand_id !== undefined) {
+    output.writeFieldBegin('brand_id', Thrift.Type.I64, 2);
+    output.writeI64(this.brand_id);
+    output.writeFieldEnd();
+  }
+  if (this.model_id !== null && this.model_id !== undefined) {
+    output.writeFieldBegin('model_id', Thrift.Type.I64, 3);
+    output.writeI64(this.model_id);
+    output.writeFieldEnd();
+  }
+  if (this.version_id !== null && this.version_id !== undefined) {
+    output.writeFieldBegin('version_id', Thrift.Type.I64, 4);
+    output.writeI64(this.version_id);
+    output.writeFieldEnd();
+  }
+  if (this.base_version_id !== null && this.base_version_id !== undefined) {
+    output.writeFieldBegin('base_version_id', Thrift.Type.I64, 5);
+    output.writeI64(this.base_version_id);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+RootConfigStruct = module.exports.RootConfigStruct = function(args) {
+  this.id = null;
+  this.name = null;
+  this.version = null;
+  this.memo = null;
+  this.resources_id = null;
+  if (args) {
+    if (args.id !== undefined && args.id !== null) {
+      this.id = args.id;
+    }
+    if (args.name !== undefined && args.name !== null) {
+      this.name = args.name;
+    }
+    if (args.version !== undefined && args.version !== null) {
+      this.version = args.version;
+    }
+    if (args.memo !== undefined && args.memo !== null) {
+      this.memo = args.memo;
+    }
+    if (args.resources_id !== undefined && args.resources_id !== null) {
+      this.resources_id = args.resources_id;
+    }
+  }
+};
+RootConfigStruct.prototype = {};
+RootConfigStruct.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.I64) {
+        this.id = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.name = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.STRING) {
+        this.version = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 4:
+      if (ftype == Thrift.Type.STRING) {
+        this.memo = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 5:
+      if (ftype == Thrift.Type.I64) {
+        this.resources_id = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+RootConfigStruct.prototype.write = function(output) {
+  output.writeStructBegin('RootConfigStruct');
+  if (this.id !== null && this.id !== undefined) {
+    output.writeFieldBegin('id', Thrift.Type.I64, 1);
+    output.writeI64(this.id);
+    output.writeFieldEnd();
+  }
+  if (this.name !== null && this.name !== undefined) {
+    output.writeFieldBegin('name', Thrift.Type.STRING, 2);
+    output.writeString(this.name);
+    output.writeFieldEnd();
+  }
+  if (this.version !== null && this.version !== undefined) {
+    output.writeFieldBegin('version', Thrift.Type.STRING, 3);
+    output.writeString(this.version);
+    output.writeFieldEnd();
+  }
+  if (this.memo !== null && this.memo !== undefined) {
+    output.writeFieldBegin('memo', Thrift.Type.STRING, 4);
+    output.writeString(this.memo);
+    output.writeFieldEnd();
+  }
+  if (this.resources_id !== null && this.resources_id !== undefined) {
+    output.writeFieldBegin('resources_id', Thrift.Type.I64, 5);
+    output.writeI64(this.resources_id);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+PushStruct = module.exports.PushStruct = function(args) {
+  this.id = null;
+  this.user_id = null;
+  this.name = null;
+  this.type = null;
+  this.img = null;
+  this.text = null;
+  this.client_type = null;
+  this.app = null;
+  this.deduct = null;
+  this.url = null;
+  this.status = null;
+  if (args) {
+    if (args.id !== undefined && args.id !== null) {
+      this.id = args.id;
+    }
+    if (args.user_id !== undefined && args.user_id !== null) {
+      this.user_id = args.user_id;
+    }
+    if (args.name !== undefined && args.name !== null) {
+      this.name = args.name;
+    }
+    if (args.type !== undefined && args.type !== null) {
+      this.type = args.type;
+    }
+    if (args.img !== undefined && args.img !== null) {
+      this.img = new ttypes.ResourcesStruct(args.img);
+    }
+    if (args.text !== undefined && args.text !== null) {
+      this.text = args.text;
+    }
+    if (args.client_type !== undefined && args.client_type !== null) {
+      this.client_type = args.client_type;
+    }
+    if (args.app !== undefined && args.app !== null) {
+      this.app = new ttypes.ResourcesStruct(args.app);
+    }
+    if (args.deduct !== undefined && args.deduct !== null) {
+      this.deduct = args.deduct;
+    }
+    if (args.url !== undefined && args.url !== null) {
+      this.url = args.url;
+    }
+    if (args.status !== undefined && args.status !== null) {
+      this.status = args.status;
+    }
+  }
+};
+PushStruct.prototype = {};
+PushStruct.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.I64) {
+        this.id = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.I64) {
+        this.user_id = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.STRING) {
+        this.name = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 4:
+      if (ftype == Thrift.Type.I32) {
+        this.type = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 5:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.img = new ttypes.ResourcesStruct();
+        this.img.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 6:
+      if (ftype == Thrift.Type.STRING) {
+        this.text = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 7:
+      if (ftype == Thrift.Type.I32) {
+        this.client_type = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 8:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.app = new ttypes.ResourcesStruct();
+        this.app.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 9:
+      if (ftype == Thrift.Type.DOUBLE) {
+        this.deduct = input.readDouble();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 10:
+      if (ftype == Thrift.Type.STRING) {
+        this.url = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 11:
+      if (ftype == Thrift.Type.I32) {
+        this.status = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+PushStruct.prototype.write = function(output) {
+  output.writeStructBegin('PushStruct');
+  if (this.id !== null && this.id !== undefined) {
+    output.writeFieldBegin('id', Thrift.Type.I64, 1);
+    output.writeI64(this.id);
+    output.writeFieldEnd();
+  }
+  if (this.user_id !== null && this.user_id !== undefined) {
+    output.writeFieldBegin('user_id', Thrift.Type.I64, 2);
+    output.writeI64(this.user_id);
+    output.writeFieldEnd();
+  }
+  if (this.name !== null && this.name !== undefined) {
+    output.writeFieldBegin('name', Thrift.Type.STRING, 3);
+    output.writeString(this.name);
+    output.writeFieldEnd();
+  }
+  if (this.type !== null && this.type !== undefined) {
+    output.writeFieldBegin('type', Thrift.Type.I32, 4);
+    output.writeI32(this.type);
+    output.writeFieldEnd();
+  }
+  if (this.img !== null && this.img !== undefined) {
+    output.writeFieldBegin('img', Thrift.Type.STRUCT, 5);
+    this.img.write(output);
+    output.writeFieldEnd();
+  }
+  if (this.text !== null && this.text !== undefined) {
+    output.writeFieldBegin('text', Thrift.Type.STRING, 6);
+    output.writeString(this.text);
+    output.writeFieldEnd();
+  }
+  if (this.client_type !== null && this.client_type !== undefined) {
+    output.writeFieldBegin('client_type', Thrift.Type.I32, 7);
+    output.writeI32(this.client_type);
+    output.writeFieldEnd();
+  }
+  if (this.app !== null && this.app !== undefined) {
+    output.writeFieldBegin('app', Thrift.Type.STRUCT, 8);
+    this.app.write(output);
+    output.writeFieldEnd();
+  }
+  if (this.deduct !== null && this.deduct !== undefined) {
+    output.writeFieldBegin('deduct', Thrift.Type.DOUBLE, 9);
+    output.writeDouble(this.deduct);
+    output.writeFieldEnd();
+  }
+  if (this.url !== null && this.url !== undefined) {
+    output.writeFieldBegin('url', Thrift.Type.STRING, 10);
+    output.writeString(this.url);
+    output.writeFieldEnd();
+  }
+  if (this.status !== null && this.status !== undefined) {
+    output.writeFieldBegin('status', Thrift.Type.I32, 11);
+    output.writeI32(this.status);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 InvalidOperation = module.exports.InvalidOperation = function(args) {
   Thrift.TException.call(this, "InvalidOperation")
   this.name = "InvalidOperation"

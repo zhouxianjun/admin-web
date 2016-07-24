@@ -55,7 +55,7 @@ define(['jquery', 'layer', 'moment', 'underscore', 'dhtmlx'], function ($, layer
     };
 
     return {
-        ajaxResponse: function(response, callback, errorFn) {
+        ajaxResponse: function (response, callback, errorFn) {
             var defer = $.Deferred();
             if (response.code == 99) {
                 window.location.href = '/';
@@ -210,7 +210,7 @@ define(['jquery', 'layer', 'moment', 'underscore', 'dhtmlx'], function ($, layer
                 type: type || 'POST',
                 dataType: 'json',
                 data: data,
-                contentType : 'application/json'
+                contentType: 'application/json'
             });
         },
         buildUploadAjax: function (url, data) {
@@ -226,38 +226,61 @@ define(['jquery', 'layer', 'moment', 'underscore', 'dhtmlx'], function ($, layer
                 data: formData
             });
         },
-        doWhenImgError: function (data, event) {
-            var oldSrc = event.target.src;
-            var self = event.target;
-            self.src = '';
-            $(event.target).unbind('error');
-            /*setTimeout(function () {
-                me.reloadImg(self, oldSrc)
-            }, 30000);*/
+        cutstr: function (str, len) {
+            var str_length = 0;
+            var str_len = 0;
+            var str_cut = '';
+            str_len = str.length;
+            for (var i = 0; i < str_len; i++) {
+                var a = str.charAt(i);
+                str_length++;
+                if (escape(a).length > 4) {
+                    //中文字符的长度经编码之后大于4
+                    str_length++;
+                }
+                str_cut = str_cut.concat(a);
+                if (str_length >= len) {
+                    str_cut = str_cut.concat("...");
+                    return str_cut;
+                }
+            }
+            //如果给定字符串小于指定长度，则返回源字符串；
+            if (str_length < len) {
+                return str;
+            }
+        },
+        RENDER: {   //常用render可以抽取出来，如日期时间、头像等
+            ELLIPSIS: function (data, type, row, meta) {
+                data = data || '';
+                return '<span title="' + data + '">' + data + '</span>';
+            },
+            ELLIPSIS_URL: function (data, type, row, meta) {
+                return data ? '<a href="'+ data +'" target="_blank" title="' + data + '">' + data + '</a>' : '';
+            }
         },
         dataTableSettings: {
             language: {
-                "sProcessing":   "处理中...",
-                "sLengthMenu":   "每页 _MENU_ 项",
-                "sZeroRecords":  "没有匹配结果",
-                "sInfo":         "当前显示第 _START_ 至 _END_ 项，共 _TOTAL_ 项。",
-                "sInfoEmpty":    "当前显示第 0 至 0 项，共 0 项",
+                "sProcessing": "处理中...",
+                "sLengthMenu": "每页 _MENU_ 项",
+                "sZeroRecords": "没有匹配结果",
+                "sInfo": "当前显示第 _START_ 至 _END_ 项，共 _TOTAL_ 项。",
+                "sInfoEmpty": "当前显示第 0 至 0 项，共 0 项",
                 "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
-                "sInfoPostFix":  "",
-                "sSearch":       false,
-                "sUrl":          "",
-                "sEmptyTable":     "表中数据为空",
+                "sInfoPostFix": "",
+                "sSearch": false,
+                "sUrl": "",
+                "sEmptyTable": "表中数据为空",
                 "sLoadingRecords": "载入中...",
-                "sInfoThousands":  ",",
+                "sInfoThousands": ",",
                 "oPaginate": {
-                    "sFirst":    "首页",
+                    "sFirst": "首页",
                     "sPrevious": "上页",
-                    "sNext":     "下页",
-                    "sLast":     "末页",
-                    "sJump":     "跳转"
+                    "sNext": "下页",
+                    "sLast": "末页",
+                    "sJump": "跳转"
                 },
                 "oAria": {
-                    "sSortAscending":  ": 以升序排列此列",
+                    "sSortAscending": ": 以升序排列此列",
                     "sSortDescending": ": 以降序排列此列"
                 }
             },
@@ -274,140 +297,140 @@ define(['jquery', 'layer', 'moment', 'underscore', 'dhtmlx'], function ($, layer
 });
 var _p_data = [
     {
-        "id":1,
-        "pname":"北京市"
+        "id": 1,
+        "pname": "北京市"
     },
     {
-        "id":2,
-        "pname":"天津市"
+        "id": 2,
+        "pname": "天津市"
     },
     {
-        "id":3,
-        "pname":"河北省"
+        "id": 3,
+        "pname": "河北省"
     },
     {
-        "id":4,
-        "pname":"山西省"
+        "id": 4,
+        "pname": "山西省"
     },
     {
-        "id":5,
-        "pname":"内蒙古自治区"
+        "id": 5,
+        "pname": "内蒙古自治区"
     },
     {
-        "id":6,
-        "pname":"辽宁省"
+        "id": 6,
+        "pname": "辽宁省"
     },
     {
-        "id":7,
-        "pname":"吉林省"
+        "id": 7,
+        "pname": "吉林省"
     },
     {
-        "id":8,
-        "pname":"黑龙江省"
+        "id": 8,
+        "pname": "黑龙江省"
     },
     {
-        "id":9,
-        "pname":"上海市"
+        "id": 9,
+        "pname": "上海市"
     },
     {
-        "id":10,
-        "pname":"江苏省"
+        "id": 10,
+        "pname": "江苏省"
     },
     {
-        "id":11,
-        "pname":"浙江省"
+        "id": 11,
+        "pname": "浙江省"
     },
     {
-        "id":12,
-        "pname":"安徽省"
+        "id": 12,
+        "pname": "安徽省"
     },
     {
-        "id":13,
-        "pname":"福建省"
+        "id": 13,
+        "pname": "福建省"
     },
     {
-        "id":14,
-        "pname":"江西省"
+        "id": 14,
+        "pname": "江西省"
     },
     {
-        "id":15,
-        "pname":"山东省"
+        "id": 15,
+        "pname": "山东省"
     },
     {
-        "id":16,
-        "pname":"河南省"
+        "id": 16,
+        "pname": "河南省"
     },
     {
-        "id":17,
-        "pname":"湖北省"
+        "id": 17,
+        "pname": "湖北省"
     },
     {
-        "id":18,
-        "pname":"湖南省"
+        "id": 18,
+        "pname": "湖南省"
     },
     {
-        "id":19,
-        "pname":"广东省"
+        "id": 19,
+        "pname": "广东省"
     },
     {
-        "id":20,
-        "pname":"广西壮族自治区"
+        "id": 20,
+        "pname": "广西壮族自治区"
     },
     {
-        "id":21,
-        "pname":"海南省"
+        "id": 21,
+        "pname": "海南省"
     },
     {
-        "id":22,
-        "pname":"重庆市"
+        "id": 22,
+        "pname": "重庆市"
     },
     {
-        "id":23,
-        "pname":"四川省"
+        "id": 23,
+        "pname": "四川省"
     },
     {
-        "id":24,
-        "pname":"贵州省"
+        "id": 24,
+        "pname": "贵州省"
     },
     {
-        "id":25,
-        "pname":"云南省"
+        "id": 25,
+        "pname": "云南省"
     },
     {
-        "id":26,
-        "pname":"西藏自治区"
+        "id": 26,
+        "pname": "西藏自治区"
     },
     {
-        "id":27,
-        "pname":"陕西省"
+        "id": 27,
+        "pname": "陕西省"
     },
     {
-        "id":28,
-        "pname":"甘肃省"
+        "id": 28,
+        "pname": "甘肃省"
     },
     {
-        "id":29,
-        "pname":"青海省"
+        "id": 29,
+        "pname": "青海省"
     },
     {
-        "id":30,
-        "pname":"宁夏回族自治区"
+        "id": 30,
+        "pname": "宁夏回族自治区"
     },
     {
-        "id":31,
-        "pname":"新疆维吾尔自治区"
+        "id": 31,
+        "pname": "新疆维吾尔自治区"
     },
     {
-        "id":32,
-        "pname":"香港特别行政区"
+        "id": 32,
+        "pname": "香港特别行政区"
     },
     {
-        "id":33,
-        "pname":"澳门特别行政区"
+        "id": 33,
+        "pname": "澳门特别行政区"
     },
     {
-        "id":34,
-        "pname":"台湾省"
+        "id": 34,
+        "pname": "台湾省"
     }
 ];
 var _c_data = [

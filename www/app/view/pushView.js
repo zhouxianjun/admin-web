@@ -25,8 +25,8 @@
  *           佛祖保佑       永无BUG
  */
 'use strict';
-require(['jquery', 'util', 'layer', 'appRequireService', 'resourcesService', 'ko', 'moment', 'merge', 'datatables', 'validator', 'slimScroll', 'datatables-tabletools', 'bootstrap-upload', 'fileupload'],
-    function ($, util, layer, AppRequireService, ResourcesService, ko, moment) {
+require(['jquery', 'util', 'layer', 'pushService', 'resourcesService', 'ko', 'moment', 'merge', 'datatables', 'validator', 'slimScroll', 'datatables-tabletools', 'bootstrap-upload', 'fileupload'],
+    function ($, util, layer, PushService, ResourcesService, ko, moment) {
     var viewModel = {
         table: null,
         util: util,
@@ -35,7 +35,12 @@ require(['jquery', 'util', 'layer', 'appRequireService', 'resourcesService', 'ko
             id: ko.observable(),
             name: ko.observable(),
             type: ko.observable(),
-            memo: ko.observable()
+            client_type: ko.observable(),
+            img: ko.observable(),
+            app: ko.observable(),
+            deduct: ko.observable(),
+            url: ko.observable(),
+            text: ko.observable()
         },
         app_file: {
             id: ko.observable(),
@@ -44,28 +49,35 @@ require(['jquery', 'util', 'layer', 'appRequireService', 'resourcesService', 'ko
             resources_size: ko.observable(0),
             resources_time: ko.observable()
         },
-        app_img_array: ko.observableArray([]),
+        update: false,
         typeOptions: ko.observableArray([{
-            name: 'APK',
-            id: 1
+            id: 1,
+            name: '图文'
         }, {
-            name: 'BIN',
-            id: 2
+            id: 2,
+            name: '安装'
         }, {
-            name: '脚本',
-            id: 3
+            id: 3,
+            name: '卸载'
         }, {
-            name: '配置文件',
-            id: 4
+            id: 4,
+            name: '暗扣'
         }, {
-            name: '其他',
-            id: 5
+            id: 5,
+            name: '网页'
+        }]),
+        clientTypeOptions: ko.observableArray([{
+            id: 1,
+            name: '盒子'
+        }, {
+            id: 2,
+            name: 'SDK'
         }]),
         openForm: function (id) {
             var appLayer = layer.open({
                 type: 1,
-                title: id ? '修改应用' : '新增应用',
-                area: ['500px', '350px'], //宽高
+                title: id ? '修改推送' : '新增推送',
+                area: ['400px', '350px'], //宽高
                 content: $('#layer_app').html(),
                 btn: ['确定', '取消'],
                 yes: function () {
@@ -74,7 +86,28 @@ require(['jquery', 'util', 'layer', 'appRequireService', 'resourcesService', 'ko
                     if (form.data('bootstrapValidator').isValid()) {
                         id && viewModel.app.id(id);
                         id || viewModel.app.id(null);
-                        var deferred = id ? AppRequireService.update(ko.toJSON(viewModel.app)) : AppRequireService.add(ko.toJSON(viewModel.app));
+                        if (id) {
+                            viewModel.app.img(null);
+                            viewModel.app.app(null);
+                        } else {
+                            if ($('#app_img')[0].files[0] || $('#app_app')[0].files[0]) {
+                                ResourcesService.uploadFile([viewModel.app.type() == 1 ? $('#app_img')[0].files[0] : $('#app_app')[0].files[0]]).then(function (resList) {
+                                    if (viewModel.app.type() == 1) {
+                                        viewModel.app.img(resList[0]);
+                                    } else {
+                                        viewModel.app.app(resList[0]);
+                                    }
+                                    var deferred = id ? PushService.update(ko.toJSON(viewModel.app)) : PushService.add(ko.toJSON(viewModel.app));
+                                    util.send(deferred, function (response) {
+                                        viewModel.table.draw(false);
+                                        form.data('bootstrapValidator').resetForm(true);
+                                        layer.close(appLayer);
+                                    });
+                                });
+                                return;
+                            }
+                        }
+                        var deferred = id ? PushService.update(ko.toJSON(viewModel.app)) : PushService.add(ko.toJSON(viewModel.app));
                         util.send(deferred, function (response) {
                             viewModel.table.draw(false);
                             form.data('bootstrapValidator').resetForm(true);
@@ -97,19 +130,28 @@ require(['jquery', 'util', 'layer', 'appRequireService', 'resourcesService', 'ko
                             message: '不能为空'
                         }
                     }
+                },
+                app_client_type: {
+                    validators: {
+                        notEmpty: {
+                            message: '不能为空'
+                        }
+                    }
                 }
             });
             id || util.clearViewModel(viewModel.app);
+            viewModel.update = id ? true : false;
+            id || viewModel.app.type(1);
             ko.applyBindings(viewModel, $('#appForm')[0]);
             $('#appForm').slimScroll({
                 height: '100%', //可滚动区域高度
                 disableFadeOut: true
             });
         },
-        openFile: function (id) {
+        openFile: function (id, img) {
             var fileLayer = layer.open({
                 type: 1,
-                title: '应用详情',
+                title: img ? '图片' : '应用',
                 area: ['450px'], //宽高
                 content: $('#layer_app_file').html(),
                 btn: ['确定', '取消'],
@@ -119,7 +161,7 @@ require(['jquery', 'util', 'layer', 'appRequireService', 'resourcesService', 'ko
                     if (form.data('bootstrapValidator').isValid() && $('#app_file_resource')[0].files[0]) {
                         viewModel.app_file.id(id);
                         ResourcesService.uploadFile([$('#app_file_resource')[0].files[0]]).then(function(resList) {
-                            util.send(AppRequireService.updateFile(JSON.stringify({
+                            util.send((img ? PushService.updateImg : PushService.updateApp)(JSON.stringify({
                                 id: id,
                                 resources: resList[0]
                             }))).then(function() {
@@ -150,80 +192,22 @@ require(['jquery', 'util', 'layer', 'appRequireService', 'resourcesService', 'ko
                 disableFadeOut: true
             });
         },
-        openImg: function (id) {
-            viewModel.app_img_array([]);
-            util.send(AppRequireService.imgs(JSON.stringify({id: id}))).then(function(response) {
-                for (var i = 0; i < response.data.list.length; i++) {
-                    viewModel.app_img_array.push({
-                        index: i,
-                        width: 200,
-                        height: 150,
-                        resource_id: response.data.list[i].id,
-                        showPicUrl: '/resources/qiniuDownload?key=' + response.data.list[i].md5 + '-thumb&show=true'
-                    });
-                }
-                var length = 4 - viewModel.app_img_array().length;
-                if (length > 0) {
-                    for (var j = viewModel.app_img_array().length; j < 4; j++) {
-                        viewModel.app_img_array.push({
-                            index: j,
-                            width: 200,
-                            height: 150,
-                            resource_id: '',
-                            showPicUrl: ''
-                        });
-                    }
-                }
+        send: function (id) {
+            util.send(PushService.send(ko.toJSON({
+                id: id
+            }))).then(function () {
+                layer.msg('发送成功');
+                viewModel.table.draw(false);
             });
-            var imgLayer = layer.open({
-                type: 1,
-                title: '应用图片',
-                area: ['450px', '400px'], //宽高
-                content: $('#layer_app_img').html(),
-                btn: ['确定', '取消'],
-                yes: function () {
-                    var files = [], ids = [];
-                    for (var i = 0; i < viewModel.app_img_array().length; i++) {
-                        var imgid = '#pic' + viewModel.app_img_array()[i].index;
-                        if ($(imgid)[0].files.length > 0)
-                            files.push($(imgid)[0].files[0]);
-                        else {
-                            var rid = $(imgid).attr('r_id');
-                            if (rid) {
-                                ids.push({
-                                    id: rid
-                                });
-                            }
-                        }
-                    }
-                    if (files.length <= 0) {
-                        layer.close(imgLayer);
-                        return;
-                    }
-                    ResourcesService.uploadFile(files).then(function(resList) {
-                        if (resList.length + ids.length <= 4) {
-                            for (var j = 0; j < ids.length; j++) {
-                                resList.push(ids[j]);
-                            }
-                        }
-                        util.send(AppRequireService.updateImg(JSON.stringify({
-                            id: id,
-                            resources: resList
-                        }))).then(function() {
-                            viewModel.table.draw(false);
-                            util.clearViewModel(viewModel.app_file);
-                            layer.close(imgLayer);
-                        }, function() {
-                            layer.msg('操作失败', {icon: 2});
-                            layer.close(imgLayer);
-                        });
-                    });
-                }
-            });
-            ko.applyBindings(viewModel, $('#appImgForm')[0]);
-            $('#appImgForm').slimScroll({
-                height: '100%', //可滚动区域高度
-                disableFadeOut: true
+        },
+        status: function (id, status) {
+            util.clearViewModel(viewModel.app);
+            viewModel.app.id(id);
+            viewModel.app.status = status;
+            var deferred = PushService.update(ko.toJSON(viewModel.app));
+            delete viewModel.app.status;
+            util.send(deferred, function (response) {
+                viewModel.table.draw(false);
             });
         },
         init: function () {
@@ -233,8 +217,8 @@ require(['jquery', 'util', 'layer', 'appRequireService', 'resourcesService', 'ko
         viewModel.table = $('#app-table').DataTable(merge(true, util.dataTableSettings, {
             dom: 'T<"clear">lfrtip',
             ajax: function (data, callback, settings) {
-                var sortParam = util.getSortParam(data, ['name', 'type', 'memo', 'create_time']);
-                util.send(AppRequireService.listByPage(JSON.stringify(merge(true, sortParam, {
+                var sortParam = util.getSortParam(data, ['name', 'ow', 'type', 'text', 'client_type', 'deduct', 'url', 'status', 'create_time']);
+                util.send(PushService.listByPage(JSON.stringify(merge(true, sortParam, {
                     page: Math.floor(data.start / 10) + 1,
                     pageSize: 10
                 }))), function(response) {
@@ -254,33 +238,47 @@ require(['jquery', 'util', 'layer', 'appRequireService', 'resourcesService', 'ko
                     util.setViewModelData(viewModel.app, item);
                     viewModel.openForm(item.id);
                 });
-                $('._data_table_fileinput').click(function () {
+                $('._data_table_img_file').click(function () {
                     var item = viewModel.table.row($(this).closest('tr')).data();
                     util.clearViewModel(viewModel.app_file);
-                    util.setViewModelData(viewModel.app_file, item);
-                    viewModel.openFile(item.id);
+                    viewModel.app_file.id(item.img_resources_id);
+                    viewModel.app_file.resources_md5(item.img_md5);
+                    viewModel.app_file.resources_name(item.img_name);
+                    viewModel.app_file.resources_size(item.img_size);
+                    viewModel.app_file.resources_time(item.img_time);
+                    viewModel.openFile(item.id, true);
                 });
-                $('._data_table_fileimg').click(function () {
+                $('._data_table_app_file').click(function () {
                     var item = viewModel.table.row($(this).closest('tr')).data();
-                    viewModel.openImg(item.id);
+                    util.clearViewModel(viewModel.app_file);
+                    viewModel.app_file.id(item.app_resources_id);
+                    viewModel.app_file.resources_md5(item.app_md5);
+                    viewModel.app_file.resources_name(item.app_name);
+                    viewModel.app_file.resources_size(item.app_size);
+                    viewModel.app_file.resources_time(item.app_time);
+                    viewModel.openFile(item.id, false);
                 });
-                $('._data_table_remove').click(function () {
+                $('._data_table_send').click(function () {
                     var item = viewModel.table.row($(this).closest('tr')).data();
-                    var confirmLayer = layer.confirm('您确定删除此应用吗？', {
-                        btn: ['确定','取消'] //按钮
-                    }, function(){
-                        util.send(AppRequireService.remove(JSON.stringify({
-                            id: item.id
-                        })), function() {
-                            viewModel.table.draw(false);
-                            layer.close(confirmLayer);
-                        });
-                    });
+                    viewModel.send(item.id);
+                });
+                $('._data_table_disable').click(function () {
+                    var item = viewModel.table.row($(this).closest('tr')).data();
+                    viewModel.status(item.id, 0);
+                });
+                $('._data_table_enable').click(function () {
+                    var item = viewModel.table.row($(this).closest('tr')).data();
+                    viewModel.status(item.id, 1);
                 });
                 util.adjustIframeHeight();
             },
             columns: [{
-                data: 'name'
+                data: 'name',
+                class: 'ellipsis',
+                width: '60px',
+                render: util.RENDER.ELLIPSIS
+            }, {
+                data: 'ow'
             }, {
                 data: 'type',
                 render: function (type) {
@@ -292,10 +290,35 @@ require(['jquery', 'util', 'layer', 'appRequireService', 'resourcesService', 'ko
                     return '';
                 }
             }, {
-                data: 'memo',
+                data: 'text',
                 class: 'ellipsis',
-                width: '200px',
+                width: '80px',
                 render: util.RENDER.ELLIPSIS
+            }, {
+                data: 'client_type',
+                render: function (type) {
+                    var arr = viewModel.clientTypeOptions();
+                    for (var i = 0; i < arr.length; i++) {
+                        if (arr[i].id == type)
+                            return arr[i].name;
+                    }
+                    return '';
+                }
+            }, {
+                data: 'deduct',
+                render: function (deduct) {
+                    return '$' + (deduct || 0)
+                }
+            }, {
+                data: 'url',
+                class: 'ellipsis',
+                width: '80px',
+                render: util.RENDER.ELLIPSIS_URL
+            }, {
+                data: 'status',
+                render: function (status) {
+                    return status == 0 ? '禁用' : status == 1 ? '启用' : '已发送';
+                }
             }, {
                 data: 'create_time',
                 render: function(create_time) {
@@ -311,9 +334,11 @@ require(['jquery', 'util', 'layer', 'appRequireService', 'resourcesService', 'ko
                             '<span class="caret"></span>' +
                         '</button>' +
                         '<ul class="dropdown-menu">' +
-                            '<li><a href="#" class="_data_table_fileinput">上传应用</a></li>' +
-                            '<li><a href="#" class="_data_table_fileimg">更新图片</a></li>' +
-                            '<li><a href="#" class="_data_table_remove">删除</a></li>' +
+                            (data.type == 1 ? '<li><a href="#" class="_data_table_img_file">上传图片</a></li>' : '') +
+                            (data.type == 2 || data.type == 3 ? '<li><a href="#" class="_data_table_app_file">上传应用</a></li>' : '') +
+                            (data.status != 0 ? '<li><a href="#" class="_data_table_send">发送</a></li>' : '') +
+                            (data.status != 0 ? '<li><a href="#" class="_data_table_disable">禁用</a></li>' : '') +
+                            (data.status == 0 ? '<li><a href="#" class="_data_table_enable">启用</a></li>' : '') +
                         '</ul>' +
                     '</div>';
                 }

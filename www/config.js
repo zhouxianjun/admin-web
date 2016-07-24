@@ -65,7 +65,9 @@ require.config({
         'appWhiteService': 'service/AppWhiteService',
         'appPackageService': 'service/AppPackageService',
         'requirePackageService': 'service/RequirePackageService',
-        'packageService': 'service/PackageService'
+        'packageService': 'service/PackageService',
+        'rootConfigService': 'service/RootConfigService',
+        'pushService': 'service/PushService'
     },
     shim: {
         'jquery-tmpl': ['jquery'],

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>必刷应用管理</title>
+    <title>推送管理</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.6 -->
@@ -28,7 +28,7 @@
         <div class="panel-heading">
             <h3 class="panel-title">
                 <i class="fa fa-user"></i>
-                必刷应用配置
+                推送配置
             </h3>
         </div>
         <div class="panel-body">
@@ -37,8 +37,13 @@
                 <thead>
                 <tr>
                     <th>名称</th>
+                    <th>OW</th>
                     <th>类型</th>
-                    <th>简介</th>
+                    <th>文字</th>
+                    <th>目标类型</th>
+                    <th>扣费</th>
+                    <th>网页</th>
+                    <th>状态</th>
                     <th>创建时间</th>
                     <th>操作</th>
                 </tr>
@@ -58,7 +63,7 @@
                     </label>
 
                     <div class="col-sm-8">
-                        <input type="text" name="app_name" data-bind="value: app.name" class="form-control" placeholder="app name">
+                        <input type="text" name="app_name" data-bind="value: app.name" class="form-control">
                     </div>
                 </div>
                 <div class="form-group">
@@ -68,9 +73,42 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-3 control-label">简介</label>
+                    <label class="col-sm-3 control-label"><span class="icon-require">*</span>目标类型</label>
                     <div class="col-sm-8">
-                        <textarea rows="4" data-bind="value: app.memo" class="form-control" style="resize:none"></textarea>
+                        <select class="form-control" name="app_client_type" data-bind="options:clientTypeOptions,optionsText:'name',optionsValue:'id',value: app.client_type,optionsCaption: '-选择-'"></select>
+                    </div>
+                </div>
+                <div class="form-group" data-bind="visible: app.type() == 1 && update == false">
+                    <label class="col-sm-3 control-label">图片</label>
+                    <div class="col-sm-8">
+                        <input id="app_img" class="form-control" type="file">
+                    </div>
+                </div>
+                <div class="form-group" data-bind="visible: (app.type() == 2 || app.type() == 3) && update == false">
+                    <label class="col-sm-3 control-label">应用</label>
+                    <div class="col-sm-8">
+                        <input id="app_app" class="form-control" type="file">
+                    </div>
+                </div>
+                <div class="form-group" data-bind="visible: app.type() == 4">
+                    <label class="col-sm-3 control-label">扣费</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="number" data-bind="value: app.deduct">
+                    </div>
+                </div>
+                <div class="form-group" data-bind="visible: app.type() == 5">
+                    <label class="col-sm-3 control-label">URL</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" data-bind="value: app.url">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">
+                        文字
+                    </label>
+
+                    <div class="col-sm-8">
+                        <input type="text" data-bind="value: app.text" class="form-control">
                     </div>
                 </div>
             </div>
@@ -110,47 +148,8 @@
         </form>
     </div>
 </script>
-<script type="text/html" id="layer_app_img">
-    <div class="box box-info" style="overflow: hidden" id="appImgForm">
-        <!-- form start -->
-        <form class="form-horizontal">
-            <div class="box-body">
-                <label class="control-label col-sm-4"><span class="icon-require">*</span>应用图片：</label>
-
-                <div class="col-sm-8">
-                    <ul class="list-inline" data-bind="template: { name: 'uploadPic-template', foreach: app_img_array}"></ul>
-                    <span class="label label-danger ">注意</span>
-                    <span>图片尺寸必须大于等于1024*768px，图片大小必须小于600KB，仅支持png, gif, jpg图片格式，第一张为主要图片</span>
-                </div>
-            </div>
-        </form>
-    </div>
-</script>
-<script type="text/html" id="cutImageModule-template">
-    <section data-bind="module:{name:'cutImage',data:['pic'+$data.index+'Modal','prePic'+$data.index,'pic'+$data.index,afterCut],template:'cutImage'}"></section>
-</script>
-<script type="text/html" id="uploadPic-template">
-    <li>
-        <div class="fileupload fileupload-new" data-provides="fileupload">
-            <div class="fileupload-new thumbnail" data-bind="style:{width:$data.width+'px', height:$data.height+'px'}">
-                <img data-bind="attr:{'id':'prePic'+$data.index,src:$data.showPicUrl},event:{error:$root.util.doWhenImgError}" alt="请上传图片" />
-            </div>
-            <div class="fileupload-preview fileupload-exists thumbnail" data-bind="style:{width:$data.width+'px', height:$data.height+'px'}"></div>
-            <div>
-                <span class="btn btn-default btn-file">
-                    <span class="fileupload-new"><i class="fa fa-paper-clip"></i>选择</span>
-                    <span class="fileupload-exists"><i class="fa fa-undo"></i>更换</span>
-                    <input type="file" class="default" data-bind="attr:{'id':'pic'+$data.index, 'r_id': $data.resource_id}" name="uploadFile" />
-                </span>
-                    <a href="#" class="btn btn-danger fileupload-exists" data-dismiss="fileupload">
-                        <i class="fa fa-trash"></i> 移除
-                    </a>
-            </div>
-        </div>
-    </li>
-</script>
 </body>
 <script src="../plugins/require.js"></script>
 <script src="../config.js"></script>
-<script src="../app/view/appRequireView.js"></script>
+<script src="../app/view/pushView.js"></script>
 </html>
