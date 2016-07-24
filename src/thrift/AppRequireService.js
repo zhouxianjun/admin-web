@@ -10,19 +10,19 @@ var Q = thrift.Q;
 var PublicStruct_ttypes = require('./PublicStruct_types')
 
 
-var ttypes = require('./AppService_types');
+var ttypes = require('./AppRequireService_types');
 //HELPER FUNCTIONS AND STRUCTURES
 
-AppService_add_args = function(args) {
+AppRequireService_add_args = function(args) {
   this.bean = null;
   if (args) {
     if (args.bean !== undefined && args.bean !== null) {
-      this.bean = new PublicStruct_ttypes.AppStruct(args.bean);
+      this.bean = new PublicStruct_ttypes.AppRequireStruct(args.bean);
     }
   }
 };
-AppService_add_args.prototype = {};
-AppService_add_args.prototype.read = function(input) {
+AppRequireService_add_args.prototype = {};
+AppRequireService_add_args.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -37,7 +37,7 @@ AppService_add_args.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.bean = new PublicStruct_ttypes.AppStruct();
+        this.bean = new PublicStruct_ttypes.AppRequireStruct();
         this.bean.read(input);
       } else {
         input.skip(ftype);
@@ -55,8 +55,8 @@ AppService_add_args.prototype.read = function(input) {
   return;
 };
 
-AppService_add_args.prototype.write = function(output) {
-  output.writeStructBegin('AppService_add_args');
+AppRequireService_add_args.prototype.write = function(output) {
+  output.writeStructBegin('AppRequireService_add_args');
   if (this.bean !== null && this.bean !== undefined) {
     output.writeFieldBegin('bean', Thrift.Type.STRUCT, 1);
     this.bean.write(output);
@@ -67,7 +67,7 @@ AppService_add_args.prototype.write = function(output) {
   return;
 };
 
-AppService_add_result = function(args) {
+AppRequireService_add_result = function(args) {
   this.success = null;
   this.ex = null;
   if (args instanceof PublicStruct_ttypes.InvalidOperation) {
@@ -83,8 +83,8 @@ AppService_add_result = function(args) {
     }
   }
 };
-AppService_add_result.prototype = {};
-AppService_add_result.prototype.read = function(input) {
+AppRequireService_add_result.prototype = {};
+AppRequireService_add_result.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -121,8 +121,8 @@ AppService_add_result.prototype.read = function(input) {
   return;
 };
 
-AppService_add_result.prototype.write = function(output) {
-  output.writeStructBegin('AppService_add_result');
+AppRequireService_add_result.prototype.write = function(output) {
+  output.writeStructBegin('AppRequireService_add_result');
   if (this.success !== null && this.success !== undefined) {
     output.writeFieldBegin('success', Thrift.Type.I64, 0);
     output.writeI64(this.success);
@@ -138,16 +138,16 @@ AppService_add_result.prototype.write = function(output) {
   return;
 };
 
-AppService_update_args = function(args) {
+AppRequireService_update_args = function(args) {
   this.bean = null;
   if (args) {
     if (args.bean !== undefined && args.bean !== null) {
-      this.bean = new PublicStruct_ttypes.AppStruct(args.bean);
+      this.bean = new PublicStruct_ttypes.AppRequireStruct(args.bean);
     }
   }
 };
-AppService_update_args.prototype = {};
-AppService_update_args.prototype.read = function(input) {
+AppRequireService_update_args.prototype = {};
+AppRequireService_update_args.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -162,7 +162,7 @@ AppService_update_args.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.bean = new PublicStruct_ttypes.AppStruct();
+        this.bean = new PublicStruct_ttypes.AppRequireStruct();
         this.bean.read(input);
       } else {
         input.skip(ftype);
@@ -180,8 +180,8 @@ AppService_update_args.prototype.read = function(input) {
   return;
 };
 
-AppService_update_args.prototype.write = function(output) {
-  output.writeStructBegin('AppService_update_args');
+AppRequireService_update_args.prototype.write = function(output) {
+  output.writeStructBegin('AppRequireService_update_args');
   if (this.bean !== null && this.bean !== undefined) {
     output.writeFieldBegin('bean', Thrift.Type.STRUCT, 1);
     this.bean.write(output);
@@ -192,7 +192,7 @@ AppService_update_args.prototype.write = function(output) {
   return;
 };
 
-AppService_update_result = function(args) {
+AppRequireService_update_result = function(args) {
   this.success = null;
   this.ex = null;
   if (args instanceof PublicStruct_ttypes.InvalidOperation) {
@@ -208,8 +208,8 @@ AppService_update_result = function(args) {
     }
   }
 };
-AppService_update_result.prototype = {};
-AppService_update_result.prototype.read = function(input) {
+AppRequireService_update_result.prototype = {};
+AppRequireService_update_result.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -246,8 +246,8 @@ AppService_update_result.prototype.read = function(input) {
   return;
 };
 
-AppService_update_result.prototype.write = function(output) {
-  output.writeStructBegin('AppService_update_result');
+AppRequireService_update_result.prototype.write = function(output) {
+  output.writeStructBegin('AppRequireService_update_result');
   if (this.success !== null && this.success !== undefined) {
     output.writeFieldBegin('success', Thrift.Type.BOOL, 0);
     output.writeBool(this.success);
@@ -263,7 +263,7 @@ AppService_update_result.prototype.write = function(output) {
   return;
 };
 
-AppService_remove_args = function(args) {
+AppRequireService_remove_args = function(args) {
   this.id = null;
   if (args) {
     if (args.id !== undefined && args.id !== null) {
@@ -271,8 +271,8 @@ AppService_remove_args = function(args) {
     }
   }
 };
-AppService_remove_args.prototype = {};
-AppService_remove_args.prototype.read = function(input) {
+AppRequireService_remove_args.prototype = {};
+AppRequireService_remove_args.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -304,8 +304,8 @@ AppService_remove_args.prototype.read = function(input) {
   return;
 };
 
-AppService_remove_args.prototype.write = function(output) {
-  output.writeStructBegin('AppService_remove_args');
+AppRequireService_remove_args.prototype.write = function(output) {
+  output.writeStructBegin('AppRequireService_remove_args');
   if (this.id !== null && this.id !== undefined) {
     output.writeFieldBegin('id', Thrift.Type.I64, 1);
     output.writeI64(this.id);
@@ -316,7 +316,7 @@ AppService_remove_args.prototype.write = function(output) {
   return;
 };
 
-AppService_remove_result = function(args) {
+AppRequireService_remove_result = function(args) {
   this.success = null;
   this.ex = null;
   if (args instanceof PublicStruct_ttypes.InvalidOperation) {
@@ -332,8 +332,8 @@ AppService_remove_result = function(args) {
     }
   }
 };
-AppService_remove_result.prototype = {};
-AppService_remove_result.prototype.read = function(input) {
+AppRequireService_remove_result.prototype = {};
+AppRequireService_remove_result.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -370,8 +370,8 @@ AppService_remove_result.prototype.read = function(input) {
   return;
 };
 
-AppService_remove_result.prototype.write = function(output) {
-  output.writeStructBegin('AppService_remove_result');
+AppRequireService_remove_result.prototype.write = function(output) {
+  output.writeStructBegin('AppRequireService_remove_result');
   if (this.success !== null && this.success !== undefined) {
     output.writeFieldBegin('success', Thrift.Type.BOOL, 0);
     output.writeBool(this.success);
@@ -387,7 +387,7 @@ AppService_remove_result.prototype.write = function(output) {
   return;
 };
 
-AppService_appByPage_args = function(args) {
+AppRequireService_listByPage_args = function(args) {
   this.page = null;
   if (args) {
     if (args.page !== undefined && args.page !== null) {
@@ -395,8 +395,8 @@ AppService_appByPage_args = function(args) {
     }
   }
 };
-AppService_appByPage_args.prototype = {};
-AppService_appByPage_args.prototype.read = function(input) {
+AppRequireService_listByPage_args.prototype = {};
+AppRequireService_listByPage_args.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -429,8 +429,8 @@ AppService_appByPage_args.prototype.read = function(input) {
   return;
 };
 
-AppService_appByPage_args.prototype.write = function(output) {
-  output.writeStructBegin('AppService_appByPage_args');
+AppRequireService_listByPage_args.prototype.write = function(output) {
+  output.writeStructBegin('AppRequireService_listByPage_args');
   if (this.page !== null && this.page !== undefined) {
     output.writeFieldBegin('page', Thrift.Type.STRUCT, 1);
     this.page.write(output);
@@ -441,7 +441,7 @@ AppService_appByPage_args.prototype.write = function(output) {
   return;
 };
 
-AppService_appByPage_result = function(args) {
+AppRequireService_listByPage_result = function(args) {
   this.success = null;
   this.ex = null;
   if (args instanceof PublicStruct_ttypes.InvalidOperation) {
@@ -457,8 +457,8 @@ AppService_appByPage_result = function(args) {
     }
   }
 };
-AppService_appByPage_result.prototype = {};
-AppService_appByPage_result.prototype.read = function(input) {
+AppRequireService_listByPage_result.prototype = {};
+AppRequireService_listByPage_result.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -496,8 +496,8 @@ AppService_appByPage_result.prototype.read = function(input) {
   return;
 };
 
-AppService_appByPage_result.prototype.write = function(output) {
-  output.writeStructBegin('AppService_appByPage_result');
+AppRequireService_listByPage_result.prototype.write = function(output) {
+  output.writeStructBegin('AppRequireService_listByPage_result');
   if (this.success !== null && this.success !== undefined) {
     output.writeFieldBegin('success', Thrift.Type.STRUCT, 0);
     this.success.write(output);
@@ -513,7 +513,7 @@ AppService_appByPage_result.prototype.write = function(output) {
   return;
 };
 
-AppService_changeAppFile_args = function(args) {
+AppRequireService_changeAppFile_args = function(args) {
   this.id = null;
   this.resources = null;
   if (args) {
@@ -525,8 +525,8 @@ AppService_changeAppFile_args = function(args) {
     }
   }
 };
-AppService_changeAppFile_args.prototype = {};
-AppService_changeAppFile_args.prototype.read = function(input) {
+AppRequireService_changeAppFile_args.prototype = {};
+AppRequireService_changeAppFile_args.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -563,8 +563,8 @@ AppService_changeAppFile_args.prototype.read = function(input) {
   return;
 };
 
-AppService_changeAppFile_args.prototype.write = function(output) {
-  output.writeStructBegin('AppService_changeAppFile_args');
+AppRequireService_changeAppFile_args.prototype.write = function(output) {
+  output.writeStructBegin('AppRequireService_changeAppFile_args');
   if (this.id !== null && this.id !== undefined) {
     output.writeFieldBegin('id', Thrift.Type.I64, 1);
     output.writeI64(this.id);
@@ -580,7 +580,7 @@ AppService_changeAppFile_args.prototype.write = function(output) {
   return;
 };
 
-AppService_changeAppFile_result = function(args) {
+AppRequireService_changeAppFile_result = function(args) {
   this.success = null;
   this.ex = null;
   if (args instanceof PublicStruct_ttypes.InvalidOperation) {
@@ -596,8 +596,8 @@ AppService_changeAppFile_result = function(args) {
     }
   }
 };
-AppService_changeAppFile_result.prototype = {};
-AppService_changeAppFile_result.prototype.read = function(input) {
+AppRequireService_changeAppFile_result.prototype = {};
+AppRequireService_changeAppFile_result.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -634,8 +634,8 @@ AppService_changeAppFile_result.prototype.read = function(input) {
   return;
 };
 
-AppService_changeAppFile_result.prototype.write = function(output) {
-  output.writeStructBegin('AppService_changeAppFile_result');
+AppRequireService_changeAppFile_result.prototype.write = function(output) {
+  output.writeStructBegin('AppRequireService_changeAppFile_result');
   if (this.success !== null && this.success !== undefined) {
     output.writeFieldBegin('success', Thrift.Type.BOOL, 0);
     output.writeBool(this.success);
@@ -651,7 +651,7 @@ AppService_changeAppFile_result.prototype.write = function(output) {
   return;
 };
 
-AppService_changeAppImg_args = function(args) {
+AppRequireService_changeAppImg_args = function(args) {
   this.id = null;
   this.resources = null;
   if (args) {
@@ -663,8 +663,8 @@ AppService_changeAppImg_args = function(args) {
     }
   }
 };
-AppService_changeAppImg_args.prototype = {};
-AppService_changeAppImg_args.prototype.read = function(input) {
+AppRequireService_changeAppImg_args.prototype = {};
+AppRequireService_changeAppImg_args.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -714,8 +714,8 @@ AppService_changeAppImg_args.prototype.read = function(input) {
   return;
 };
 
-AppService_changeAppImg_args.prototype.write = function(output) {
-  output.writeStructBegin('AppService_changeAppImg_args');
+AppRequireService_changeAppImg_args.prototype.write = function(output) {
+  output.writeStructBegin('AppRequireService_changeAppImg_args');
   if (this.id !== null && this.id !== undefined) {
     output.writeFieldBegin('id', Thrift.Type.I64, 1);
     output.writeI64(this.id);
@@ -740,7 +740,7 @@ AppService_changeAppImg_args.prototype.write = function(output) {
   return;
 };
 
-AppService_changeAppImg_result = function(args) {
+AppRequireService_changeAppImg_result = function(args) {
   this.success = null;
   this.ex = null;
   if (args instanceof PublicStruct_ttypes.InvalidOperation) {
@@ -756,8 +756,8 @@ AppService_changeAppImg_result = function(args) {
     }
   }
 };
-AppService_changeAppImg_result.prototype = {};
-AppService_changeAppImg_result.prototype.read = function(input) {
+AppRequireService_changeAppImg_result.prototype = {};
+AppRequireService_changeAppImg_result.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -794,8 +794,8 @@ AppService_changeAppImg_result.prototype.read = function(input) {
   return;
 };
 
-AppService_changeAppImg_result.prototype.write = function(output) {
-  output.writeStructBegin('AppService_changeAppImg_result');
+AppRequireService_changeAppImg_result.prototype.write = function(output) {
+  output.writeStructBegin('AppRequireService_changeAppImg_result');
   if (this.success !== null && this.success !== undefined) {
     output.writeFieldBegin('success', Thrift.Type.BOOL, 0);
     output.writeBool(this.success);
@@ -811,7 +811,7 @@ AppService_changeAppImg_result.prototype.write = function(output) {
   return;
 };
 
-AppService_imgs_args = function(args) {
+AppRequireService_imgs_args = function(args) {
   this.id = null;
   if (args) {
     if (args.id !== undefined && args.id !== null) {
@@ -819,8 +819,8 @@ AppService_imgs_args = function(args) {
     }
   }
 };
-AppService_imgs_args.prototype = {};
-AppService_imgs_args.prototype.read = function(input) {
+AppRequireService_imgs_args.prototype = {};
+AppRequireService_imgs_args.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -852,8 +852,8 @@ AppService_imgs_args.prototype.read = function(input) {
   return;
 };
 
-AppService_imgs_args.prototype.write = function(output) {
-  output.writeStructBegin('AppService_imgs_args');
+AppRequireService_imgs_args.prototype.write = function(output) {
+  output.writeStructBegin('AppRequireService_imgs_args');
   if (this.id !== null && this.id !== undefined) {
     output.writeFieldBegin('id', Thrift.Type.I64, 1);
     output.writeI64(this.id);
@@ -864,7 +864,7 @@ AppService_imgs_args.prototype.write = function(output) {
   return;
 };
 
-AppService_imgs_result = function(args) {
+AppRequireService_imgs_result = function(args) {
   this.success = null;
   this.ex = null;
   if (args instanceof PublicStruct_ttypes.InvalidOperation) {
@@ -880,8 +880,8 @@ AppService_imgs_result = function(args) {
     }
   }
 };
-AppService_imgs_result.prototype = {};
-AppService_imgs_result.prototype.read = function(input) {
+AppRequireService_imgs_result.prototype = {};
+AppRequireService_imgs_result.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -932,8 +932,8 @@ AppService_imgs_result.prototype.read = function(input) {
   return;
 };
 
-AppService_imgs_result.prototype.write = function(output) {
-  output.writeStructBegin('AppService_imgs_result');
+AppRequireService_imgs_result.prototype.write = function(output) {
+  output.writeStructBegin('AppRequireService_imgs_result');
   if (this.success !== null && this.success !== undefined) {
     output.writeFieldBegin('success', Thrift.Type.LIST, 0);
     output.writeListBegin(Thrift.Type.STRUCT, this.success.length);
@@ -958,10 +958,10 @@ AppService_imgs_result.prototype.write = function(output) {
   return;
 };
 
-AppService_allList_args = function(args) {
+AppRequireService_allList_args = function(args) {
 };
-AppService_allList_args.prototype = {};
-AppService_allList_args.prototype.read = function(input) {
+AppRequireService_allList_args.prototype = {};
+AppRequireService_allList_args.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -979,14 +979,14 @@ AppService_allList_args.prototype.read = function(input) {
   return;
 };
 
-AppService_allList_args.prototype.write = function(output) {
-  output.writeStructBegin('AppService_allList_args');
+AppRequireService_allList_args.prototype.write = function(output) {
+  output.writeStructBegin('AppRequireService_allList_args');
   output.writeFieldStop();
   output.writeStructEnd();
   return;
 };
 
-AppService_allList_result = function(args) {
+AppRequireService_allList_result = function(args) {
   this.success = null;
   this.ex = null;
   if (args instanceof PublicStruct_ttypes.InvalidOperation) {
@@ -1002,8 +1002,8 @@ AppService_allList_result = function(args) {
     }
   }
 };
-AppService_allList_result.prototype = {};
-AppService_allList_result.prototype.read = function(input) {
+AppRequireService_allList_result.prototype = {};
+AppRequireService_allList_result.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -1040,8 +1040,8 @@ AppService_allList_result.prototype.read = function(input) {
   return;
 };
 
-AppService_allList_result.prototype.write = function(output) {
-  output.writeStructBegin('AppService_allList_result');
+AppRequireService_allList_result.prototype.write = function(output) {
+  output.writeStructBegin('AppRequireService_allList_result');
   if (this.success !== null && this.success !== undefined) {
     output.writeFieldBegin('success', Thrift.Type.STRING, 0);
     output.writeString(this.success);
@@ -1057,16 +1057,16 @@ AppService_allList_result.prototype.write = function(output) {
   return;
 };
 
-AppServiceClient = exports.Client = function(output, pClass) {
+AppRequireServiceClient = exports.Client = function(output, pClass) {
     this.output = output;
     this.pClass = pClass;
     this._seqid = 0;
     this._reqs = {};
 };
-AppServiceClient.prototype = {};
-AppServiceClient.prototype.seqid = function() { return this._seqid; }
-AppServiceClient.prototype.new_seqid = function() { return this._seqid += 1; }
-AppServiceClient.prototype.add = function(bean, callback) {
+AppRequireServiceClient.prototype = {};
+AppRequireServiceClient.prototype.seqid = function() { return this._seqid; }
+AppRequireServiceClient.prototype.new_seqid = function() { return this._seqid += 1; }
+AppRequireServiceClient.prototype.add = function(bean, callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
     var _defer = Q.defer();
@@ -1085,17 +1085,17 @@ AppServiceClient.prototype.add = function(bean, callback) {
   }
 };
 
-AppServiceClient.prototype.send_add = function(bean) {
+AppRequireServiceClient.prototype.send_add = function(bean) {
   var output = new this.pClass(this.output);
   output.writeMessageBegin('add', Thrift.MessageType.CALL, this.seqid());
-  var args = new AppService_add_args();
+  var args = new AppRequireService_add_args();
   args.bean = bean;
   args.write(output);
   output.writeMessageEnd();
   return this.output.flush();
 };
 
-AppServiceClient.prototype.recv_add = function(input,mtype,rseqid) {
+AppRequireServiceClient.prototype.recv_add = function(input,mtype,rseqid) {
   var callback = this._reqs[rseqid] || function() {};
   delete this._reqs[rseqid];
   if (mtype == Thrift.MessageType.EXCEPTION) {
@@ -1104,7 +1104,7 @@ AppServiceClient.prototype.recv_add = function(input,mtype,rseqid) {
     input.readMessageEnd();
     return callback(x);
   }
-  var result = new AppService_add_result();
+  var result = new AppRequireService_add_result();
   result.read(input);
   input.readMessageEnd();
 
@@ -1116,7 +1116,7 @@ AppServiceClient.prototype.recv_add = function(input,mtype,rseqid) {
   }
   return callback('add failed: unknown result');
 };
-AppServiceClient.prototype.update = function(bean, callback) {
+AppRequireServiceClient.prototype.update = function(bean, callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
     var _defer = Q.defer();
@@ -1135,17 +1135,17 @@ AppServiceClient.prototype.update = function(bean, callback) {
   }
 };
 
-AppServiceClient.prototype.send_update = function(bean) {
+AppRequireServiceClient.prototype.send_update = function(bean) {
   var output = new this.pClass(this.output);
   output.writeMessageBegin('update', Thrift.MessageType.CALL, this.seqid());
-  var args = new AppService_update_args();
+  var args = new AppRequireService_update_args();
   args.bean = bean;
   args.write(output);
   output.writeMessageEnd();
   return this.output.flush();
 };
 
-AppServiceClient.prototype.recv_update = function(input,mtype,rseqid) {
+AppRequireServiceClient.prototype.recv_update = function(input,mtype,rseqid) {
   var callback = this._reqs[rseqid] || function() {};
   delete this._reqs[rseqid];
   if (mtype == Thrift.MessageType.EXCEPTION) {
@@ -1154,7 +1154,7 @@ AppServiceClient.prototype.recv_update = function(input,mtype,rseqid) {
     input.readMessageEnd();
     return callback(x);
   }
-  var result = new AppService_update_result();
+  var result = new AppRequireService_update_result();
   result.read(input);
   input.readMessageEnd();
 
@@ -1166,7 +1166,7 @@ AppServiceClient.prototype.recv_update = function(input,mtype,rseqid) {
   }
   return callback('update failed: unknown result');
 };
-AppServiceClient.prototype.remove = function(id, callback) {
+AppRequireServiceClient.prototype.remove = function(id, callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
     var _defer = Q.defer();
@@ -1185,17 +1185,17 @@ AppServiceClient.prototype.remove = function(id, callback) {
   }
 };
 
-AppServiceClient.prototype.send_remove = function(id) {
+AppRequireServiceClient.prototype.send_remove = function(id) {
   var output = new this.pClass(this.output);
   output.writeMessageBegin('remove', Thrift.MessageType.CALL, this.seqid());
-  var args = new AppService_remove_args();
+  var args = new AppRequireService_remove_args();
   args.id = id;
   args.write(output);
   output.writeMessageEnd();
   return this.output.flush();
 };
 
-AppServiceClient.prototype.recv_remove = function(input,mtype,rseqid) {
+AppRequireServiceClient.prototype.recv_remove = function(input,mtype,rseqid) {
   var callback = this._reqs[rseqid] || function() {};
   delete this._reqs[rseqid];
   if (mtype == Thrift.MessageType.EXCEPTION) {
@@ -1204,7 +1204,7 @@ AppServiceClient.prototype.recv_remove = function(input,mtype,rseqid) {
     input.readMessageEnd();
     return callback(x);
   }
-  var result = new AppService_remove_result();
+  var result = new AppRequireService_remove_result();
   result.read(input);
   input.readMessageEnd();
 
@@ -1216,7 +1216,7 @@ AppServiceClient.prototype.recv_remove = function(input,mtype,rseqid) {
   }
   return callback('remove failed: unknown result');
 };
-AppServiceClient.prototype.appByPage = function(page, callback) {
+AppRequireServiceClient.prototype.listByPage = function(page, callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
     var _defer = Q.defer();
@@ -1227,25 +1227,25 @@ AppServiceClient.prototype.appByPage = function(page, callback) {
         _defer.resolve(result);
       }
     };
-    this.send_appByPage(page);
+    this.send_listByPage(page);
     return _defer.promise;
   } else {
     this._reqs[this.seqid()] = callback;
-    this.send_appByPage(page);
+    this.send_listByPage(page);
   }
 };
 
-AppServiceClient.prototype.send_appByPage = function(page) {
+AppRequireServiceClient.prototype.send_listByPage = function(page) {
   var output = new this.pClass(this.output);
-  output.writeMessageBegin('appByPage', Thrift.MessageType.CALL, this.seqid());
-  var args = new AppService_appByPage_args();
+  output.writeMessageBegin('listByPage', Thrift.MessageType.CALL, this.seqid());
+  var args = new AppRequireService_listByPage_args();
   args.page = page;
   args.write(output);
   output.writeMessageEnd();
   return this.output.flush();
 };
 
-AppServiceClient.prototype.recv_appByPage = function(input,mtype,rseqid) {
+AppRequireServiceClient.prototype.recv_listByPage = function(input,mtype,rseqid) {
   var callback = this._reqs[rseqid] || function() {};
   delete this._reqs[rseqid];
   if (mtype == Thrift.MessageType.EXCEPTION) {
@@ -1254,7 +1254,7 @@ AppServiceClient.prototype.recv_appByPage = function(input,mtype,rseqid) {
     input.readMessageEnd();
     return callback(x);
   }
-  var result = new AppService_appByPage_result();
+  var result = new AppRequireService_listByPage_result();
   result.read(input);
   input.readMessageEnd();
 
@@ -1264,9 +1264,9 @@ AppServiceClient.prototype.recv_appByPage = function(input,mtype,rseqid) {
   if (null !== result.success) {
     return callback(null, result.success);
   }
-  return callback('appByPage failed: unknown result');
+  return callback('listByPage failed: unknown result');
 };
-AppServiceClient.prototype.changeAppFile = function(id, resources, callback) {
+AppRequireServiceClient.prototype.changeAppFile = function(id, resources, callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
     var _defer = Q.defer();
@@ -1285,10 +1285,10 @@ AppServiceClient.prototype.changeAppFile = function(id, resources, callback) {
   }
 };
 
-AppServiceClient.prototype.send_changeAppFile = function(id, resources) {
+AppRequireServiceClient.prototype.send_changeAppFile = function(id, resources) {
   var output = new this.pClass(this.output);
   output.writeMessageBegin('changeAppFile', Thrift.MessageType.CALL, this.seqid());
-  var args = new AppService_changeAppFile_args();
+  var args = new AppRequireService_changeAppFile_args();
   args.id = id;
   args.resources = resources;
   args.write(output);
@@ -1296,7 +1296,7 @@ AppServiceClient.prototype.send_changeAppFile = function(id, resources) {
   return this.output.flush();
 };
 
-AppServiceClient.prototype.recv_changeAppFile = function(input,mtype,rseqid) {
+AppRequireServiceClient.prototype.recv_changeAppFile = function(input,mtype,rseqid) {
   var callback = this._reqs[rseqid] || function() {};
   delete this._reqs[rseqid];
   if (mtype == Thrift.MessageType.EXCEPTION) {
@@ -1305,7 +1305,7 @@ AppServiceClient.prototype.recv_changeAppFile = function(input,mtype,rseqid) {
     input.readMessageEnd();
     return callback(x);
   }
-  var result = new AppService_changeAppFile_result();
+  var result = new AppRequireService_changeAppFile_result();
   result.read(input);
   input.readMessageEnd();
 
@@ -1317,7 +1317,7 @@ AppServiceClient.prototype.recv_changeAppFile = function(input,mtype,rseqid) {
   }
   return callback('changeAppFile failed: unknown result');
 };
-AppServiceClient.prototype.changeAppImg = function(id, resources, callback) {
+AppRequireServiceClient.prototype.changeAppImg = function(id, resources, callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
     var _defer = Q.defer();
@@ -1336,10 +1336,10 @@ AppServiceClient.prototype.changeAppImg = function(id, resources, callback) {
   }
 };
 
-AppServiceClient.prototype.send_changeAppImg = function(id, resources) {
+AppRequireServiceClient.prototype.send_changeAppImg = function(id, resources) {
   var output = new this.pClass(this.output);
   output.writeMessageBegin('changeAppImg', Thrift.MessageType.CALL, this.seqid());
-  var args = new AppService_changeAppImg_args();
+  var args = new AppRequireService_changeAppImg_args();
   args.id = id;
   args.resources = resources;
   args.write(output);
@@ -1347,7 +1347,7 @@ AppServiceClient.prototype.send_changeAppImg = function(id, resources) {
   return this.output.flush();
 };
 
-AppServiceClient.prototype.recv_changeAppImg = function(input,mtype,rseqid) {
+AppRequireServiceClient.prototype.recv_changeAppImg = function(input,mtype,rseqid) {
   var callback = this._reqs[rseqid] || function() {};
   delete this._reqs[rseqid];
   if (mtype == Thrift.MessageType.EXCEPTION) {
@@ -1356,7 +1356,7 @@ AppServiceClient.prototype.recv_changeAppImg = function(input,mtype,rseqid) {
     input.readMessageEnd();
     return callback(x);
   }
-  var result = new AppService_changeAppImg_result();
+  var result = new AppRequireService_changeAppImg_result();
   result.read(input);
   input.readMessageEnd();
 
@@ -1368,7 +1368,7 @@ AppServiceClient.prototype.recv_changeAppImg = function(input,mtype,rseqid) {
   }
   return callback('changeAppImg failed: unknown result');
 };
-AppServiceClient.prototype.imgs = function(id, callback) {
+AppRequireServiceClient.prototype.imgs = function(id, callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
     var _defer = Q.defer();
@@ -1387,17 +1387,17 @@ AppServiceClient.prototype.imgs = function(id, callback) {
   }
 };
 
-AppServiceClient.prototype.send_imgs = function(id) {
+AppRequireServiceClient.prototype.send_imgs = function(id) {
   var output = new this.pClass(this.output);
   output.writeMessageBegin('imgs', Thrift.MessageType.CALL, this.seqid());
-  var args = new AppService_imgs_args();
+  var args = new AppRequireService_imgs_args();
   args.id = id;
   args.write(output);
   output.writeMessageEnd();
   return this.output.flush();
 };
 
-AppServiceClient.prototype.recv_imgs = function(input,mtype,rseqid) {
+AppRequireServiceClient.prototype.recv_imgs = function(input,mtype,rseqid) {
   var callback = this._reqs[rseqid] || function() {};
   delete this._reqs[rseqid];
   if (mtype == Thrift.MessageType.EXCEPTION) {
@@ -1406,7 +1406,7 @@ AppServiceClient.prototype.recv_imgs = function(input,mtype,rseqid) {
     input.readMessageEnd();
     return callback(x);
   }
-  var result = new AppService_imgs_result();
+  var result = new AppRequireService_imgs_result();
   result.read(input);
   input.readMessageEnd();
 
@@ -1418,7 +1418,7 @@ AppServiceClient.prototype.recv_imgs = function(input,mtype,rseqid) {
   }
   return callback('imgs failed: unknown result');
 };
-AppServiceClient.prototype.allList = function(callback) {
+AppRequireServiceClient.prototype.allList = function(callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
     var _defer = Q.defer();
@@ -1437,16 +1437,16 @@ AppServiceClient.prototype.allList = function(callback) {
   }
 };
 
-AppServiceClient.prototype.send_allList = function() {
+AppRequireServiceClient.prototype.send_allList = function() {
   var output = new this.pClass(this.output);
   output.writeMessageBegin('allList', Thrift.MessageType.CALL, this.seqid());
-  var args = new AppService_allList_args();
+  var args = new AppRequireService_allList_args();
   args.write(output);
   output.writeMessageEnd();
   return this.output.flush();
 };
 
-AppServiceClient.prototype.recv_allList = function(input,mtype,rseqid) {
+AppRequireServiceClient.prototype.recv_allList = function(input,mtype,rseqid) {
   var callback = this._reqs[rseqid] || function() {};
   delete this._reqs[rseqid];
   if (mtype == Thrift.MessageType.EXCEPTION) {
@@ -1455,7 +1455,7 @@ AppServiceClient.prototype.recv_allList = function(input,mtype,rseqid) {
     input.readMessageEnd();
     return callback(x);
   }
-  var result = new AppService_allList_result();
+  var result = new AppRequireService_allList_result();
   result.read(input);
   input.readMessageEnd();
 
@@ -1467,10 +1467,10 @@ AppServiceClient.prototype.recv_allList = function(input,mtype,rseqid) {
   }
   return callback('allList failed: unknown result');
 };
-AppServiceProcessor = exports.Processor = function(handler) {
+AppRequireServiceProcessor = exports.Processor = function(handler) {
   this._handler = handler
 }
-AppServiceProcessor.prototype.process = function(input, output) {
+AppRequireServiceProcessor.prototype.process = function(input, output) {
   var r = input.readMessageBegin();
   if (this['process_' + r.fname]) {
     return this['process_' + r.fname].call(this, r.rseqid, input, output);
@@ -1485,21 +1485,21 @@ AppServiceProcessor.prototype.process = function(input, output) {
   }
 }
 
-AppServiceProcessor.prototype.process_add = function(seqid, input, output) {
-  var args = new AppService_add_args();
+AppRequireServiceProcessor.prototype.process_add = function(seqid, input, output) {
+  var args = new AppRequireService_add_args();
   args.read(input);
   input.readMessageEnd();
   if (this._handler.add.length === 1) {
     Q.fcall(this._handler.add, args.bean)
       .then(function(result) {
-        var result = new AppService_add_result({success: result});
+        var result = new AppRequireService_add_result({success: result});
         output.writeMessageBegin("add", Thrift.MessageType.REPLY, seqid);
         result.write(output);
         output.writeMessageEnd();
         output.flush();
       }, function (err) {
         if (err instanceof PublicStruct_ttypes.InvalidOperation) {
-          var result = new AppService_add_result(err);
+          var result = new AppRequireService_add_result(err);
           output.writeMessageBegin("add", Thrift.MessageType.REPLY, seqid);
         } else {
           var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
@@ -1512,7 +1512,7 @@ AppServiceProcessor.prototype.process_add = function(seqid, input, output) {
   } else {
     this._handler.add(args.bean, function (err, result) {
       if (err == null || err instanceof PublicStruct_ttypes.InvalidOperation) {
-        var result = new AppService_add_result((err != null ? err : {success: result}));
+        var result = new AppRequireService_add_result((err != null ? err : {success: result}));
         output.writeMessageBegin("add", Thrift.MessageType.REPLY, seqid);
       } else {
         var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
@@ -1525,21 +1525,21 @@ AppServiceProcessor.prototype.process_add = function(seqid, input, output) {
   }
 }
 
-AppServiceProcessor.prototype.process_update = function(seqid, input, output) {
-  var args = new AppService_update_args();
+AppRequireServiceProcessor.prototype.process_update = function(seqid, input, output) {
+  var args = new AppRequireService_update_args();
   args.read(input);
   input.readMessageEnd();
   if (this._handler.update.length === 1) {
     Q.fcall(this._handler.update, args.bean)
       .then(function(result) {
-        var result = new AppService_update_result({success: result});
+        var result = new AppRequireService_update_result({success: result});
         output.writeMessageBegin("update", Thrift.MessageType.REPLY, seqid);
         result.write(output);
         output.writeMessageEnd();
         output.flush();
       }, function (err) {
         if (err instanceof PublicStruct_ttypes.InvalidOperation) {
-          var result = new AppService_update_result(err);
+          var result = new AppRequireService_update_result(err);
           output.writeMessageBegin("update", Thrift.MessageType.REPLY, seqid);
         } else {
           var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
@@ -1552,7 +1552,7 @@ AppServiceProcessor.prototype.process_update = function(seqid, input, output) {
   } else {
     this._handler.update(args.bean, function (err, result) {
       if (err == null || err instanceof PublicStruct_ttypes.InvalidOperation) {
-        var result = new AppService_update_result((err != null ? err : {success: result}));
+        var result = new AppRequireService_update_result((err != null ? err : {success: result}));
         output.writeMessageBegin("update", Thrift.MessageType.REPLY, seqid);
       } else {
         var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
@@ -1565,21 +1565,21 @@ AppServiceProcessor.prototype.process_update = function(seqid, input, output) {
   }
 }
 
-AppServiceProcessor.prototype.process_remove = function(seqid, input, output) {
-  var args = new AppService_remove_args();
+AppRequireServiceProcessor.prototype.process_remove = function(seqid, input, output) {
+  var args = new AppRequireService_remove_args();
   args.read(input);
   input.readMessageEnd();
   if (this._handler.remove.length === 1) {
     Q.fcall(this._handler.remove, args.id)
       .then(function(result) {
-        var result = new AppService_remove_result({success: result});
+        var result = new AppRequireService_remove_result({success: result});
         output.writeMessageBegin("remove", Thrift.MessageType.REPLY, seqid);
         result.write(output);
         output.writeMessageEnd();
         output.flush();
       }, function (err) {
         if (err instanceof PublicStruct_ttypes.InvalidOperation) {
-          var result = new AppService_remove_result(err);
+          var result = new AppRequireService_remove_result(err);
           output.writeMessageBegin("remove", Thrift.MessageType.REPLY, seqid);
         } else {
           var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
@@ -1592,7 +1592,7 @@ AppServiceProcessor.prototype.process_remove = function(seqid, input, output) {
   } else {
     this._handler.remove(args.id, function (err, result) {
       if (err == null || err instanceof PublicStruct_ttypes.InvalidOperation) {
-        var result = new AppService_remove_result((err != null ? err : {success: result}));
+        var result = new AppRequireService_remove_result((err != null ? err : {success: result}));
         output.writeMessageBegin("remove", Thrift.MessageType.REPLY, seqid);
       } else {
         var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
@@ -1605,38 +1605,38 @@ AppServiceProcessor.prototype.process_remove = function(seqid, input, output) {
   }
 }
 
-AppServiceProcessor.prototype.process_appByPage = function(seqid, input, output) {
-  var args = new AppService_appByPage_args();
+AppRequireServiceProcessor.prototype.process_listByPage = function(seqid, input, output) {
+  var args = new AppRequireService_listByPage_args();
   args.read(input);
   input.readMessageEnd();
-  if (this._handler.appByPage.length === 1) {
-    Q.fcall(this._handler.appByPage, args.page)
+  if (this._handler.listByPage.length === 1) {
+    Q.fcall(this._handler.listByPage, args.page)
       .then(function(result) {
-        var result = new AppService_appByPage_result({success: result});
-        output.writeMessageBegin("appByPage", Thrift.MessageType.REPLY, seqid);
+        var result = new AppRequireService_listByPage_result({success: result});
+        output.writeMessageBegin("listByPage", Thrift.MessageType.REPLY, seqid);
         result.write(output);
         output.writeMessageEnd();
         output.flush();
       }, function (err) {
         if (err instanceof PublicStruct_ttypes.InvalidOperation) {
-          var result = new AppService_appByPage_result(err);
-          output.writeMessageBegin("appByPage", Thrift.MessageType.REPLY, seqid);
+          var result = new AppRequireService_listByPage_result(err);
+          output.writeMessageBegin("listByPage", Thrift.MessageType.REPLY, seqid);
         } else {
           var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
-          output.writeMessageBegin("appByPage", Thrift.MessageType.EXCEPTION, seqid);
+          output.writeMessageBegin("listByPage", Thrift.MessageType.EXCEPTION, seqid);
         }
         result.write(output);
         output.writeMessageEnd();
         output.flush();
       });
   } else {
-    this._handler.appByPage(args.page, function (err, result) {
+    this._handler.listByPage(args.page, function (err, result) {
       if (err == null || err instanceof PublicStruct_ttypes.InvalidOperation) {
-        var result = new AppService_appByPage_result((err != null ? err : {success: result}));
-        output.writeMessageBegin("appByPage", Thrift.MessageType.REPLY, seqid);
+        var result = new AppRequireService_listByPage_result((err != null ? err : {success: result}));
+        output.writeMessageBegin("listByPage", Thrift.MessageType.REPLY, seqid);
       } else {
         var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
-        output.writeMessageBegin("appByPage", Thrift.MessageType.EXCEPTION, seqid);
+        output.writeMessageBegin("listByPage", Thrift.MessageType.EXCEPTION, seqid);
       }
       result.write(output);
       output.writeMessageEnd();
@@ -1645,21 +1645,21 @@ AppServiceProcessor.prototype.process_appByPage = function(seqid, input, output)
   }
 }
 
-AppServiceProcessor.prototype.process_changeAppFile = function(seqid, input, output) {
-  var args = new AppService_changeAppFile_args();
+AppRequireServiceProcessor.prototype.process_changeAppFile = function(seqid, input, output) {
+  var args = new AppRequireService_changeAppFile_args();
   args.read(input);
   input.readMessageEnd();
   if (this._handler.changeAppFile.length === 2) {
     Q.fcall(this._handler.changeAppFile, args.id, args.resources)
       .then(function(result) {
-        var result = new AppService_changeAppFile_result({success: result});
+        var result = new AppRequireService_changeAppFile_result({success: result});
         output.writeMessageBegin("changeAppFile", Thrift.MessageType.REPLY, seqid);
         result.write(output);
         output.writeMessageEnd();
         output.flush();
       }, function (err) {
         if (err instanceof PublicStruct_ttypes.InvalidOperation) {
-          var result = new AppService_changeAppFile_result(err);
+          var result = new AppRequireService_changeAppFile_result(err);
           output.writeMessageBegin("changeAppFile", Thrift.MessageType.REPLY, seqid);
         } else {
           var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
@@ -1672,7 +1672,7 @@ AppServiceProcessor.prototype.process_changeAppFile = function(seqid, input, out
   } else {
     this._handler.changeAppFile(args.id, args.resources, function (err, result) {
       if (err == null || err instanceof PublicStruct_ttypes.InvalidOperation) {
-        var result = new AppService_changeAppFile_result((err != null ? err : {success: result}));
+        var result = new AppRequireService_changeAppFile_result((err != null ? err : {success: result}));
         output.writeMessageBegin("changeAppFile", Thrift.MessageType.REPLY, seqid);
       } else {
         var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
@@ -1685,21 +1685,21 @@ AppServiceProcessor.prototype.process_changeAppFile = function(seqid, input, out
   }
 }
 
-AppServiceProcessor.prototype.process_changeAppImg = function(seqid, input, output) {
-  var args = new AppService_changeAppImg_args();
+AppRequireServiceProcessor.prototype.process_changeAppImg = function(seqid, input, output) {
+  var args = new AppRequireService_changeAppImg_args();
   args.read(input);
   input.readMessageEnd();
   if (this._handler.changeAppImg.length === 2) {
     Q.fcall(this._handler.changeAppImg, args.id, args.resources)
       .then(function(result) {
-        var result = new AppService_changeAppImg_result({success: result});
+        var result = new AppRequireService_changeAppImg_result({success: result});
         output.writeMessageBegin("changeAppImg", Thrift.MessageType.REPLY, seqid);
         result.write(output);
         output.writeMessageEnd();
         output.flush();
       }, function (err) {
         if (err instanceof PublicStruct_ttypes.InvalidOperation) {
-          var result = new AppService_changeAppImg_result(err);
+          var result = new AppRequireService_changeAppImg_result(err);
           output.writeMessageBegin("changeAppImg", Thrift.MessageType.REPLY, seqid);
         } else {
           var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
@@ -1712,7 +1712,7 @@ AppServiceProcessor.prototype.process_changeAppImg = function(seqid, input, outp
   } else {
     this._handler.changeAppImg(args.id, args.resources, function (err, result) {
       if (err == null || err instanceof PublicStruct_ttypes.InvalidOperation) {
-        var result = new AppService_changeAppImg_result((err != null ? err : {success: result}));
+        var result = new AppRequireService_changeAppImg_result((err != null ? err : {success: result}));
         output.writeMessageBegin("changeAppImg", Thrift.MessageType.REPLY, seqid);
       } else {
         var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
@@ -1725,21 +1725,21 @@ AppServiceProcessor.prototype.process_changeAppImg = function(seqid, input, outp
   }
 }
 
-AppServiceProcessor.prototype.process_imgs = function(seqid, input, output) {
-  var args = new AppService_imgs_args();
+AppRequireServiceProcessor.prototype.process_imgs = function(seqid, input, output) {
+  var args = new AppRequireService_imgs_args();
   args.read(input);
   input.readMessageEnd();
   if (this._handler.imgs.length === 1) {
     Q.fcall(this._handler.imgs, args.id)
       .then(function(result) {
-        var result = new AppService_imgs_result({success: result});
+        var result = new AppRequireService_imgs_result({success: result});
         output.writeMessageBegin("imgs", Thrift.MessageType.REPLY, seqid);
         result.write(output);
         output.writeMessageEnd();
         output.flush();
       }, function (err) {
         if (err instanceof PublicStruct_ttypes.InvalidOperation) {
-          var result = new AppService_imgs_result(err);
+          var result = new AppRequireService_imgs_result(err);
           output.writeMessageBegin("imgs", Thrift.MessageType.REPLY, seqid);
         } else {
           var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
@@ -1752,7 +1752,7 @@ AppServiceProcessor.prototype.process_imgs = function(seqid, input, output) {
   } else {
     this._handler.imgs(args.id, function (err, result) {
       if (err == null || err instanceof PublicStruct_ttypes.InvalidOperation) {
-        var result = new AppService_imgs_result((err != null ? err : {success: result}));
+        var result = new AppRequireService_imgs_result((err != null ? err : {success: result}));
         output.writeMessageBegin("imgs", Thrift.MessageType.REPLY, seqid);
       } else {
         var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
@@ -1765,21 +1765,21 @@ AppServiceProcessor.prototype.process_imgs = function(seqid, input, output) {
   }
 }
 
-AppServiceProcessor.prototype.process_allList = function(seqid, input, output) {
-  var args = new AppService_allList_args();
+AppRequireServiceProcessor.prototype.process_allList = function(seqid, input, output) {
+  var args = new AppRequireService_allList_args();
   args.read(input);
   input.readMessageEnd();
   if (this._handler.allList.length === 0) {
     Q.fcall(this._handler.allList)
       .then(function(result) {
-        var result = new AppService_allList_result({success: result});
+        var result = new AppRequireService_allList_result({success: result});
         output.writeMessageBegin("allList", Thrift.MessageType.REPLY, seqid);
         result.write(output);
         output.writeMessageEnd();
         output.flush();
       }, function (err) {
         if (err instanceof PublicStruct_ttypes.InvalidOperation) {
-          var result = new AppService_allList_result(err);
+          var result = new AppRequireService_allList_result(err);
           output.writeMessageBegin("allList", Thrift.MessageType.REPLY, seqid);
         } else {
           var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
@@ -1792,7 +1792,7 @@ AppServiceProcessor.prototype.process_allList = function(seqid, input, output) {
   } else {
     this._handler.allList(function (err, result) {
       if (err == null || err instanceof PublicStruct_ttypes.InvalidOperation) {
-        var result = new AppService_allList_result((err != null ? err : {success: result}));
+        var result = new AppRequireService_allList_result((err != null ? err : {success: result}));
         output.writeMessageBegin("allList", Thrift.MessageType.REPLY, seqid);
       } else {
         var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);

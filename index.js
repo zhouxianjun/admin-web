@@ -113,7 +113,7 @@ app.use(function *error(next){
     try {
         yield next;
     } catch (err) {
-        Utils.writeResult(this, new Result(false, err.message || '操作失败'));
+        Utils.writeResult(this, new Result(false, err.msg || err.message || '操作失败'));
         logger.error('router error', err, this);
     }
 });

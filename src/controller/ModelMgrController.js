@@ -108,4 +108,35 @@ module.exports = class {
             value: res
         }));
     }
+    * brandList() {
+        let res = yield modelMgrService.brandList();
+        Utils.writeResult(this, new Result(true, {
+            key: 'list',
+            value: JSON.parse(res)
+        }));
+    }
+    * modelList() {
+        let params = this.request.body;
+        let res = yield modelMgrService.modelList(params.brand);
+        Utils.writeResult(this, new Result(true, {
+            key: 'list',
+            value: JSON.parse(res)
+        }));
+    }
+    * versionList() {
+        let params = this.request.body;
+        let res = yield modelMgrService.versionList(params.model);
+        Utils.writeResult(this, new Result(true, {
+            key: 'list',
+            value: JSON.parse(res)
+        }));
+    }
+    * baseVersionList() {
+        let params = this.request.body;
+        let res = yield modelMgrService.baseVersionList(params.version);
+        Utils.writeResult(this, new Result(true, {
+            key: 'list',
+            value: JSON.parse(res)
+        }));
+    }
 };

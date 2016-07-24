@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>套餐管理</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.6 -->
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../dist/font-awesome/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="../dist/ionicons/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
+    <!--<link rel="stylesheet" href="../plugins/datatables/jquery.dataTables.min.css">-->
+    <link rel="stylesheet" href="../plugins/layer/skin/layer.css">
+    <link rel="stylesheet" href="../plugins/datatables/dataTables.bootstrap.css">
+    <link rel="stylesheet" href="../plugins/datatables/extensions/TableTools/css/dataTables.tableTools.min.css">
+    <link rel="stylesheet" href="../dist/css/bootstrap-fileupload.min.css">
+</head>
+<body>
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <i class="fa fa-user"></i>
+                套餐配置
+            </h3>
+        </div>
+        <div class="panel-body">
+            <button type="button" class="btn btn-primary" data-bind="click: function() {$root.openForm();}"><i class="fa fa-plus"></i> 添加</button>
+            <table id="app-table" class="table table-bordered table-striped table-hover">
+                <thead>
+                <tr>
+                    <th>名称</th>
+                    <th>单价</th>
+                    <th>创建时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+
+<script type="text/html" id="layer_app">
+    <div class="box box-info" style="overflow: hidden" id="appForm">
+        <!-- form start -->
+        <form class="form-horizontal">
+            <div class="box-body">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">
+                        <span class="icon-require">*</span>名称
+                    </label>
+
+                    <div class="col-sm-8">
+                        <input type="text" name="app_name" data-bind="value: app.name" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label"><span class="icon-require">*</span>单价</label>
+                    <div class="col-sm-8">
+                        <input type="number" name="app_price" data-bind="value: app.price" class="form-control">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</script>
+<script type="text/html" id="layer_app_package">
+    <div class="box box-info" style="overflow: hidden" id="appPackageBox">
+        <div class="box-body">
+            <table id="app-package-table" class="table table-bordered table-striped table-hover">
+                <thead>
+                <tr>
+                    <th>名称</th>
+                    <th>通用</th>
+                    <th>ROOT</th>
+                    <th>创建时间</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</script>
+</body>
+<script src="../plugins/require.js"></script>
+<script src="../config.js"></script>
+<script src="../app/view/packageView.js"></script>
+</html>

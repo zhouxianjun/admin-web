@@ -28,28 +28,25 @@
 define(['jquery', 'util'], function ($, util) {
     return {
         listByPage: function(data){
-            return util.buildAjax('/app/listByPage', data);
+            return util.buildAjax('/appPackage/listByPage', data);
         },
         add: function(data){
-            return util.buildAjax('/app/add', data);
+            return util.buildAjax('/appPackage/add', data);
         },
         update: function(data){
-            return util.buildAjax('/app/update', data);
+            return util.buildAjax('/appPackage/update', data);
         },
         remove: function (data) {
-            return util.buildAjax('/app/remove', data);
+            return util.buildAjax('/appPackage/remove', data);
         },
-        updateFile: function (data) {
-            return util.buildAjax('/app/updateFile', data);
+        removeApp: function (data) {
+            return util.buildAjax('/appPackage/removeApp', data);
         },
-        updateImg: function (data) {
-            return util.buildAjax('/app/updateImg', data);
+        appAllList: function (data) {
+            return util.buildAjax('/appPackage/appAllList', data);
         },
-        imgs: function (data) {
-            return util.buildAjax('/app/imgs', data);
-        },
-        allList: function (data) {
-            return util.buildAjax('/app/allList', data);
+        listAppByPage: function (data) {
+            return util.buildAjax('/appPackage/listAppByPage', data);
         }
     };
 });

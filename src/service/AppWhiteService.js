@@ -26,16 +26,13 @@
  */
 'use strict';
 const ThriftClient = require('node-thrift-client');
-module.exports = class AppService extends ThriftClient.referenceBean {
-    appByPage() {}
+module.exports = class AppWhiteService extends ThriftClient.referenceBean {
+    listByPage() {}
     add() {}
     update() {}
     changeAppFile() {}
-    changeAppImg() {}
     remove() {}
-    imgs() {}
-    allList() {}
     get type() {
-        return require('../thrift/AppService');
+        return require('../thrift/AppWhiteService');
     }
 };

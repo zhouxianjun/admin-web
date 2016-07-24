@@ -25,17 +25,17 @@
  *           佛祖保佑       永无BUG
  */
 'use strict';
-const appService = require('../service/AppService').instance();
+const appWhiteService = require('../service/AppWhiteService').instance();
 const Result = require('../dto/Result');
 const Utils = require('../util/Utils');
 const PublicStruct = require('../thrift/PublicStruct_types');
 module.exports = class {
     static get path() {
-        return '/app';
+        return '/appWhite';
     }
     * add() {
         let params = this.request.body;
-        let res = yield appService.add(new PublicStruct.AppStruct(params));
+        let res = yield appWhiteService.add(new PublicStruct.AppWhiteStruct(params));
         Utils.writeResult(this, new Result(res ? true : false, {
             key: 'id',
             value: res.toNumber()
@@ -43,51 +43,25 @@ module.exports = class {
     }
     * update() {
         let params = this.request.body;
-        let res = yield appService.update(new PublicStruct.AppStruct(params));
+        let res = yield appWhiteService.update(new PublicStruct.AppWhiteStruct(params));
         Utils.writeResult(this, new Result(res ? true : false));
     }
     * listByPage() {
         let params = this.request.body;
-        let res = yield appService.appByPage(new PublicStruct.PageParamStruct(params));
+        let res = yield appWhiteService.listByPage(new PublicStruct.PageParamStruct(params));
         Utils.writeResult(this, new Result(true, {
-            key: 'apps',
+            key: 'list',
             value: res
         }));
     }
     * updateFile() {
         let params = this.request.body;
-        let res = yield appService.changeAppFile(params.id, new PublicStruct.ResourcesStruct(params.resources));
+        let res = yield appWhiteService.changeAppFile(params.id, new PublicStruct.ResourcesStruct(params.resources));
         this.body = new Result(res ? true : false).json;
-    }
-    * updateImg() {
-        let params = this.request.body;
-        let list = [];
-        if (params.resources && params.resources.length) {
-            params.resources.forEach(r => {
-                list.push(new PublicStruct.ResourcesStruct(r));
-            });
-        }
-        let res = yield appService.changeAppImg(params.id, list);
-        this.body = new Result(res ? true : false).json;
-    }
-    * imgs() {
-        let params = this.request.body;
-        let res = yield appService.imgs(params.id);
-        Utils.writeResult(this, new Result(true, {
-            key: 'list',
-            value: Utils.makeList(res)
-        }));
-    }
-    * allList() {
-        let res = yield appService.allList();
-        Utils.writeResult(this, new Result(true, {
-            key: 'list',
-            value: JSON.parse(res)
-        }));
     }
     * remove() {
         let params = this.request.body;
-        let res = yield appService.remove(params.id);
+        let res = yield appWhiteService.remove(params.id);
         Utils.writeResult(this, new Result(res ? true : false));
     }
 };

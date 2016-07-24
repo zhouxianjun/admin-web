@@ -1597,6 +1597,298 @@ AppStruct.prototype.write = function(output) {
   return;
 };
 
+AppRequireStruct = module.exports.AppRequireStruct = function(args) {
+  this.id = null;
+  this.name = null;
+  this.resources_id = null;
+  this.type = null;
+  this.memo = null;
+  if (args) {
+    if (args.id !== undefined && args.id !== null) {
+      this.id = args.id;
+    }
+    if (args.name !== undefined && args.name !== null) {
+      this.name = args.name;
+    }
+    if (args.resources_id !== undefined && args.resources_id !== null) {
+      this.resources_id = args.resources_id;
+    }
+    if (args.type !== undefined && args.type !== null) {
+      this.type = args.type;
+    }
+    if (args.memo !== undefined && args.memo !== null) {
+      this.memo = args.memo;
+    }
+  }
+};
+AppRequireStruct.prototype = {};
+AppRequireStruct.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.I64) {
+        this.id = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.name = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.I64) {
+        this.resources_id = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 4:
+      if (ftype == Thrift.Type.I32) {
+        this.type = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 5:
+      if (ftype == Thrift.Type.STRING) {
+        this.memo = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+AppRequireStruct.prototype.write = function(output) {
+  output.writeStructBegin('AppRequireStruct');
+  if (this.id !== null && this.id !== undefined) {
+    output.writeFieldBegin('id', Thrift.Type.I64, 1);
+    output.writeI64(this.id);
+    output.writeFieldEnd();
+  }
+  if (this.name !== null && this.name !== undefined) {
+    output.writeFieldBegin('name', Thrift.Type.STRING, 2);
+    output.writeString(this.name);
+    output.writeFieldEnd();
+  }
+  if (this.resources_id !== null && this.resources_id !== undefined) {
+    output.writeFieldBegin('resources_id', Thrift.Type.I64, 3);
+    output.writeI64(this.resources_id);
+    output.writeFieldEnd();
+  }
+  if (this.type !== null && this.type !== undefined) {
+    output.writeFieldBegin('type', Thrift.Type.I32, 4);
+    output.writeI32(this.type);
+    output.writeFieldEnd();
+  }
+  if (this.memo !== null && this.memo !== undefined) {
+    output.writeFieldBegin('memo', Thrift.Type.STRING, 5);
+    output.writeString(this.memo);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+AppWhiteStruct = module.exports.AppWhiteStruct = function(args) {
+  this.id = null;
+  this.name = null;
+  this.resources_id = null;
+  this.memo = null;
+  this.version = null;
+  this.brand_id = null;
+  this.model_id = null;
+  this.version_id = null;
+  this.base_version_id = null;
+  if (args) {
+    if (args.id !== undefined && args.id !== null) {
+      this.id = args.id;
+    }
+    if (args.name !== undefined && args.name !== null) {
+      this.name = args.name;
+    }
+    if (args.resources_id !== undefined && args.resources_id !== null) {
+      this.resources_id = args.resources_id;
+    }
+    if (args.memo !== undefined && args.memo !== null) {
+      this.memo = args.memo;
+    }
+    if (args.version !== undefined && args.version !== null) {
+      this.version = args.version;
+    }
+    if (args.brand_id !== undefined && args.brand_id !== null) {
+      this.brand_id = args.brand_id;
+    }
+    if (args.model_id !== undefined && args.model_id !== null) {
+      this.model_id = args.model_id;
+    }
+    if (args.version_id !== undefined && args.version_id !== null) {
+      this.version_id = args.version_id;
+    }
+    if (args.base_version_id !== undefined && args.base_version_id !== null) {
+      this.base_version_id = args.base_version_id;
+    }
+  }
+};
+AppWhiteStruct.prototype = {};
+AppWhiteStruct.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.I64) {
+        this.id = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.name = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.I64) {
+        this.resources_id = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 4:
+      if (ftype == Thrift.Type.STRING) {
+        this.memo = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 5:
+      if (ftype == Thrift.Type.STRING) {
+        this.version = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 6:
+      if (ftype == Thrift.Type.I64) {
+        this.brand_id = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 7:
+      if (ftype == Thrift.Type.I64) {
+        this.model_id = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 8:
+      if (ftype == Thrift.Type.I64) {
+        this.version_id = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 9:
+      if (ftype == Thrift.Type.I64) {
+        this.base_version_id = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+AppWhiteStruct.prototype.write = function(output) {
+  output.writeStructBegin('AppWhiteStruct');
+  if (this.id !== null && this.id !== undefined) {
+    output.writeFieldBegin('id', Thrift.Type.I64, 1);
+    output.writeI64(this.id);
+    output.writeFieldEnd();
+  }
+  if (this.name !== null && this.name !== undefined) {
+    output.writeFieldBegin('name', Thrift.Type.STRING, 2);
+    output.writeString(this.name);
+    output.writeFieldEnd();
+  }
+  if (this.resources_id !== null && this.resources_id !== undefined) {
+    output.writeFieldBegin('resources_id', Thrift.Type.I64, 3);
+    output.writeI64(this.resources_id);
+    output.writeFieldEnd();
+  }
+  if (this.memo !== null && this.memo !== undefined) {
+    output.writeFieldBegin('memo', Thrift.Type.STRING, 4);
+    output.writeString(this.memo);
+    output.writeFieldEnd();
+  }
+  if (this.version !== null && this.version !== undefined) {
+    output.writeFieldBegin('version', Thrift.Type.STRING, 5);
+    output.writeString(this.version);
+    output.writeFieldEnd();
+  }
+  if (this.brand_id !== null && this.brand_id !== undefined) {
+    output.writeFieldBegin('brand_id', Thrift.Type.I64, 6);
+    output.writeI64(this.brand_id);
+    output.writeFieldEnd();
+  }
+  if (this.model_id !== null && this.model_id !== undefined) {
+    output.writeFieldBegin('model_id', Thrift.Type.I64, 7);
+    output.writeI64(this.model_id);
+    output.writeFieldEnd();
+  }
+  if (this.version_id !== null && this.version_id !== undefined) {
+    output.writeFieldBegin('version_id', Thrift.Type.I64, 8);
+    output.writeI64(this.version_id);
+    output.writeFieldEnd();
+  }
+  if (this.base_version_id !== null && this.base_version_id !== undefined) {
+    output.writeFieldBegin('base_version_id', Thrift.Type.I64, 9);
+    output.writeI64(this.base_version_id);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 AppActiveStruct = module.exports.AppActiveStruct = function(args) {
   this.id = null;
   this.name = null;
@@ -1736,6 +2028,516 @@ AppActiveStruct.prototype.write = function(output) {
   if (this.open_network !== null && this.open_network !== undefined) {
     output.writeFieldBegin('open_network', Thrift.Type.BOOL, 7);
     output.writeBool(this.open_network);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+PackageStruct = module.exports.PackageStruct = function(args) {
+  this.id = null;
+  this.name = null;
+  this.price = null;
+  if (args) {
+    if (args.id !== undefined && args.id !== null) {
+      this.id = args.id;
+    }
+    if (args.name !== undefined && args.name !== null) {
+      this.name = args.name;
+    }
+    if (args.price !== undefined && args.price !== null) {
+      this.price = args.price;
+    }
+  }
+};
+PackageStruct.prototype = {};
+PackageStruct.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.I64) {
+        this.id = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.name = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.DOUBLE) {
+        this.price = input.readDouble();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+PackageStruct.prototype.write = function(output) {
+  output.writeStructBegin('PackageStruct');
+  if (this.id !== null && this.id !== undefined) {
+    output.writeFieldBegin('id', Thrift.Type.I64, 1);
+    output.writeI64(this.id);
+    output.writeFieldEnd();
+  }
+  if (this.name !== null && this.name !== undefined) {
+    output.writeFieldBegin('name', Thrift.Type.STRING, 2);
+    output.writeString(this.name);
+    output.writeFieldEnd();
+  }
+  if (this.price !== null && this.price !== undefined) {
+    output.writeFieldBegin('price', Thrift.Type.DOUBLE, 3);
+    output.writeDouble(this.price);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+AppPackageStruct = module.exports.AppPackageStruct = function(args) {
+  this.id = null;
+  this.name = null;
+  this.common = null;
+  this.root = null;
+  this.brand_id = null;
+  this.model_id = null;
+  this.version_id = null;
+  this.base_version_id = null;
+  this.package_id = null;
+  this.pre = null;
+  this.install = null;
+  if (args) {
+    if (args.id !== undefined && args.id !== null) {
+      this.id = args.id;
+    }
+    if (args.name !== undefined && args.name !== null) {
+      this.name = args.name;
+    }
+    if (args.common !== undefined && args.common !== null) {
+      this.common = args.common;
+    }
+    if (args.root !== undefined && args.root !== null) {
+      this.root = args.root;
+    }
+    if (args.brand_id !== undefined && args.brand_id !== null) {
+      this.brand_id = args.brand_id;
+    }
+    if (args.model_id !== undefined && args.model_id !== null) {
+      this.model_id = args.model_id;
+    }
+    if (args.version_id !== undefined && args.version_id !== null) {
+      this.version_id = args.version_id;
+    }
+    if (args.base_version_id !== undefined && args.base_version_id !== null) {
+      this.base_version_id = args.base_version_id;
+    }
+    if (args.package_id !== undefined && args.package_id !== null) {
+      this.package_id = args.package_id;
+    }
+    if (args.pre !== undefined && args.pre !== null) {
+      this.pre = Thrift.copyList(args.pre, [null]);
+    }
+    if (args.install !== undefined && args.install !== null) {
+      this.install = Thrift.copyList(args.install, [null]);
+    }
+  }
+};
+AppPackageStruct.prototype = {};
+AppPackageStruct.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.I64) {
+        this.id = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.name = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.BOOL) {
+        this.common = input.readBool();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 4:
+      if (ftype == Thrift.Type.BOOL) {
+        this.root = input.readBool();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 5:
+      if (ftype == Thrift.Type.I64) {
+        this.brand_id = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 6:
+      if (ftype == Thrift.Type.I64) {
+        this.model_id = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 7:
+      if (ftype == Thrift.Type.I64) {
+        this.version_id = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 8:
+      if (ftype == Thrift.Type.I64) {
+        this.base_version_id = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 9:
+      if (ftype == Thrift.Type.I64) {
+        this.package_id = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 10:
+      if (ftype == Thrift.Type.LIST) {
+        var _size0 = 0;
+        var _rtmp34;
+        this.pre = [];
+        var _etype3 = 0;
+        _rtmp34 = input.readListBegin();
+        _etype3 = _rtmp34.etype;
+        _size0 = _rtmp34.size;
+        for (var _i5 = 0; _i5 < _size0; ++_i5)
+        {
+          var elem6 = null;
+          elem6 = input.readI64();
+          this.pre.push(elem6);
+        }
+        input.readListEnd();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 11:
+      if (ftype == Thrift.Type.LIST) {
+        var _size7 = 0;
+        var _rtmp311;
+        this.install = [];
+        var _etype10 = 0;
+        _rtmp311 = input.readListBegin();
+        _etype10 = _rtmp311.etype;
+        _size7 = _rtmp311.size;
+        for (var _i12 = 0; _i12 < _size7; ++_i12)
+        {
+          var elem13 = null;
+          elem13 = input.readI64();
+          this.install.push(elem13);
+        }
+        input.readListEnd();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+AppPackageStruct.prototype.write = function(output) {
+  output.writeStructBegin('AppPackageStruct');
+  if (this.id !== null && this.id !== undefined) {
+    output.writeFieldBegin('id', Thrift.Type.I64, 1);
+    output.writeI64(this.id);
+    output.writeFieldEnd();
+  }
+  if (this.name !== null && this.name !== undefined) {
+    output.writeFieldBegin('name', Thrift.Type.STRING, 2);
+    output.writeString(this.name);
+    output.writeFieldEnd();
+  }
+  if (this.common !== null && this.common !== undefined) {
+    output.writeFieldBegin('common', Thrift.Type.BOOL, 3);
+    output.writeBool(this.common);
+    output.writeFieldEnd();
+  }
+  if (this.root !== null && this.root !== undefined) {
+    output.writeFieldBegin('root', Thrift.Type.BOOL, 4);
+    output.writeBool(this.root);
+    output.writeFieldEnd();
+  }
+  if (this.brand_id !== null && this.brand_id !== undefined) {
+    output.writeFieldBegin('brand_id', Thrift.Type.I64, 5);
+    output.writeI64(this.brand_id);
+    output.writeFieldEnd();
+  }
+  if (this.model_id !== null && this.model_id !== undefined) {
+    output.writeFieldBegin('model_id', Thrift.Type.I64, 6);
+    output.writeI64(this.model_id);
+    output.writeFieldEnd();
+  }
+  if (this.version_id !== null && this.version_id !== undefined) {
+    output.writeFieldBegin('version_id', Thrift.Type.I64, 7);
+    output.writeI64(this.version_id);
+    output.writeFieldEnd();
+  }
+  if (this.base_version_id !== null && this.base_version_id !== undefined) {
+    output.writeFieldBegin('base_version_id', Thrift.Type.I64, 8);
+    output.writeI64(this.base_version_id);
+    output.writeFieldEnd();
+  }
+  if (this.package_id !== null && this.package_id !== undefined) {
+    output.writeFieldBegin('package_id', Thrift.Type.I64, 9);
+    output.writeI64(this.package_id);
+    output.writeFieldEnd();
+  }
+  if (this.pre !== null && this.pre !== undefined) {
+    output.writeFieldBegin('pre', Thrift.Type.LIST, 10);
+    output.writeListBegin(Thrift.Type.I64, this.pre.length);
+    for (var iter14 in this.pre)
+    {
+      if (this.pre.hasOwnProperty(iter14))
+      {
+        iter14 = this.pre[iter14];
+        output.writeI64(iter14);
+      }
+    }
+    output.writeListEnd();
+    output.writeFieldEnd();
+  }
+  if (this.install !== null && this.install !== undefined) {
+    output.writeFieldBegin('install', Thrift.Type.LIST, 11);
+    output.writeListBegin(Thrift.Type.I64, this.install.length);
+    for (var iter15 in this.install)
+    {
+      if (this.install.hasOwnProperty(iter15))
+      {
+        iter15 = this.install[iter15];
+        output.writeI64(iter15);
+      }
+    }
+    output.writeListEnd();
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+RequirePackageStruct = module.exports.RequirePackageStruct = function(args) {
+  this.id = null;
+  this.name = null;
+  this.android_version = null;
+  this.root = null;
+  this.pre = null;
+  this.install = null;
+  if (args) {
+    if (args.id !== undefined && args.id !== null) {
+      this.id = args.id;
+    }
+    if (args.name !== undefined && args.name !== null) {
+      this.name = args.name;
+    }
+    if (args.android_version !== undefined && args.android_version !== null) {
+      this.android_version = args.android_version;
+    }
+    if (args.root !== undefined && args.root !== null) {
+      this.root = args.root;
+    }
+    if (args.pre !== undefined && args.pre !== null) {
+      this.pre = Thrift.copyList(args.pre, [null]);
+    }
+    if (args.install !== undefined && args.install !== null) {
+      this.install = Thrift.copyList(args.install, [null]);
+    }
+  }
+};
+RequirePackageStruct.prototype = {};
+RequirePackageStruct.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.I64) {
+        this.id = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.name = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.STRING) {
+        this.android_version = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 4:
+      if (ftype == Thrift.Type.BOOL) {
+        this.root = input.readBool();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 5:
+      if (ftype == Thrift.Type.LIST) {
+        var _size16 = 0;
+        var _rtmp320;
+        this.pre = [];
+        var _etype19 = 0;
+        _rtmp320 = input.readListBegin();
+        _etype19 = _rtmp320.etype;
+        _size16 = _rtmp320.size;
+        for (var _i21 = 0; _i21 < _size16; ++_i21)
+        {
+          var elem22 = null;
+          elem22 = input.readI64();
+          this.pre.push(elem22);
+        }
+        input.readListEnd();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 6:
+      if (ftype == Thrift.Type.LIST) {
+        var _size23 = 0;
+        var _rtmp327;
+        this.install = [];
+        var _etype26 = 0;
+        _rtmp327 = input.readListBegin();
+        _etype26 = _rtmp327.etype;
+        _size23 = _rtmp327.size;
+        for (var _i28 = 0; _i28 < _size23; ++_i28)
+        {
+          var elem29 = null;
+          elem29 = input.readI64();
+          this.install.push(elem29);
+        }
+        input.readListEnd();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+RequirePackageStruct.prototype.write = function(output) {
+  output.writeStructBegin('RequirePackageStruct');
+  if (this.id !== null && this.id !== undefined) {
+    output.writeFieldBegin('id', Thrift.Type.I64, 1);
+    output.writeI64(this.id);
+    output.writeFieldEnd();
+  }
+  if (this.name !== null && this.name !== undefined) {
+    output.writeFieldBegin('name', Thrift.Type.STRING, 2);
+    output.writeString(this.name);
+    output.writeFieldEnd();
+  }
+  if (this.android_version !== null && this.android_version !== undefined) {
+    output.writeFieldBegin('android_version', Thrift.Type.STRING, 3);
+    output.writeString(this.android_version);
+    output.writeFieldEnd();
+  }
+  if (this.root !== null && this.root !== undefined) {
+    output.writeFieldBegin('root', Thrift.Type.BOOL, 4);
+    output.writeBool(this.root);
+    output.writeFieldEnd();
+  }
+  if (this.pre !== null && this.pre !== undefined) {
+    output.writeFieldBegin('pre', Thrift.Type.LIST, 5);
+    output.writeListBegin(Thrift.Type.I64, this.pre.length);
+    for (var iter30 in this.pre)
+    {
+      if (this.pre.hasOwnProperty(iter30))
+      {
+        iter30 = this.pre[iter30];
+        output.writeI64(iter30);
+      }
+    }
+    output.writeListEnd();
+    output.writeFieldEnd();
+  }
+  if (this.install !== null && this.install !== undefined) {
+    output.writeFieldBegin('install', Thrift.Type.LIST, 6);
+    output.writeListBegin(Thrift.Type.I64, this.install.length);
+    for (var iter31 in this.install)
+    {
+      if (this.install.hasOwnProperty(iter31))
+      {
+        iter31 = this.install[iter31];
+        output.writeI64(iter31);
+      }
+    }
+    output.writeListEnd();
     output.writeFieldEnd();
   }
   output.writeFieldStop();

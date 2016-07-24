@@ -51,6 +51,7 @@ require.config({
         'fileinput': '/plugins/fileinput/js/fileinput.min',
         'fileupload': '/plugins/ajaxfileupload',
         'bootstrap-upload': '/plugins/bootstrap-fileupload.min',
+        'select2': '/plugins/select2/select2.min',
 
         // service
         'userService': 'service/UserService',
@@ -59,7 +60,12 @@ require.config({
         'appService': 'service/AppService',
         'appActiveService': 'service/AppActiveService',
         'modelMgrService': 'service/ModelMgrService',
-        'resourcesService': 'service/ResourcesService'
+        'resourcesService': 'service/ResourcesService',
+        'appRequireService': 'service/AppRequireService',
+        'appWhiteService': 'service/AppWhiteService',
+        'appPackageService': 'service/AppPackageService',
+        'requirePackageService': 'service/RequirePackageService',
+        'packageService': 'service/PackageService'
     },
     shim: {
         'jquery-tmpl': ['jquery'],
@@ -75,6 +81,7 @@ require.config({
         'datatables-tabletools': ['datatables'],
         'fileinput': ['jquery'],
         'fileupload': ['jquery'],
-        'bootstrap-upload': ['bootstrap']
+        'bootstrap-upload': ['bootstrap'],
+        'select2': ['jquery', 'bootstrap']
     }
 });

@@ -1587,6 +1587,477 @@ ModelMgrService_baseVersionByPage_result.prototype.write = function(output) {
   return;
 };
 
+ModelMgrService_brandList_args = function(args) {
+};
+ModelMgrService_brandList_args.prototype = {};
+ModelMgrService_brandList_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    input.skip(ftype);
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+ModelMgrService_brandList_args.prototype.write = function(output) {
+  output.writeStructBegin('ModelMgrService_brandList_args');
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+ModelMgrService_brandList_result = function(args) {
+  this.success = null;
+  this.ex = null;
+  if (args instanceof PublicStruct_ttypes.InvalidOperation) {
+    this.ex = args;
+    return;
+  }
+  if (args) {
+    if (args.success !== undefined && args.success !== null) {
+      this.success = args.success;
+    }
+    if (args.ex !== undefined && args.ex !== null) {
+      this.ex = args.ex;
+    }
+  }
+};
+ModelMgrService_brandList_result.prototype = {};
+ModelMgrService_brandList_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.STRING) {
+        this.success = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.ex = new PublicStruct_ttypes.InvalidOperation();
+        this.ex.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+ModelMgrService_brandList_result.prototype.write = function(output) {
+  output.writeStructBegin('ModelMgrService_brandList_result');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.STRING, 0);
+    output.writeString(this.success);
+    output.writeFieldEnd();
+  }
+  if (this.ex !== null && this.ex !== undefined) {
+    output.writeFieldBegin('ex', Thrift.Type.STRUCT, 1);
+    this.ex.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+ModelMgrService_modelList_args = function(args) {
+  this.brand = null;
+  if (args) {
+    if (args.brand !== undefined && args.brand !== null) {
+      this.brand = args.brand;
+    }
+  }
+};
+ModelMgrService_modelList_args.prototype = {};
+ModelMgrService_modelList_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.I64) {
+        this.brand = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+ModelMgrService_modelList_args.prototype.write = function(output) {
+  output.writeStructBegin('ModelMgrService_modelList_args');
+  if (this.brand !== null && this.brand !== undefined) {
+    output.writeFieldBegin('brand', Thrift.Type.I64, 1);
+    output.writeI64(this.brand);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+ModelMgrService_modelList_result = function(args) {
+  this.success = null;
+  this.ex = null;
+  if (args instanceof PublicStruct_ttypes.InvalidOperation) {
+    this.ex = args;
+    return;
+  }
+  if (args) {
+    if (args.success !== undefined && args.success !== null) {
+      this.success = args.success;
+    }
+    if (args.ex !== undefined && args.ex !== null) {
+      this.ex = args.ex;
+    }
+  }
+};
+ModelMgrService_modelList_result.prototype = {};
+ModelMgrService_modelList_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.STRING) {
+        this.success = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.ex = new PublicStruct_ttypes.InvalidOperation();
+        this.ex.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+ModelMgrService_modelList_result.prototype.write = function(output) {
+  output.writeStructBegin('ModelMgrService_modelList_result');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.STRING, 0);
+    output.writeString(this.success);
+    output.writeFieldEnd();
+  }
+  if (this.ex !== null && this.ex !== undefined) {
+    output.writeFieldBegin('ex', Thrift.Type.STRUCT, 1);
+    this.ex.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+ModelMgrService_versionList_args = function(args) {
+  this.model = null;
+  if (args) {
+    if (args.model !== undefined && args.model !== null) {
+      this.model = args.model;
+    }
+  }
+};
+ModelMgrService_versionList_args.prototype = {};
+ModelMgrService_versionList_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.I64) {
+        this.model = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+ModelMgrService_versionList_args.prototype.write = function(output) {
+  output.writeStructBegin('ModelMgrService_versionList_args');
+  if (this.model !== null && this.model !== undefined) {
+    output.writeFieldBegin('model', Thrift.Type.I64, 1);
+    output.writeI64(this.model);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+ModelMgrService_versionList_result = function(args) {
+  this.success = null;
+  this.ex = null;
+  if (args instanceof PublicStruct_ttypes.InvalidOperation) {
+    this.ex = args;
+    return;
+  }
+  if (args) {
+    if (args.success !== undefined && args.success !== null) {
+      this.success = args.success;
+    }
+    if (args.ex !== undefined && args.ex !== null) {
+      this.ex = args.ex;
+    }
+  }
+};
+ModelMgrService_versionList_result.prototype = {};
+ModelMgrService_versionList_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.STRING) {
+        this.success = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.ex = new PublicStruct_ttypes.InvalidOperation();
+        this.ex.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+ModelMgrService_versionList_result.prototype.write = function(output) {
+  output.writeStructBegin('ModelMgrService_versionList_result');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.STRING, 0);
+    output.writeString(this.success);
+    output.writeFieldEnd();
+  }
+  if (this.ex !== null && this.ex !== undefined) {
+    output.writeFieldBegin('ex', Thrift.Type.STRUCT, 1);
+    this.ex.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+ModelMgrService_baseVersionList_args = function(args) {
+  this.version = null;
+  if (args) {
+    if (args.version !== undefined && args.version !== null) {
+      this.version = args.version;
+    }
+  }
+};
+ModelMgrService_baseVersionList_args.prototype = {};
+ModelMgrService_baseVersionList_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.I64) {
+        this.version = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+ModelMgrService_baseVersionList_args.prototype.write = function(output) {
+  output.writeStructBegin('ModelMgrService_baseVersionList_args');
+  if (this.version !== null && this.version !== undefined) {
+    output.writeFieldBegin('version', Thrift.Type.I64, 1);
+    output.writeI64(this.version);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+ModelMgrService_baseVersionList_result = function(args) {
+  this.success = null;
+  this.ex = null;
+  if (args instanceof PublicStruct_ttypes.InvalidOperation) {
+    this.ex = args;
+    return;
+  }
+  if (args) {
+    if (args.success !== undefined && args.success !== null) {
+      this.success = args.success;
+    }
+    if (args.ex !== undefined && args.ex !== null) {
+      this.ex = args.ex;
+    }
+  }
+};
+ModelMgrService_baseVersionList_result.prototype = {};
+ModelMgrService_baseVersionList_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.STRING) {
+        this.success = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.ex = new PublicStruct_ttypes.InvalidOperation();
+        this.ex.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+ModelMgrService_baseVersionList_result.prototype.write = function(output) {
+  output.writeStructBegin('ModelMgrService_baseVersionList_result');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.STRING, 0);
+    output.writeString(this.success);
+    output.writeFieldEnd();
+  }
+  if (this.ex !== null && this.ex !== undefined) {
+    output.writeFieldBegin('ex', Thrift.Type.STRUCT, 1);
+    this.ex.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 ModelMgrServiceClient = exports.Client = function(output, pClass) {
     this.output = output;
     this.pClass = pClass;
@@ -2202,6 +2673,205 @@ ModelMgrServiceClient.prototype.recv_baseVersionByPage = function(input,mtype,rs
   }
   return callback('baseVersionByPage failed: unknown result');
 };
+ModelMgrServiceClient.prototype.brandList = function(callback) {
+  this._seqid = this.new_seqid();
+  if (callback === undefined) {
+    var _defer = Q.defer();
+    this._reqs[this.seqid()] = function(error, result) {
+      if (error) {
+        _defer.reject(error);
+      } else {
+        _defer.resolve(result);
+      }
+    };
+    this.send_brandList();
+    return _defer.promise;
+  } else {
+    this._reqs[this.seqid()] = callback;
+    this.send_brandList();
+  }
+};
+
+ModelMgrServiceClient.prototype.send_brandList = function() {
+  var output = new this.pClass(this.output);
+  output.writeMessageBegin('brandList', Thrift.MessageType.CALL, this.seqid());
+  var args = new ModelMgrService_brandList_args();
+  args.write(output);
+  output.writeMessageEnd();
+  return this.output.flush();
+};
+
+ModelMgrServiceClient.prototype.recv_brandList = function(input,mtype,rseqid) {
+  var callback = this._reqs[rseqid] || function() {};
+  delete this._reqs[rseqid];
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(input);
+    input.readMessageEnd();
+    return callback(x);
+  }
+  var result = new ModelMgrService_brandList_result();
+  result.read(input);
+  input.readMessageEnd();
+
+  if (null !== result.ex) {
+    return callback(result.ex);
+  }
+  if (null !== result.success) {
+    return callback(null, result.success);
+  }
+  return callback('brandList failed: unknown result');
+};
+ModelMgrServiceClient.prototype.modelList = function(brand, callback) {
+  this._seqid = this.new_seqid();
+  if (callback === undefined) {
+    var _defer = Q.defer();
+    this._reqs[this.seqid()] = function(error, result) {
+      if (error) {
+        _defer.reject(error);
+      } else {
+        _defer.resolve(result);
+      }
+    };
+    this.send_modelList(brand);
+    return _defer.promise;
+  } else {
+    this._reqs[this.seqid()] = callback;
+    this.send_modelList(brand);
+  }
+};
+
+ModelMgrServiceClient.prototype.send_modelList = function(brand) {
+  var output = new this.pClass(this.output);
+  output.writeMessageBegin('modelList', Thrift.MessageType.CALL, this.seqid());
+  var args = new ModelMgrService_modelList_args();
+  args.brand = brand;
+  args.write(output);
+  output.writeMessageEnd();
+  return this.output.flush();
+};
+
+ModelMgrServiceClient.prototype.recv_modelList = function(input,mtype,rseqid) {
+  var callback = this._reqs[rseqid] || function() {};
+  delete this._reqs[rseqid];
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(input);
+    input.readMessageEnd();
+    return callback(x);
+  }
+  var result = new ModelMgrService_modelList_result();
+  result.read(input);
+  input.readMessageEnd();
+
+  if (null !== result.ex) {
+    return callback(result.ex);
+  }
+  if (null !== result.success) {
+    return callback(null, result.success);
+  }
+  return callback('modelList failed: unknown result');
+};
+ModelMgrServiceClient.prototype.versionList = function(model, callback) {
+  this._seqid = this.new_seqid();
+  if (callback === undefined) {
+    var _defer = Q.defer();
+    this._reqs[this.seqid()] = function(error, result) {
+      if (error) {
+        _defer.reject(error);
+      } else {
+        _defer.resolve(result);
+      }
+    };
+    this.send_versionList(model);
+    return _defer.promise;
+  } else {
+    this._reqs[this.seqid()] = callback;
+    this.send_versionList(model);
+  }
+};
+
+ModelMgrServiceClient.prototype.send_versionList = function(model) {
+  var output = new this.pClass(this.output);
+  output.writeMessageBegin('versionList', Thrift.MessageType.CALL, this.seqid());
+  var args = new ModelMgrService_versionList_args();
+  args.model = model;
+  args.write(output);
+  output.writeMessageEnd();
+  return this.output.flush();
+};
+
+ModelMgrServiceClient.prototype.recv_versionList = function(input,mtype,rseqid) {
+  var callback = this._reqs[rseqid] || function() {};
+  delete this._reqs[rseqid];
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(input);
+    input.readMessageEnd();
+    return callback(x);
+  }
+  var result = new ModelMgrService_versionList_result();
+  result.read(input);
+  input.readMessageEnd();
+
+  if (null !== result.ex) {
+    return callback(result.ex);
+  }
+  if (null !== result.success) {
+    return callback(null, result.success);
+  }
+  return callback('versionList failed: unknown result');
+};
+ModelMgrServiceClient.prototype.baseVersionList = function(version, callback) {
+  this._seqid = this.new_seqid();
+  if (callback === undefined) {
+    var _defer = Q.defer();
+    this._reqs[this.seqid()] = function(error, result) {
+      if (error) {
+        _defer.reject(error);
+      } else {
+        _defer.resolve(result);
+      }
+    };
+    this.send_baseVersionList(version);
+    return _defer.promise;
+  } else {
+    this._reqs[this.seqid()] = callback;
+    this.send_baseVersionList(version);
+  }
+};
+
+ModelMgrServiceClient.prototype.send_baseVersionList = function(version) {
+  var output = new this.pClass(this.output);
+  output.writeMessageBegin('baseVersionList', Thrift.MessageType.CALL, this.seqid());
+  var args = new ModelMgrService_baseVersionList_args();
+  args.version = version;
+  args.write(output);
+  output.writeMessageEnd();
+  return this.output.flush();
+};
+
+ModelMgrServiceClient.prototype.recv_baseVersionList = function(input,mtype,rseqid) {
+  var callback = this._reqs[rseqid] || function() {};
+  delete this._reqs[rseqid];
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(input);
+    input.readMessageEnd();
+    return callback(x);
+  }
+  var result = new ModelMgrService_baseVersionList_result();
+  result.read(input);
+  input.readMessageEnd();
+
+  if (null !== result.ex) {
+    return callback(result.ex);
+  }
+  if (null !== result.success) {
+    return callback(null, result.success);
+  }
+  return callback('baseVersionList failed: unknown result');
+};
 ModelMgrServiceProcessor = exports.Processor = function(handler) {
   this._handler = handler
 }
@@ -2692,6 +3362,166 @@ ModelMgrServiceProcessor.prototype.process_baseVersionByPage = function(seqid, i
       } else {
         var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
         output.writeMessageBegin("baseVersionByPage", Thrift.MessageType.EXCEPTION, seqid);
+      }
+      result.write(output);
+      output.writeMessageEnd();
+      output.flush();
+    });
+  }
+}
+
+ModelMgrServiceProcessor.prototype.process_brandList = function(seqid, input, output) {
+  var args = new ModelMgrService_brandList_args();
+  args.read(input);
+  input.readMessageEnd();
+  if (this._handler.brandList.length === 0) {
+    Q.fcall(this._handler.brandList)
+      .then(function(result) {
+        var result = new ModelMgrService_brandList_result({success: result});
+        output.writeMessageBegin("brandList", Thrift.MessageType.REPLY, seqid);
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      }, function (err) {
+        if (err instanceof PublicStruct_ttypes.InvalidOperation) {
+          var result = new ModelMgrService_brandList_result(err);
+          output.writeMessageBegin("brandList", Thrift.MessageType.REPLY, seqid);
+        } else {
+          var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+          output.writeMessageBegin("brandList", Thrift.MessageType.EXCEPTION, seqid);
+        }
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      });
+  } else {
+    this._handler.brandList(function (err, result) {
+      if (err == null || err instanceof PublicStruct_ttypes.InvalidOperation) {
+        var result = new ModelMgrService_brandList_result((err != null ? err : {success: result}));
+        output.writeMessageBegin("brandList", Thrift.MessageType.REPLY, seqid);
+      } else {
+        var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+        output.writeMessageBegin("brandList", Thrift.MessageType.EXCEPTION, seqid);
+      }
+      result.write(output);
+      output.writeMessageEnd();
+      output.flush();
+    });
+  }
+}
+
+ModelMgrServiceProcessor.prototype.process_modelList = function(seqid, input, output) {
+  var args = new ModelMgrService_modelList_args();
+  args.read(input);
+  input.readMessageEnd();
+  if (this._handler.modelList.length === 1) {
+    Q.fcall(this._handler.modelList, args.brand)
+      .then(function(result) {
+        var result = new ModelMgrService_modelList_result({success: result});
+        output.writeMessageBegin("modelList", Thrift.MessageType.REPLY, seqid);
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      }, function (err) {
+        if (err instanceof PublicStruct_ttypes.InvalidOperation) {
+          var result = new ModelMgrService_modelList_result(err);
+          output.writeMessageBegin("modelList", Thrift.MessageType.REPLY, seqid);
+        } else {
+          var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+          output.writeMessageBegin("modelList", Thrift.MessageType.EXCEPTION, seqid);
+        }
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      });
+  } else {
+    this._handler.modelList(args.brand, function (err, result) {
+      if (err == null || err instanceof PublicStruct_ttypes.InvalidOperation) {
+        var result = new ModelMgrService_modelList_result((err != null ? err : {success: result}));
+        output.writeMessageBegin("modelList", Thrift.MessageType.REPLY, seqid);
+      } else {
+        var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+        output.writeMessageBegin("modelList", Thrift.MessageType.EXCEPTION, seqid);
+      }
+      result.write(output);
+      output.writeMessageEnd();
+      output.flush();
+    });
+  }
+}
+
+ModelMgrServiceProcessor.prototype.process_versionList = function(seqid, input, output) {
+  var args = new ModelMgrService_versionList_args();
+  args.read(input);
+  input.readMessageEnd();
+  if (this._handler.versionList.length === 1) {
+    Q.fcall(this._handler.versionList, args.model)
+      .then(function(result) {
+        var result = new ModelMgrService_versionList_result({success: result});
+        output.writeMessageBegin("versionList", Thrift.MessageType.REPLY, seqid);
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      }, function (err) {
+        if (err instanceof PublicStruct_ttypes.InvalidOperation) {
+          var result = new ModelMgrService_versionList_result(err);
+          output.writeMessageBegin("versionList", Thrift.MessageType.REPLY, seqid);
+        } else {
+          var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+          output.writeMessageBegin("versionList", Thrift.MessageType.EXCEPTION, seqid);
+        }
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      });
+  } else {
+    this._handler.versionList(args.model, function (err, result) {
+      if (err == null || err instanceof PublicStruct_ttypes.InvalidOperation) {
+        var result = new ModelMgrService_versionList_result((err != null ? err : {success: result}));
+        output.writeMessageBegin("versionList", Thrift.MessageType.REPLY, seqid);
+      } else {
+        var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+        output.writeMessageBegin("versionList", Thrift.MessageType.EXCEPTION, seqid);
+      }
+      result.write(output);
+      output.writeMessageEnd();
+      output.flush();
+    });
+  }
+}
+
+ModelMgrServiceProcessor.prototype.process_baseVersionList = function(seqid, input, output) {
+  var args = new ModelMgrService_baseVersionList_args();
+  args.read(input);
+  input.readMessageEnd();
+  if (this._handler.baseVersionList.length === 1) {
+    Q.fcall(this._handler.baseVersionList, args.version)
+      .then(function(result) {
+        var result = new ModelMgrService_baseVersionList_result({success: result});
+        output.writeMessageBegin("baseVersionList", Thrift.MessageType.REPLY, seqid);
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      }, function (err) {
+        if (err instanceof PublicStruct_ttypes.InvalidOperation) {
+          var result = new ModelMgrService_baseVersionList_result(err);
+          output.writeMessageBegin("baseVersionList", Thrift.MessageType.REPLY, seqid);
+        } else {
+          var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+          output.writeMessageBegin("baseVersionList", Thrift.MessageType.EXCEPTION, seqid);
+        }
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      });
+  } else {
+    this._handler.baseVersionList(args.version, function (err, result) {
+      if (err == null || err instanceof PublicStruct_ttypes.InvalidOperation) {
+        var result = new ModelMgrService_baseVersionList_result((err != null ? err : {success: result}));
+        output.writeMessageBegin("baseVersionList", Thrift.MessageType.REPLY, seqid);
+      } else {
+        var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+        output.writeMessageBegin("baseVersionList", Thrift.MessageType.EXCEPTION, seqid);
       }
       result.write(output);
       output.writeMessageEnd();

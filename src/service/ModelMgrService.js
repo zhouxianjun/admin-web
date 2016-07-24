@@ -39,6 +39,10 @@ module.exports = class ModelMgrService extends ThriftClient.referenceBean {
     modelByPage() {}
     versionByPage() {}
     baseVersionByPage() {}
+    brandList() {}
+    modelList() {}
+    versionList() {}
+    baseVersionList() {}
     get type() {
         return require('../thrift/ModelMgrService');
     }

@@ -28,28 +28,28 @@
 define(['jquery', 'util'], function ($, util) {
     return {
         listByPage: function(data){
-            return util.buildAjax('/app/listByPage', data);
+            return util.buildAjax('/appRequire/listByPage', data);
         },
         add: function(data){
-            return util.buildAjax('/app/add', data);
+            return util.buildAjax('/appRequire/add', data);
         },
         update: function(data){
-            return util.buildAjax('/app/update', data);
+            return util.buildAjax('/appRequire/update', data);
         },
         remove: function (data) {
-            return util.buildAjax('/app/remove', data);
+            return util.buildAjax('/appRequire/remove', data);
         },
         updateFile: function (data) {
-            return util.buildAjax('/app/updateFile', data);
+            return util.buildAjax('/appRequire/updateFile', data);
         },
         updateImg: function (data) {
-            return util.buildAjax('/app/updateImg', data);
+            return util.buildAjax('/appRequire/updateImg', data);
         },
         imgs: function (data) {
-            return util.buildAjax('/app/imgs', data);
+            return util.buildAjax('/appRequire/imgs', data);
         },
         allList: function (data) {
-            return util.buildAjax('/app/allList', data);
+            return util.buildAjax('/appRequire/allList', data);
         }
     };
 });

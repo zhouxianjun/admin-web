@@ -62,6 +62,18 @@ define(['jquery', 'util'], function ($, util) {
         },
         baseVersionByPage: function (data) {
             return util.buildAjax('/modelMgr/baseVersionByPage', data);
+        },
+        brandList: function (data) {
+            return util.buildAjax('/modelMgr/brandList', data);
+        },
+        modelList: function (data) {
+            return util.buildAjax('/modelMgr/modelList', data);
+        },
+        versionList: function (data) {
+            return util.buildAjax('/modelMgr/versionList', data);
+        },
+        baseVersionList: function (data) {
+            return util.buildAjax('/modelMgr/baseVersionList', data);
         }
     };
 });
