@@ -32,6 +32,7 @@ module.exports = class AppWhiteService extends ThriftClient.referenceBean {
     update() {}
     changeAppFile() {}
     remove() {}
+    allList() {}
     get type() {
         return require('../thrift/AppWhiteService');
     }

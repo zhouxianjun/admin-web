@@ -67,7 +67,8 @@ require.config({
         'requirePackageService': 'service/RequirePackageService',
         'packageService': 'service/PackageService',
         'rootConfigService': 'service/RootConfigService',
-        'pushService': 'service/PushService'
+        'pushService': 'service/PushService',
+        'installActiveService': 'service/InstallActiveService'
     },
     shim: {
         'jquery-tmpl': ['jquery'],

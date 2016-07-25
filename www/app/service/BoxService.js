@@ -38,6 +38,9 @@ define(['jquery', 'util'], function ($, util) {
         },
         remove: function (data) {
             return util.buildAjax('/box/remove', data);
+        },
+        allList: function (data) {
+            return util.buildAjax('/box/allList', data);
         }
     };
 });

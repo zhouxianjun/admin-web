@@ -25,7 +25,8 @@
  *           佛祖保佑       永无BUG
  */
 'use strict';
-require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'validator', 'slimScroll'], function ($, util, layer, PermissionsService, ko) {
+require(['jquery', 'util', 'layer', 'userService', 'permissionsService', 'boxService', 'appPackageService', 'requirePackageService', 'appWhiteService', 'installActiveService', 'ko', 'dhtmlx', 'validator', 'slimScroll', 'select2'],
+    function ($, util, layer, UserService, PermissionsService, BoxService, AppPackageService, RequirePackageService, AppWhiteService, InstallActiveService, ko) {
     var viewModel = {
         user: {
             id: ko.observable(),
@@ -40,10 +41,22 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'valid
             email: ko.observable(),
             pid: ko.observable()
         },
+        ref: {
+            box: null,
+            app_package: null,
+            require_package: null,
+            app_white: null,
+            install_active: null
+        },
         provinceText: ko.observable(),
         cityText: ko.observable(),
         provinceOptions: ko.observableArray(),
         cityOptions: ko.observableArray(),
+        boxOptions: ko.observableArray(),
+        appPackageOptions: ko.observableArray(),
+        requirePackageOptions: ko.observableArray(),
+        whiteOptions: ko.observableArray(),
+        activeOptions: ko.observableArray(),
         formTitle: ko.observable(''),
         statusOptions: ko.observableArray([{
             name: '启用',
@@ -63,6 +76,21 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'valid
         init: function () {
             viewModel.provinceOptions(util.loadProvinceList());
             viewModel.initKoSubscribe();
+            util.send(BoxService.allList()).then(function (response) {
+                viewModel.boxOptions(response.data.list);
+            });
+            util.send(AppPackageService.allList()).then(function (response) {
+                viewModel.appPackageOptions(response.data.list);
+            });
+            util.send(RequirePackageService.allList()).then(function (response) {
+                viewModel.requirePackageOptions(response.data.list);
+            });
+            util.send(AppWhiteService.allList()).then(function (response) {
+                viewModel.whiteOptions(response.data.list);
+            });
+            util.send(InstallActiveService.allList()).then(function (response) {
+                viewModel.activeOptions(response.data.list);
+            });
         },
         updateGrid: function (myTreeGrid, rowId) {
             myTreeGrid.cells(rowId, 1).setValue(viewModel.user.real_name());
@@ -257,6 +285,9 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'valid
                 },
                 user_email: {
                     validators: {
+                        notEmpty: {
+                            message: '不能为空'
+                        },
                         email: {
                             message: '请输入正确到邮箱地址'
                         }
@@ -275,6 +306,54 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'valid
                 height: '100%', //可滚动区域高度
                 disableFadeOut: true
             });
+        },
+        setRef: function (defer, select) {
+            util.send(defer).then(function (response) {
+                if (response.data.list && response.data.list.length) {
+                    var arr = [];
+                    for (var i = 0; i < response.data.list.length; i++) {
+                        arr.push(response.data.list[i].id);
+                    }
+                    $(select).val(arr).trigger('change');
+                }
+            });
+        },
+        openRefForm: function (id) {
+            var lwin = layer.open({
+                type: 1,
+                title: '关联资源',
+                area: ['500px', '400px'], //宽高
+                content: $('#layer_box').html(),
+                btn: ['确定', '取消'],
+                yes: function () {
+                    util.send(UserService.setRefs(ko.toJSON({
+                        box: viewModel.ref.box.val(),
+                        app_package: viewModel.ref.app_package.val(),
+                        require_package: viewModel.ref.require_package.val(),
+                        app_white: viewModel.ref.app_white.val(),
+                        install_active: viewModel.ref.install_active.val(),
+                        user: id
+                    }))).then(function () {
+                        layer.close(lwin);
+                    });
+                }
+            });
+            ko.applyBindings(viewModel, $('#setRefForm')[0]);
+            $('#setRefForm').slimScroll({
+                height: '100%', //可滚动区域高度
+                disableFadeOut: true
+            });
+            viewModel.ref.box = $('#box_select').select2();
+            viewModel.ref.app_package = $('#app_package_select').select2();
+            viewModel.ref.require_package = $('#require_package_select').select2();
+            viewModel.ref.app_white = $('#white_select').select2();
+            viewModel.ref.install_active = $('#active_select').select2();
+
+            viewModel.setRef(BoxService.allList(ko.toJSON({user: id})), '#box_select');
+            viewModel.setRef(AppPackageService.allList(ko.toJSON({user: id})), '#app_package_select');
+            viewModel.setRef(RequirePackageService.allList(ko.toJSON({user: id})), '#require_package_select');
+            viewModel.setRef(AppWhiteService.allList(ko.toJSON({user: id})), '#white_select');
+            viewModel.setRef(InstallActiveService.allList(ko.toJSON({user: id})), '#active_select');
         }
     };
     viewModel.init();
@@ -286,6 +365,8 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'valid
         myTreeGrid.setColumnIds('id,real_name,company,email,tree,username,name,phone,province_id,city_id,status,create_time');
         myTreeGrid.setColAlign('left,left,left,left,left,center,center,center,center,center,center,center');
         myTreeGrid.setColTypes('ro,ro,ro,ro,tree,ro,ro,ro,combo,combo,combo,ltro');
+        myTreeGrid.setInitWidths("*,*,*,*,*,*,*,*,*,*,*,140");
+        myTreeGrid.enableResizing('false,false,false,false,false,false,false,false,false,false,false,false');
         myTreeGrid.setColumnHidden(0, true);
         myTreeGrid.setColumnHidden(1, true);
         myTreeGrid.setColumnHidden(2, true);
@@ -293,7 +374,7 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'valid
         myTreeGrid.enableDragAndDrop(true);
         myTreeGrid.enableTreeGridLines();
         myTreeGrid.enableTreeCellEdit(false);
-        myTreeGrid.enableAutoHeight(true, 0, true);
+        myTreeGrid.enableAutoHeight(false);
         myTreeGrid.setEditable(false);
         var menu = new dhtmlXMenuObject({
             icons_path: '/plugins/dhtmlx/imgs/dhxmenu_skyblue/',
@@ -301,7 +382,9 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'valid
             items: [
                 {id: 'add', text: '新增'},
                 {id: 'update', text: '修改'},
-                {id: 'setRole', text: '配置角色'}
+                {id: 'setRole', text: '配置角色'},
+                {type: 'separator'},
+                {id: 'setRef', text: '资源关联'}
             ]
         });
         menu.attachEvent("onClick", function(id, zoneId, cas) {
@@ -314,6 +397,8 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'valid
                 viewModel.openUserForm(true, rowId, myTreeGrid, myId);
             } else if (id == 'setRole') {
                 viewModel.openRoles(myId);
+            } else if (id == 'setRef') {
+                viewModel.openRefForm(myId);
             }
             myTreeGrid.selectRowById(rowId);
         });

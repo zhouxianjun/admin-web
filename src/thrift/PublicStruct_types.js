@@ -2985,6 +2985,104 @@ PushStruct.prototype.write = function(output) {
   return;
 };
 
+InstallActiveStruct = module.exports.InstallActiveStruct = function(args) {
+  this.id = null;
+  this.name = null;
+  this.memo = null;
+  this.hours = null;
+  if (args) {
+    if (args.id !== undefined && args.id !== null) {
+      this.id = args.id;
+    }
+    if (args.name !== undefined && args.name !== null) {
+      this.name = args.name;
+    }
+    if (args.memo !== undefined && args.memo !== null) {
+      this.memo = args.memo;
+    }
+    if (args.hours !== undefined && args.hours !== null) {
+      this.hours = args.hours;
+    }
+  }
+};
+InstallActiveStruct.prototype = {};
+InstallActiveStruct.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.I64) {
+        this.id = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.name = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.STRING) {
+        this.memo = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 4:
+      if (ftype == Thrift.Type.I32) {
+        this.hours = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+InstallActiveStruct.prototype.write = function(output) {
+  output.writeStructBegin('InstallActiveStruct');
+  if (this.id !== null && this.id !== undefined) {
+    output.writeFieldBegin('id', Thrift.Type.I64, 1);
+    output.writeI64(this.id);
+    output.writeFieldEnd();
+  }
+  if (this.name !== null && this.name !== undefined) {
+    output.writeFieldBegin('name', Thrift.Type.STRING, 2);
+    output.writeString(this.name);
+    output.writeFieldEnd();
+  }
+  if (this.memo !== null && this.memo !== undefined) {
+    output.writeFieldBegin('memo', Thrift.Type.STRING, 3);
+    output.writeString(this.memo);
+    output.writeFieldEnd();
+  }
+  if (this.hours !== null && this.hours !== undefined) {
+    output.writeFieldBegin('hours', Thrift.Type.I32, 4);
+    output.writeI32(this.hours);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 InvalidOperation = module.exports.InvalidOperation = function(args) {
   Thrift.TException.call(this, "InvalidOperation")
   this.name = "InvalidOperation"

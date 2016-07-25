@@ -25,17 +25,17 @@
  *           佛祖保佑       永无BUG
  */
 'use strict';
-const appPackageService = require('../service/AppPackageService').instance();
+const installActiveService = require('../service/InstallActiveService').instance();
 const Result = require('../dto/Result');
 const Utils = require('../util/Utils');
 const PublicStruct = require('../thrift/PublicStruct_types');
 module.exports = class {
     static get path() {
-        return '/appPackage';
+        return '/installActive';
     }
     * add() {
         let params = this.request.body;
-        let res = yield appPackageService.add(new PublicStruct.AppPackageStruct(params));
+        let res = yield installActiveService.add(new PublicStruct.InstallActiveStruct(params));
         Utils.writeResult(this, new Result(res ? true : false, {
             key: 'id',
             value: res.toNumber()
@@ -43,49 +43,28 @@ module.exports = class {
     }
     * update() {
         let params = this.request.body;
-        let res = yield appPackageService.update(new PublicStruct.AppPackageStruct(params));
+        let res = yield installActiveService.update(new PublicStruct.InstallActiveStruct(params));
         Utils.writeResult(this, new Result(res ? true : false));
     }
     * listByPage() {
         let params = this.request.body;
-        let res = yield appPackageService.listByPage(new PublicStruct.PageParamStruct(params));
+        let res = yield installActiveService.listByPage(new PublicStruct.PageParamStruct(params));
         Utils.writeResult(this, new Result(true, {
             key: 'list',
             value: res
-        }));
-    }
-    * listAppByPage() {
-        let params = this.request.body;
-        let res = yield appPackageService.listAppByPage(new PublicStruct.PageParamStruct(params), params.type, params.id);
-        Utils.writeResult(this, new Result(true, {
-            key: 'list',
-            value: res
-        }));
-    }
-    * remove() {
-        let params = this.request.body;
-        let res = yield appPackageService.remove(params.id);
-        Utils.writeResult(this, new Result(res ? true : false));
-    }
-    * removeApp() {
-        let params = this.request.body;
-        let res = yield appPackageService.removeApp(params.id, params.app, params.type);
-        Utils.writeResult(this, new Result(res ? true : false));
-    }
-    * appAllList() {
-        let params = this.request.body;
-        let res = yield appPackageService.appAllList(params.id, params.type);
-        Utils.writeResult(this, new Result(true, {
-            key: 'list',
-            value: JSON.parse(res)
         }));
     }
     * allList() {
         let params = this.request.body;
-        let res = yield appPackageService.allList(params.user || this.session.user.id);
+        let res = yield installActiveService.allList(params.user || this.session.user.id);
         Utils.writeResult(this, new Result(true, {
             key: 'list',
             value: JSON.parse(res)
         }));
+    }
+    * remove() {
+        let params = this.request.body;
+        let res = yield installActiveService.remove(params.id);
+        Utils.writeResult(this, new Result(res ? true : false));
     }
 };

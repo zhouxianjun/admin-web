@@ -32,6 +32,7 @@ module.exports = class BoxService extends ThriftClient.referenceBean {
     update() {}
     updateVersion() {}
     remove() {}
+    allList() {}
     get type() {
         return require('../thrift/BoxService');
     }

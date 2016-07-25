@@ -27,7 +27,9 @@
 'use strict';
 const userService = require('../service/UserService').instance();
 const interfaceService = require('../service/InterfaceService').instance();
+const userRefService = require('../service/UserRefService').instance();
 const Result = require('../dto/Result');
+const Utils = require('../util/Utils');
 module.exports = class {
     static get path() {
         return '/user';
@@ -52,5 +54,23 @@ module.exports = class {
         } else {
             this.redirect('/pages/login.html?error=500');
         }
+    }
+    * setRef() {
+        let param = this.request.body;
+        if (!param.user || !param.type) {
+            this.throw(400);
+            return;
+        }
+        let res = yield userRefService.setRef(param.user, param.refs, param.type);
+        Utils.writeResult(this, new Result(res));
+    }
+    * setRefs() {
+        let param = this.request.body;
+        if (!param.user) {
+            this.throw(400);
+            return;
+        }
+        let res = yield userRefService.setRefs(param.user, param.box, param.app_package, param.require_package, param.app_white, param.install_active);
+        Utils.writeResult(this, new Result(res));
     }
 };

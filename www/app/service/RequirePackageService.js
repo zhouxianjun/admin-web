@@ -47,6 +47,9 @@ define(['jquery', 'util'], function ($, util) {
         },
         appAllList: function (data) {
             return util.buildAjax('/requirePackage/appAllList', data);
+        },
+        allList: function (data) {
+            return util.buildAjax('/requirePackage/allList', data);
         }
     };
 });

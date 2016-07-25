@@ -28,22 +28,19 @@
 define(['jquery', 'util'], function ($, util) {
     return {
         listByPage: function(data){
-            return util.buildAjax('/appWhite/listByPage', data);
+            return util.buildAjax('/installActive/listByPage', data);
         },
         add: function(data){
-            return util.buildAjax('/appWhite/add', data);
+            return util.buildAjax('/installActive/add', data);
         },
         update: function(data){
-            return util.buildAjax('/appWhite/update', data);
+            return util.buildAjax('/installActive/update', data);
         },
         remove: function (data) {
-            return util.buildAjax('/appWhite/remove', data);
-        },
-        updateFile: function (data) {
-            return util.buildAjax('/appWhite/updateFile', data);
+            return util.buildAjax('/installActive/remove', data);
         },
         allList: function (data) {
-            return util.buildAjax('/appWhite/allList', data);
+            return util.buildAjax('/installActive/allList', data);
         }
     };
 });

@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="../dist/font-awesome/css/font-awesome.min.css">
     <!-- Ionicons -->
     <link rel="stylesheet" href="../dist/ionicons/css/ionicons.min.css">
+    <link rel="stylesheet" href="../plugins/select2/select2.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
     <link rel="stylesheet" href="../dist/css/m.css">
@@ -31,7 +32,7 @@
     </div>
     <div class="panel-body">
         <legend>用户信息</legend>
-        <div id="tree_user" style="max-height: 650px;width: 99%;height: 400px;overflow: hidden"></div>
+        <div id="tree_user" style="max-height: 650px;width: 100%;height: 400px;overflow: hidden"></div>
     </div>
 </div>
 <script type="text/html" id="layer_add_user">
@@ -66,14 +67,14 @@
                     <label for="user_real_name" class="col-sm-3 control-label">真实姓名</label>
 
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" name="user_real_name" data-bind="user.real_name" id="user_real_name" placeholder="真实姓名">
+                        <input type="text" class="form-control" name="user_real_name" data-bind="value: user.real_name" id="user_real_name" placeholder="真实姓名">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="user_company" class="col-sm-3 control-label">公司名称</label>
 
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" name="user_company" data-bind="user.company" id="user_company" placeholder="公司名称">
+                        <input type="text" class="form-control" name="user_company" data-bind="value: user.company" id="user_company" placeholder="公司名称">
                     </div>
                 </div>
                 <div class="form-group">
@@ -88,10 +89,10 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="user_email" class="col-sm-3 control-label">邮箱</label>
+                    <label for="user_email" class="col-sm-3 control-label"><span class="icon-require">*</span>邮箱</label>
 
                     <div class="col-sm-8">
-                        <input type="email" class="form-control" name="user_email" data-bind="user.email" id="user_email" placeholder="邮箱地址">
+                        <input type="email" class="form-control" name="user_email" data-bind="value: user.email" id="user_email" placeholder="邮箱地址">
                     </div>
                 </div>
                 <div class="form-group">
@@ -110,6 +111,45 @@
 </script>
 <script type="text/html" id="show_roles">
     <div id="roles_list" style="padding-top: 10px;margin-left: 8px;"></div>
+</script>
+<script type="text/html" id="layer_box">
+    <div class="box box-info" style="overflow: hidden" id="setRefForm">
+        <!-- form start -->
+        <form class="form-horizontal">
+            <div class="box-body">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">盒子</label>
+                    <div class="col-sm-8">
+                        <select id="box_select" class="form-control select2" multiple="multiple" style="width: 100%;" data-bind="options:boxOptions,optionsText:'box_id',optionsValue:'id'"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">应用包</label>
+                    <div class="col-sm-8">
+                        <select id="app_package_select" class="form-control select2" multiple="multiple" style="width: 100%;" data-bind="options:appPackageOptions,optionsText:'name',optionsValue:'id'"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">必刷包</label>
+                    <div class="col-sm-8">
+                        <select id="require_package_select" class="form-control select2" multiple="multiple" style="width: 100%;" data-bind="options:requirePackageOptions,optionsText:'name',optionsValue:'id'"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">白名单</label>
+                    <div class="col-sm-8">
+                        <select id="white_select" class="form-control select2" multiple="multiple" style="width: 100%;" data-bind="options:whiteOptions,optionsText:'name',optionsValue:'id'"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">激活策略</label>
+                    <div class="col-sm-8">
+                        <select id="active_select" class="form-control select2" multiple="multiple" style="width: 100%;" data-bind="options:activeOptions,optionsText:'name',optionsValue:'id'"></select>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
 </script>
 </body>
 <script src="../plugins/require.js"></script>

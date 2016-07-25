@@ -47,6 +47,9 @@ define(['jquery', 'util'], function ($, util) {
         },
         listAppByPage: function (data) {
             return util.buildAjax('/appPackage/listAppByPage', data);
+        },
+        allList: function (data) {
+            return util.buildAjax('/appPackage/allList', data);
         }
     };
 });

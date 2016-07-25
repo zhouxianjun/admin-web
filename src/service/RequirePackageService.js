@@ -34,6 +34,7 @@ module.exports = class RequirePackageService extends ThriftClient.referenceBean 
     listAppByPage() {}
     removeApp() {}
     appAllList() {}
+    allList() {}
     get type() {
         return require('../thrift/RequirePackageService');
     }

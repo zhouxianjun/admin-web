@@ -64,4 +64,12 @@ module.exports = class {
         let res = yield appWhiteService.remove(params.id);
         Utils.writeResult(this, new Result(res ? true : false));
     }
+    * allList() {
+        let params = this.request.body;
+        let res = yield appWhiteService.allList(params.user || this.session.user.id);
+        Utils.writeResult(this, new Result(true, {
+            key: 'list',
+            value: JSON.parse(res)
+        }));
+    }
 };

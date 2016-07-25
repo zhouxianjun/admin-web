@@ -10,19 +10,19 @@ var Q = thrift.Q;
 var PublicStruct_ttypes = require('./PublicStruct_types')
 
 
-var ttypes = require('./AppWhiteService_types');
+var ttypes = require('./InstallActiveService_types');
 //HELPER FUNCTIONS AND STRUCTURES
 
-AppWhiteService_add_args = function(args) {
+InstallActiveService_add_args = function(args) {
   this.bean = null;
   if (args) {
     if (args.bean !== undefined && args.bean !== null) {
-      this.bean = new PublicStruct_ttypes.AppWhiteStruct(args.bean);
+      this.bean = new PublicStruct_ttypes.InstallActiveStruct(args.bean);
     }
   }
 };
-AppWhiteService_add_args.prototype = {};
-AppWhiteService_add_args.prototype.read = function(input) {
+InstallActiveService_add_args.prototype = {};
+InstallActiveService_add_args.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -37,7 +37,7 @@ AppWhiteService_add_args.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.bean = new PublicStruct_ttypes.AppWhiteStruct();
+        this.bean = new PublicStruct_ttypes.InstallActiveStruct();
         this.bean.read(input);
       } else {
         input.skip(ftype);
@@ -55,8 +55,8 @@ AppWhiteService_add_args.prototype.read = function(input) {
   return;
 };
 
-AppWhiteService_add_args.prototype.write = function(output) {
-  output.writeStructBegin('AppWhiteService_add_args');
+InstallActiveService_add_args.prototype.write = function(output) {
+  output.writeStructBegin('InstallActiveService_add_args');
   if (this.bean !== null && this.bean !== undefined) {
     output.writeFieldBegin('bean', Thrift.Type.STRUCT, 1);
     this.bean.write(output);
@@ -67,7 +67,7 @@ AppWhiteService_add_args.prototype.write = function(output) {
   return;
 };
 
-AppWhiteService_add_result = function(args) {
+InstallActiveService_add_result = function(args) {
   this.success = null;
   this.ex = null;
   if (args instanceof PublicStruct_ttypes.InvalidOperation) {
@@ -83,8 +83,8 @@ AppWhiteService_add_result = function(args) {
     }
   }
 };
-AppWhiteService_add_result.prototype = {};
-AppWhiteService_add_result.prototype.read = function(input) {
+InstallActiveService_add_result.prototype = {};
+InstallActiveService_add_result.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -121,8 +121,8 @@ AppWhiteService_add_result.prototype.read = function(input) {
   return;
 };
 
-AppWhiteService_add_result.prototype.write = function(output) {
-  output.writeStructBegin('AppWhiteService_add_result');
+InstallActiveService_add_result.prototype.write = function(output) {
+  output.writeStructBegin('InstallActiveService_add_result');
   if (this.success !== null && this.success !== undefined) {
     output.writeFieldBegin('success', Thrift.Type.I64, 0);
     output.writeI64(this.success);
@@ -138,16 +138,16 @@ AppWhiteService_add_result.prototype.write = function(output) {
   return;
 };
 
-AppWhiteService_update_args = function(args) {
+InstallActiveService_update_args = function(args) {
   this.bean = null;
   if (args) {
     if (args.bean !== undefined && args.bean !== null) {
-      this.bean = new PublicStruct_ttypes.AppWhiteStruct(args.bean);
+      this.bean = new PublicStruct_ttypes.InstallActiveStruct(args.bean);
     }
   }
 };
-AppWhiteService_update_args.prototype = {};
-AppWhiteService_update_args.prototype.read = function(input) {
+InstallActiveService_update_args.prototype = {};
+InstallActiveService_update_args.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -162,7 +162,7 @@ AppWhiteService_update_args.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.bean = new PublicStruct_ttypes.AppWhiteStruct();
+        this.bean = new PublicStruct_ttypes.InstallActiveStruct();
         this.bean.read(input);
       } else {
         input.skip(ftype);
@@ -180,8 +180,8 @@ AppWhiteService_update_args.prototype.read = function(input) {
   return;
 };
 
-AppWhiteService_update_args.prototype.write = function(output) {
-  output.writeStructBegin('AppWhiteService_update_args');
+InstallActiveService_update_args.prototype.write = function(output) {
+  output.writeStructBegin('InstallActiveService_update_args');
   if (this.bean !== null && this.bean !== undefined) {
     output.writeFieldBegin('bean', Thrift.Type.STRUCT, 1);
     this.bean.write(output);
@@ -192,7 +192,7 @@ AppWhiteService_update_args.prototype.write = function(output) {
   return;
 };
 
-AppWhiteService_update_result = function(args) {
+InstallActiveService_update_result = function(args) {
   this.success = null;
   this.ex = null;
   if (args instanceof PublicStruct_ttypes.InvalidOperation) {
@@ -208,8 +208,8 @@ AppWhiteService_update_result = function(args) {
     }
   }
 };
-AppWhiteService_update_result.prototype = {};
-AppWhiteService_update_result.prototype.read = function(input) {
+InstallActiveService_update_result.prototype = {};
+InstallActiveService_update_result.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -246,8 +246,8 @@ AppWhiteService_update_result.prototype.read = function(input) {
   return;
 };
 
-AppWhiteService_update_result.prototype.write = function(output) {
-  output.writeStructBegin('AppWhiteService_update_result');
+InstallActiveService_update_result.prototype.write = function(output) {
+  output.writeStructBegin('InstallActiveService_update_result');
   if (this.success !== null && this.success !== undefined) {
     output.writeFieldBegin('success', Thrift.Type.BOOL, 0);
     output.writeBool(this.success);
@@ -263,7 +263,7 @@ AppWhiteService_update_result.prototype.write = function(output) {
   return;
 };
 
-AppWhiteService_remove_args = function(args) {
+InstallActiveService_remove_args = function(args) {
   this.id = null;
   if (args) {
     if (args.id !== undefined && args.id !== null) {
@@ -271,8 +271,8 @@ AppWhiteService_remove_args = function(args) {
     }
   }
 };
-AppWhiteService_remove_args.prototype = {};
-AppWhiteService_remove_args.prototype.read = function(input) {
+InstallActiveService_remove_args.prototype = {};
+InstallActiveService_remove_args.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -304,8 +304,8 @@ AppWhiteService_remove_args.prototype.read = function(input) {
   return;
 };
 
-AppWhiteService_remove_args.prototype.write = function(output) {
-  output.writeStructBegin('AppWhiteService_remove_args');
+InstallActiveService_remove_args.prototype.write = function(output) {
+  output.writeStructBegin('InstallActiveService_remove_args');
   if (this.id !== null && this.id !== undefined) {
     output.writeFieldBegin('id', Thrift.Type.I64, 1);
     output.writeI64(this.id);
@@ -316,7 +316,7 @@ AppWhiteService_remove_args.prototype.write = function(output) {
   return;
 };
 
-AppWhiteService_remove_result = function(args) {
+InstallActiveService_remove_result = function(args) {
   this.success = null;
   this.ex = null;
   if (args instanceof PublicStruct_ttypes.InvalidOperation) {
@@ -332,8 +332,8 @@ AppWhiteService_remove_result = function(args) {
     }
   }
 };
-AppWhiteService_remove_result.prototype = {};
-AppWhiteService_remove_result.prototype.read = function(input) {
+InstallActiveService_remove_result.prototype = {};
+InstallActiveService_remove_result.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -370,8 +370,8 @@ AppWhiteService_remove_result.prototype.read = function(input) {
   return;
 };
 
-AppWhiteService_remove_result.prototype.write = function(output) {
-  output.writeStructBegin('AppWhiteService_remove_result');
+InstallActiveService_remove_result.prototype.write = function(output) {
+  output.writeStructBegin('InstallActiveService_remove_result');
   if (this.success !== null && this.success !== undefined) {
     output.writeFieldBegin('success', Thrift.Type.BOOL, 0);
     output.writeBool(this.success);
@@ -387,7 +387,7 @@ AppWhiteService_remove_result.prototype.write = function(output) {
   return;
 };
 
-AppWhiteService_listByPage_args = function(args) {
+InstallActiveService_listByPage_args = function(args) {
   this.page = null;
   if (args) {
     if (args.page !== undefined && args.page !== null) {
@@ -395,8 +395,8 @@ AppWhiteService_listByPage_args = function(args) {
     }
   }
 };
-AppWhiteService_listByPage_args.prototype = {};
-AppWhiteService_listByPage_args.prototype.read = function(input) {
+InstallActiveService_listByPage_args.prototype = {};
+InstallActiveService_listByPage_args.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -429,8 +429,8 @@ AppWhiteService_listByPage_args.prototype.read = function(input) {
   return;
 };
 
-AppWhiteService_listByPage_args.prototype.write = function(output) {
-  output.writeStructBegin('AppWhiteService_listByPage_args');
+InstallActiveService_listByPage_args.prototype.write = function(output) {
+  output.writeStructBegin('InstallActiveService_listByPage_args');
   if (this.page !== null && this.page !== undefined) {
     output.writeFieldBegin('page', Thrift.Type.STRUCT, 1);
     this.page.write(output);
@@ -441,7 +441,7 @@ AppWhiteService_listByPage_args.prototype.write = function(output) {
   return;
 };
 
-AppWhiteService_listByPage_result = function(args) {
+InstallActiveService_listByPage_result = function(args) {
   this.success = null;
   this.ex = null;
   if (args instanceof PublicStruct_ttypes.InvalidOperation) {
@@ -457,8 +457,8 @@ AppWhiteService_listByPage_result = function(args) {
     }
   }
 };
-AppWhiteService_listByPage_result.prototype = {};
-AppWhiteService_listByPage_result.prototype.read = function(input) {
+InstallActiveService_listByPage_result.prototype = {};
+InstallActiveService_listByPage_result.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -496,8 +496,8 @@ AppWhiteService_listByPage_result.prototype.read = function(input) {
   return;
 };
 
-AppWhiteService_listByPage_result.prototype.write = function(output) {
-  output.writeStructBegin('AppWhiteService_listByPage_result');
+InstallActiveService_listByPage_result.prototype.write = function(output) {
+  output.writeStructBegin('InstallActiveService_listByPage_result');
   if (this.success !== null && this.success !== undefined) {
     output.writeFieldBegin('success', Thrift.Type.STRUCT, 0);
     this.success.write(output);
@@ -513,145 +513,7 @@ AppWhiteService_listByPage_result.prototype.write = function(output) {
   return;
 };
 
-AppWhiteService_changeAppFile_args = function(args) {
-  this.id = null;
-  this.resources = null;
-  if (args) {
-    if (args.id !== undefined && args.id !== null) {
-      this.id = args.id;
-    }
-    if (args.resources !== undefined && args.resources !== null) {
-      this.resources = new PublicStruct_ttypes.ResourcesStruct(args.resources);
-    }
-  }
-};
-AppWhiteService_changeAppFile_args.prototype = {};
-AppWhiteService_changeAppFile_args.prototype.read = function(input) {
-  input.readStructBegin();
-  while (true)
-  {
-    var ret = input.readFieldBegin();
-    var fname = ret.fname;
-    var ftype = ret.ftype;
-    var fid = ret.fid;
-    if (ftype == Thrift.Type.STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 1:
-      if (ftype == Thrift.Type.I64) {
-        this.id = input.readI64();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 2:
-      if (ftype == Thrift.Type.STRUCT) {
-        this.resources = new PublicStruct_ttypes.ResourcesStruct();
-        this.resources.read(input);
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      default:
-        input.skip(ftype);
-    }
-    input.readFieldEnd();
-  }
-  input.readStructEnd();
-  return;
-};
-
-AppWhiteService_changeAppFile_args.prototype.write = function(output) {
-  output.writeStructBegin('AppWhiteService_changeAppFile_args');
-  if (this.id !== null && this.id !== undefined) {
-    output.writeFieldBegin('id', Thrift.Type.I64, 1);
-    output.writeI64(this.id);
-    output.writeFieldEnd();
-  }
-  if (this.resources !== null && this.resources !== undefined) {
-    output.writeFieldBegin('resources', Thrift.Type.STRUCT, 2);
-    this.resources.write(output);
-    output.writeFieldEnd();
-  }
-  output.writeFieldStop();
-  output.writeStructEnd();
-  return;
-};
-
-AppWhiteService_changeAppFile_result = function(args) {
-  this.success = null;
-  this.ex = null;
-  if (args instanceof PublicStruct_ttypes.InvalidOperation) {
-    this.ex = args;
-    return;
-  }
-  if (args) {
-    if (args.success !== undefined && args.success !== null) {
-      this.success = args.success;
-    }
-    if (args.ex !== undefined && args.ex !== null) {
-      this.ex = args.ex;
-    }
-  }
-};
-AppWhiteService_changeAppFile_result.prototype = {};
-AppWhiteService_changeAppFile_result.prototype.read = function(input) {
-  input.readStructBegin();
-  while (true)
-  {
-    var ret = input.readFieldBegin();
-    var fname = ret.fname;
-    var ftype = ret.ftype;
-    var fid = ret.fid;
-    if (ftype == Thrift.Type.STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 0:
-      if (ftype == Thrift.Type.BOOL) {
-        this.success = input.readBool();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 1:
-      if (ftype == Thrift.Type.STRUCT) {
-        this.ex = new PublicStruct_ttypes.InvalidOperation();
-        this.ex.read(input);
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      default:
-        input.skip(ftype);
-    }
-    input.readFieldEnd();
-  }
-  input.readStructEnd();
-  return;
-};
-
-AppWhiteService_changeAppFile_result.prototype.write = function(output) {
-  output.writeStructBegin('AppWhiteService_changeAppFile_result');
-  if (this.success !== null && this.success !== undefined) {
-    output.writeFieldBegin('success', Thrift.Type.BOOL, 0);
-    output.writeBool(this.success);
-    output.writeFieldEnd();
-  }
-  if (this.ex !== null && this.ex !== undefined) {
-    output.writeFieldBegin('ex', Thrift.Type.STRUCT, 1);
-    this.ex.write(output);
-    output.writeFieldEnd();
-  }
-  output.writeFieldStop();
-  output.writeStructEnd();
-  return;
-};
-
-AppWhiteService_allList_args = function(args) {
+InstallActiveService_allList_args = function(args) {
   this.user = null;
   if (args) {
     if (args.user !== undefined && args.user !== null) {
@@ -659,8 +521,8 @@ AppWhiteService_allList_args = function(args) {
     }
   }
 };
-AppWhiteService_allList_args.prototype = {};
-AppWhiteService_allList_args.prototype.read = function(input) {
+InstallActiveService_allList_args.prototype = {};
+InstallActiveService_allList_args.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -692,8 +554,8 @@ AppWhiteService_allList_args.prototype.read = function(input) {
   return;
 };
 
-AppWhiteService_allList_args.prototype.write = function(output) {
-  output.writeStructBegin('AppWhiteService_allList_args');
+InstallActiveService_allList_args.prototype.write = function(output) {
+  output.writeStructBegin('InstallActiveService_allList_args');
   if (this.user !== null && this.user !== undefined) {
     output.writeFieldBegin('user', Thrift.Type.I64, 1);
     output.writeI64(this.user);
@@ -704,7 +566,7 @@ AppWhiteService_allList_args.prototype.write = function(output) {
   return;
 };
 
-AppWhiteService_allList_result = function(args) {
+InstallActiveService_allList_result = function(args) {
   this.success = null;
   this.ex = null;
   if (args instanceof PublicStruct_ttypes.InvalidOperation) {
@@ -720,8 +582,8 @@ AppWhiteService_allList_result = function(args) {
     }
   }
 };
-AppWhiteService_allList_result.prototype = {};
-AppWhiteService_allList_result.prototype.read = function(input) {
+InstallActiveService_allList_result.prototype = {};
+InstallActiveService_allList_result.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -758,8 +620,8 @@ AppWhiteService_allList_result.prototype.read = function(input) {
   return;
 };
 
-AppWhiteService_allList_result.prototype.write = function(output) {
-  output.writeStructBegin('AppWhiteService_allList_result');
+InstallActiveService_allList_result.prototype.write = function(output) {
+  output.writeStructBegin('InstallActiveService_allList_result');
   if (this.success !== null && this.success !== undefined) {
     output.writeFieldBegin('success', Thrift.Type.STRING, 0);
     output.writeString(this.success);
@@ -775,16 +637,16 @@ AppWhiteService_allList_result.prototype.write = function(output) {
   return;
 };
 
-AppWhiteServiceClient = exports.Client = function(output, pClass) {
+InstallActiveServiceClient = exports.Client = function(output, pClass) {
     this.output = output;
     this.pClass = pClass;
     this._seqid = 0;
     this._reqs = {};
 };
-AppWhiteServiceClient.prototype = {};
-AppWhiteServiceClient.prototype.seqid = function() { return this._seqid; }
-AppWhiteServiceClient.prototype.new_seqid = function() { return this._seqid += 1; }
-AppWhiteServiceClient.prototype.add = function(bean, callback) {
+InstallActiveServiceClient.prototype = {};
+InstallActiveServiceClient.prototype.seqid = function() { return this._seqid; }
+InstallActiveServiceClient.prototype.new_seqid = function() { return this._seqid += 1; }
+InstallActiveServiceClient.prototype.add = function(bean, callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
     var _defer = Q.defer();
@@ -803,17 +665,17 @@ AppWhiteServiceClient.prototype.add = function(bean, callback) {
   }
 };
 
-AppWhiteServiceClient.prototype.send_add = function(bean) {
+InstallActiveServiceClient.prototype.send_add = function(bean) {
   var output = new this.pClass(this.output);
   output.writeMessageBegin('add', Thrift.MessageType.CALL, this.seqid());
-  var args = new AppWhiteService_add_args();
+  var args = new InstallActiveService_add_args();
   args.bean = bean;
   args.write(output);
   output.writeMessageEnd();
   return this.output.flush();
 };
 
-AppWhiteServiceClient.prototype.recv_add = function(input,mtype,rseqid) {
+InstallActiveServiceClient.prototype.recv_add = function(input,mtype,rseqid) {
   var callback = this._reqs[rseqid] || function() {};
   delete this._reqs[rseqid];
   if (mtype == Thrift.MessageType.EXCEPTION) {
@@ -822,7 +684,7 @@ AppWhiteServiceClient.prototype.recv_add = function(input,mtype,rseqid) {
     input.readMessageEnd();
     return callback(x);
   }
-  var result = new AppWhiteService_add_result();
+  var result = new InstallActiveService_add_result();
   result.read(input);
   input.readMessageEnd();
 
@@ -834,7 +696,7 @@ AppWhiteServiceClient.prototype.recv_add = function(input,mtype,rseqid) {
   }
   return callback('add failed: unknown result');
 };
-AppWhiteServiceClient.prototype.update = function(bean, callback) {
+InstallActiveServiceClient.prototype.update = function(bean, callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
     var _defer = Q.defer();
@@ -853,17 +715,17 @@ AppWhiteServiceClient.prototype.update = function(bean, callback) {
   }
 };
 
-AppWhiteServiceClient.prototype.send_update = function(bean) {
+InstallActiveServiceClient.prototype.send_update = function(bean) {
   var output = new this.pClass(this.output);
   output.writeMessageBegin('update', Thrift.MessageType.CALL, this.seqid());
-  var args = new AppWhiteService_update_args();
+  var args = new InstallActiveService_update_args();
   args.bean = bean;
   args.write(output);
   output.writeMessageEnd();
   return this.output.flush();
 };
 
-AppWhiteServiceClient.prototype.recv_update = function(input,mtype,rseqid) {
+InstallActiveServiceClient.prototype.recv_update = function(input,mtype,rseqid) {
   var callback = this._reqs[rseqid] || function() {};
   delete this._reqs[rseqid];
   if (mtype == Thrift.MessageType.EXCEPTION) {
@@ -872,7 +734,7 @@ AppWhiteServiceClient.prototype.recv_update = function(input,mtype,rseqid) {
     input.readMessageEnd();
     return callback(x);
   }
-  var result = new AppWhiteService_update_result();
+  var result = new InstallActiveService_update_result();
   result.read(input);
   input.readMessageEnd();
 
@@ -884,7 +746,7 @@ AppWhiteServiceClient.prototype.recv_update = function(input,mtype,rseqid) {
   }
   return callback('update failed: unknown result');
 };
-AppWhiteServiceClient.prototype.remove = function(id, callback) {
+InstallActiveServiceClient.prototype.remove = function(id, callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
     var _defer = Q.defer();
@@ -903,17 +765,17 @@ AppWhiteServiceClient.prototype.remove = function(id, callback) {
   }
 };
 
-AppWhiteServiceClient.prototype.send_remove = function(id) {
+InstallActiveServiceClient.prototype.send_remove = function(id) {
   var output = new this.pClass(this.output);
   output.writeMessageBegin('remove', Thrift.MessageType.CALL, this.seqid());
-  var args = new AppWhiteService_remove_args();
+  var args = new InstallActiveService_remove_args();
   args.id = id;
   args.write(output);
   output.writeMessageEnd();
   return this.output.flush();
 };
 
-AppWhiteServiceClient.prototype.recv_remove = function(input,mtype,rseqid) {
+InstallActiveServiceClient.prototype.recv_remove = function(input,mtype,rseqid) {
   var callback = this._reqs[rseqid] || function() {};
   delete this._reqs[rseqid];
   if (mtype == Thrift.MessageType.EXCEPTION) {
@@ -922,7 +784,7 @@ AppWhiteServiceClient.prototype.recv_remove = function(input,mtype,rseqid) {
     input.readMessageEnd();
     return callback(x);
   }
-  var result = new AppWhiteService_remove_result();
+  var result = new InstallActiveService_remove_result();
   result.read(input);
   input.readMessageEnd();
 
@@ -934,7 +796,7 @@ AppWhiteServiceClient.prototype.recv_remove = function(input,mtype,rseqid) {
   }
   return callback('remove failed: unknown result');
 };
-AppWhiteServiceClient.prototype.listByPage = function(page, callback) {
+InstallActiveServiceClient.prototype.listByPage = function(page, callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
     var _defer = Q.defer();
@@ -953,17 +815,17 @@ AppWhiteServiceClient.prototype.listByPage = function(page, callback) {
   }
 };
 
-AppWhiteServiceClient.prototype.send_listByPage = function(page) {
+InstallActiveServiceClient.prototype.send_listByPage = function(page) {
   var output = new this.pClass(this.output);
   output.writeMessageBegin('listByPage', Thrift.MessageType.CALL, this.seqid());
-  var args = new AppWhiteService_listByPage_args();
+  var args = new InstallActiveService_listByPage_args();
   args.page = page;
   args.write(output);
   output.writeMessageEnd();
   return this.output.flush();
 };
 
-AppWhiteServiceClient.prototype.recv_listByPage = function(input,mtype,rseqid) {
+InstallActiveServiceClient.prototype.recv_listByPage = function(input,mtype,rseqid) {
   var callback = this._reqs[rseqid] || function() {};
   delete this._reqs[rseqid];
   if (mtype == Thrift.MessageType.EXCEPTION) {
@@ -972,7 +834,7 @@ AppWhiteServiceClient.prototype.recv_listByPage = function(input,mtype,rseqid) {
     input.readMessageEnd();
     return callback(x);
   }
-  var result = new AppWhiteService_listByPage_result();
+  var result = new InstallActiveService_listByPage_result();
   result.read(input);
   input.readMessageEnd();
 
@@ -984,58 +846,7 @@ AppWhiteServiceClient.prototype.recv_listByPage = function(input,mtype,rseqid) {
   }
   return callback('listByPage failed: unknown result');
 };
-AppWhiteServiceClient.prototype.changeAppFile = function(id, resources, callback) {
-  this._seqid = this.new_seqid();
-  if (callback === undefined) {
-    var _defer = Q.defer();
-    this._reqs[this.seqid()] = function(error, result) {
-      if (error) {
-        _defer.reject(error);
-      } else {
-        _defer.resolve(result);
-      }
-    };
-    this.send_changeAppFile(id, resources);
-    return _defer.promise;
-  } else {
-    this._reqs[this.seqid()] = callback;
-    this.send_changeAppFile(id, resources);
-  }
-};
-
-AppWhiteServiceClient.prototype.send_changeAppFile = function(id, resources) {
-  var output = new this.pClass(this.output);
-  output.writeMessageBegin('changeAppFile', Thrift.MessageType.CALL, this.seqid());
-  var args = new AppWhiteService_changeAppFile_args();
-  args.id = id;
-  args.resources = resources;
-  args.write(output);
-  output.writeMessageEnd();
-  return this.output.flush();
-};
-
-AppWhiteServiceClient.prototype.recv_changeAppFile = function(input,mtype,rseqid) {
-  var callback = this._reqs[rseqid] || function() {};
-  delete this._reqs[rseqid];
-  if (mtype == Thrift.MessageType.EXCEPTION) {
-    var x = new Thrift.TApplicationException();
-    x.read(input);
-    input.readMessageEnd();
-    return callback(x);
-  }
-  var result = new AppWhiteService_changeAppFile_result();
-  result.read(input);
-  input.readMessageEnd();
-
-  if (null !== result.ex) {
-    return callback(result.ex);
-  }
-  if (null !== result.success) {
-    return callback(null, result.success);
-  }
-  return callback('changeAppFile failed: unknown result');
-};
-AppWhiteServiceClient.prototype.allList = function(user, callback) {
+InstallActiveServiceClient.prototype.allList = function(user, callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
     var _defer = Q.defer();
@@ -1054,17 +865,17 @@ AppWhiteServiceClient.prototype.allList = function(user, callback) {
   }
 };
 
-AppWhiteServiceClient.prototype.send_allList = function(user) {
+InstallActiveServiceClient.prototype.send_allList = function(user) {
   var output = new this.pClass(this.output);
   output.writeMessageBegin('allList', Thrift.MessageType.CALL, this.seqid());
-  var args = new AppWhiteService_allList_args();
+  var args = new InstallActiveService_allList_args();
   args.user = user;
   args.write(output);
   output.writeMessageEnd();
   return this.output.flush();
 };
 
-AppWhiteServiceClient.prototype.recv_allList = function(input,mtype,rseqid) {
+InstallActiveServiceClient.prototype.recv_allList = function(input,mtype,rseqid) {
   var callback = this._reqs[rseqid] || function() {};
   delete this._reqs[rseqid];
   if (mtype == Thrift.MessageType.EXCEPTION) {
@@ -1073,7 +884,7 @@ AppWhiteServiceClient.prototype.recv_allList = function(input,mtype,rseqid) {
     input.readMessageEnd();
     return callback(x);
   }
-  var result = new AppWhiteService_allList_result();
+  var result = new InstallActiveService_allList_result();
   result.read(input);
   input.readMessageEnd();
 
@@ -1085,10 +896,10 @@ AppWhiteServiceClient.prototype.recv_allList = function(input,mtype,rseqid) {
   }
   return callback('allList failed: unknown result');
 };
-AppWhiteServiceProcessor = exports.Processor = function(handler) {
+InstallActiveServiceProcessor = exports.Processor = function(handler) {
   this._handler = handler
 }
-AppWhiteServiceProcessor.prototype.process = function(input, output) {
+InstallActiveServiceProcessor.prototype.process = function(input, output) {
   var r = input.readMessageBegin();
   if (this['process_' + r.fname]) {
     return this['process_' + r.fname].call(this, r.rseqid, input, output);
@@ -1103,21 +914,21 @@ AppWhiteServiceProcessor.prototype.process = function(input, output) {
   }
 }
 
-AppWhiteServiceProcessor.prototype.process_add = function(seqid, input, output) {
-  var args = new AppWhiteService_add_args();
+InstallActiveServiceProcessor.prototype.process_add = function(seqid, input, output) {
+  var args = new InstallActiveService_add_args();
   args.read(input);
   input.readMessageEnd();
   if (this._handler.add.length === 1) {
     Q.fcall(this._handler.add, args.bean)
       .then(function(result) {
-        var result = new AppWhiteService_add_result({success: result});
+        var result = new InstallActiveService_add_result({success: result});
         output.writeMessageBegin("add", Thrift.MessageType.REPLY, seqid);
         result.write(output);
         output.writeMessageEnd();
         output.flush();
       }, function (err) {
         if (err instanceof PublicStruct_ttypes.InvalidOperation) {
-          var result = new AppWhiteService_add_result(err);
+          var result = new InstallActiveService_add_result(err);
           output.writeMessageBegin("add", Thrift.MessageType.REPLY, seqid);
         } else {
           var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
@@ -1130,7 +941,7 @@ AppWhiteServiceProcessor.prototype.process_add = function(seqid, input, output) 
   } else {
     this._handler.add(args.bean, function (err, result) {
       if (err == null || err instanceof PublicStruct_ttypes.InvalidOperation) {
-        var result = new AppWhiteService_add_result((err != null ? err : {success: result}));
+        var result = new InstallActiveService_add_result((err != null ? err : {success: result}));
         output.writeMessageBegin("add", Thrift.MessageType.REPLY, seqid);
       } else {
         var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
@@ -1143,21 +954,21 @@ AppWhiteServiceProcessor.prototype.process_add = function(seqid, input, output) 
   }
 }
 
-AppWhiteServiceProcessor.prototype.process_update = function(seqid, input, output) {
-  var args = new AppWhiteService_update_args();
+InstallActiveServiceProcessor.prototype.process_update = function(seqid, input, output) {
+  var args = new InstallActiveService_update_args();
   args.read(input);
   input.readMessageEnd();
   if (this._handler.update.length === 1) {
     Q.fcall(this._handler.update, args.bean)
       .then(function(result) {
-        var result = new AppWhiteService_update_result({success: result});
+        var result = new InstallActiveService_update_result({success: result});
         output.writeMessageBegin("update", Thrift.MessageType.REPLY, seqid);
         result.write(output);
         output.writeMessageEnd();
         output.flush();
       }, function (err) {
         if (err instanceof PublicStruct_ttypes.InvalidOperation) {
-          var result = new AppWhiteService_update_result(err);
+          var result = new InstallActiveService_update_result(err);
           output.writeMessageBegin("update", Thrift.MessageType.REPLY, seqid);
         } else {
           var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
@@ -1170,7 +981,7 @@ AppWhiteServiceProcessor.prototype.process_update = function(seqid, input, outpu
   } else {
     this._handler.update(args.bean, function (err, result) {
       if (err == null || err instanceof PublicStruct_ttypes.InvalidOperation) {
-        var result = new AppWhiteService_update_result((err != null ? err : {success: result}));
+        var result = new InstallActiveService_update_result((err != null ? err : {success: result}));
         output.writeMessageBegin("update", Thrift.MessageType.REPLY, seqid);
       } else {
         var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
@@ -1183,21 +994,21 @@ AppWhiteServiceProcessor.prototype.process_update = function(seqid, input, outpu
   }
 }
 
-AppWhiteServiceProcessor.prototype.process_remove = function(seqid, input, output) {
-  var args = new AppWhiteService_remove_args();
+InstallActiveServiceProcessor.prototype.process_remove = function(seqid, input, output) {
+  var args = new InstallActiveService_remove_args();
   args.read(input);
   input.readMessageEnd();
   if (this._handler.remove.length === 1) {
     Q.fcall(this._handler.remove, args.id)
       .then(function(result) {
-        var result = new AppWhiteService_remove_result({success: result});
+        var result = new InstallActiveService_remove_result({success: result});
         output.writeMessageBegin("remove", Thrift.MessageType.REPLY, seqid);
         result.write(output);
         output.writeMessageEnd();
         output.flush();
       }, function (err) {
         if (err instanceof PublicStruct_ttypes.InvalidOperation) {
-          var result = new AppWhiteService_remove_result(err);
+          var result = new InstallActiveService_remove_result(err);
           output.writeMessageBegin("remove", Thrift.MessageType.REPLY, seqid);
         } else {
           var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
@@ -1210,7 +1021,7 @@ AppWhiteServiceProcessor.prototype.process_remove = function(seqid, input, outpu
   } else {
     this._handler.remove(args.id, function (err, result) {
       if (err == null || err instanceof PublicStruct_ttypes.InvalidOperation) {
-        var result = new AppWhiteService_remove_result((err != null ? err : {success: result}));
+        var result = new InstallActiveService_remove_result((err != null ? err : {success: result}));
         output.writeMessageBegin("remove", Thrift.MessageType.REPLY, seqid);
       } else {
         var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
@@ -1223,21 +1034,21 @@ AppWhiteServiceProcessor.prototype.process_remove = function(seqid, input, outpu
   }
 }
 
-AppWhiteServiceProcessor.prototype.process_listByPage = function(seqid, input, output) {
-  var args = new AppWhiteService_listByPage_args();
+InstallActiveServiceProcessor.prototype.process_listByPage = function(seqid, input, output) {
+  var args = new InstallActiveService_listByPage_args();
   args.read(input);
   input.readMessageEnd();
   if (this._handler.listByPage.length === 1) {
     Q.fcall(this._handler.listByPage, args.page)
       .then(function(result) {
-        var result = new AppWhiteService_listByPage_result({success: result});
+        var result = new InstallActiveService_listByPage_result({success: result});
         output.writeMessageBegin("listByPage", Thrift.MessageType.REPLY, seqid);
         result.write(output);
         output.writeMessageEnd();
         output.flush();
       }, function (err) {
         if (err instanceof PublicStruct_ttypes.InvalidOperation) {
-          var result = new AppWhiteService_listByPage_result(err);
+          var result = new InstallActiveService_listByPage_result(err);
           output.writeMessageBegin("listByPage", Thrift.MessageType.REPLY, seqid);
         } else {
           var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
@@ -1250,7 +1061,7 @@ AppWhiteServiceProcessor.prototype.process_listByPage = function(seqid, input, o
   } else {
     this._handler.listByPage(args.page, function (err, result) {
       if (err == null || err instanceof PublicStruct_ttypes.InvalidOperation) {
-        var result = new AppWhiteService_listByPage_result((err != null ? err : {success: result}));
+        var result = new InstallActiveService_listByPage_result((err != null ? err : {success: result}));
         output.writeMessageBegin("listByPage", Thrift.MessageType.REPLY, seqid);
       } else {
         var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
@@ -1263,61 +1074,21 @@ AppWhiteServiceProcessor.prototype.process_listByPage = function(seqid, input, o
   }
 }
 
-AppWhiteServiceProcessor.prototype.process_changeAppFile = function(seqid, input, output) {
-  var args = new AppWhiteService_changeAppFile_args();
-  args.read(input);
-  input.readMessageEnd();
-  if (this._handler.changeAppFile.length === 2) {
-    Q.fcall(this._handler.changeAppFile, args.id, args.resources)
-      .then(function(result) {
-        var result = new AppWhiteService_changeAppFile_result({success: result});
-        output.writeMessageBegin("changeAppFile", Thrift.MessageType.REPLY, seqid);
-        result.write(output);
-        output.writeMessageEnd();
-        output.flush();
-      }, function (err) {
-        if (err instanceof PublicStruct_ttypes.InvalidOperation) {
-          var result = new AppWhiteService_changeAppFile_result(err);
-          output.writeMessageBegin("changeAppFile", Thrift.MessageType.REPLY, seqid);
-        } else {
-          var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
-          output.writeMessageBegin("changeAppFile", Thrift.MessageType.EXCEPTION, seqid);
-        }
-        result.write(output);
-        output.writeMessageEnd();
-        output.flush();
-      });
-  } else {
-    this._handler.changeAppFile(args.id, args.resources, function (err, result) {
-      if (err == null || err instanceof PublicStruct_ttypes.InvalidOperation) {
-        var result = new AppWhiteService_changeAppFile_result((err != null ? err : {success: result}));
-        output.writeMessageBegin("changeAppFile", Thrift.MessageType.REPLY, seqid);
-      } else {
-        var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
-        output.writeMessageBegin("changeAppFile", Thrift.MessageType.EXCEPTION, seqid);
-      }
-      result.write(output);
-      output.writeMessageEnd();
-      output.flush();
-    });
-  }
-}
-
-AppWhiteServiceProcessor.prototype.process_allList = function(seqid, input, output) {
-  var args = new AppWhiteService_allList_args();
+InstallActiveServiceProcessor.prototype.process_allList = function(seqid, input, output) {
+  var args = new InstallActiveService_allList_args();
   args.read(input);
   input.readMessageEnd();
   if (this._handler.allList.length === 1) {
     Q.fcall(this._handler.allList, args.user)
       .then(function(result) {
-        var result = new AppWhiteService_allList_result({success: result});
+        var result = new InstallActiveService_allList_result({success: result});
         output.writeMessageBegin("allList", Thrift.MessageType.REPLY, seqid);
         result.write(output);
         output.writeMessageEnd();
         output.flush();
       }, function (err) {
         if (err instanceof PublicStruct_ttypes.InvalidOperation) {
-          var result = new AppWhiteService_allList_result(err);
+          var result = new InstallActiveService_allList_result(err);
           output.writeMessageBegin("allList", Thrift.MessageType.REPLY, seqid);
         } else {
           var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
@@ -1330,7 +1101,7 @@ AppWhiteServiceProcessor.prototype.process_allList = function(seqid, input, outp
   } else {
     this._handler.allList(args.user, function (err, result) {
       if (err == null || err instanceof PublicStruct_ttypes.InvalidOperation) {
-        var result = new AppWhiteService_allList_result((err != null ? err : {success: result}));
+        var result = new InstallActiveService_allList_result((err != null ? err : {success: result}));
         output.writeMessageBegin("allList", Thrift.MessageType.REPLY, seqid);
       } else {
         var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);

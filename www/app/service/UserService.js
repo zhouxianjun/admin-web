@@ -25,7 +25,7 @@
  *           佛祖保佑       永无BUG
  */
 'use strict';
-define(['jquery'], function ($) {
+define(['jquery', 'util'], function ($, util) {
     return {
         login: function(data){
             return $.ajax({
@@ -34,6 +34,9 @@ define(['jquery'], function ($) {
                 data: data,
                 contentType : 'application/json'
             });
+        },
+        setRefs: function (data) {
+            return util.buildAjax('/user/setRefs', data);
         }
     };
 });
