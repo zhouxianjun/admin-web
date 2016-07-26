@@ -25,43 +25,33 @@
  *           佛祖保佑       永无BUG
  */
 'use strict';
-const rootConfigService = require('../service/RootConfigService').instance();
+const modelRefService = require('../service/ModelRefService').instance();
 const Result = require('../dto/Result');
 const Utils = require('../util/Utils');
 const PublicStruct = require('../thrift/PublicStruct_types');
 module.exports = class {
     static get path() {
-        return '/rootConfig';
+        return '/model/ref';
     }
     * add() {
         let params = this.request.body;
-        let res = yield rootConfigService.add(new PublicStruct.RootConfigStruct(params));
+        let res = yield modelRefService.add(new PublicStruct.ModelRefStruct(params), params.id, params.type);
         Utils.writeResult(this, new Result(res ? true : false, {
             key: 'id',
             value: res.toNumber()
         }));
     }
-    * update() {
+    * listModelByPage() {
         let params = this.request.body;
-        let res = yield rootConfigService.update(new PublicStruct.RootConfigStruct(params));
-        Utils.writeResult(this, new Result(res ? true : false));
-    }
-    * listByPage() {
-        let params = this.request.body;
-        let res = yield rootConfigService.listByPage(new PublicStruct.PageParamStruct(params));
+        let res = yield modelRefService.listModelByPage(new PublicStruct.PageParamStruct(params), params.id, params.type);
         Utils.writeResult(this, new Result(true, {
             key: 'list',
             value: res
         }));
     }
-    * updateFile() {
-        let params = this.request.body;
-        let res = yield rootConfigService.changeAppFile(params.id, new PublicStruct.ResourcesStruct(params.resources));
-        this.body = new Result(res ? true : false).json;
-    }
     * remove() {
         let params = this.request.body;
-        let res = yield rootConfigService.remove(params.id);
+        let res = yield modelRefService.remove(params.id);
         Utils.writeResult(this, new Result(res ? true : false));
     }
 };

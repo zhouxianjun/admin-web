@@ -153,17 +153,11 @@ require(['jquery', 'util', 'layer', 'userService', 'permissionsService', 'boxSer
                 content: $('#show_roles').html(),
                 btn: ['确定', '取消'],
                 yes: function () {
-                    alert(tree.getAllChecked());
-                    return;
-                    var setRoleLoad = layer.load(2);
-                    util.send(PermissionsService.setRoles(JSON.stringify({
+                    util.send(PermissionsService.setRoles(ko.toJSON({
                         id: id,
                         roles: tree.getAllChecked().split(',')
                     })), function() {
-                        layer.close(setRoleLoad);
                         layer.close(roleswin);
-                    }, function() {
-                        layer.close(setRoleLoad);
                     });
                 }
             });

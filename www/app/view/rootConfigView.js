@@ -25,8 +25,8 @@
  *           佛祖保佑       永无BUG
  */
 'use strict';
-require(['jquery', 'util', 'layer', 'rootConfigService', 'modelMgrService', 'resourcesService', 'ko', 'moment', 'merge', 'datatables', 'validator', 'slimScroll', 'datatables-tabletools', 'bootstrap-upload', 'fileupload'],
-    function ($, util, layer, RootConfigService, ModelMgrService, ResourcesService, ko, moment) {
+require(['jquery', 'util', 'layer', 'rootConfigService', 'modelRefService', 'modelMgrService', 'resourcesService', 'ko', 'moment', 'merge', 'datatables', 'validator', 'slimScroll', 'datatables-tabletools', 'bootstrap-upload', 'fileupload'],
+    function ($, util, layer, RootConfigService, ModelRefService, ModelMgrService, ResourcesService, ko, moment) {
     var viewModel = {
         table: null,
         model_table: null,
@@ -43,7 +43,8 @@ require(['jquery', 'util', 'layer', 'rootConfigService', 'modelMgrService', 'res
             brand_id: ko.observable(),
             model_id: ko.observable(),
             version_id: ko.observable(),
-            base_version_id: ko.observable()
+            base_version_id: ko.observable(),
+            type: 1
         },
         app_file: {
             id: ko.observable(),
@@ -149,7 +150,7 @@ require(['jquery', 'util', 'layer', 'rootConfigService', 'modelMgrService', 'res
             var form = $('#addModel');
             form.data('bootstrapValidator').validate();
             if (form.data('bootstrapValidator').isValid()) {
-                util.send(RootConfigService.addModel(ko.toJSON(viewModel.model))).then(function() {
+                util.send(ModelRefService.add(ko.toJSON(viewModel.model))).then(function() {
                     viewModel.model_table.draw(false);
                     var id = viewModel.model.id();
                     util.clearViewModel(viewModel.model);
@@ -168,10 +169,11 @@ require(['jquery', 'util', 'layer', 'rootConfigService', 'modelMgrService', 'res
             viewModel.model_table = $('#active-table').DataTable(merge(true, util.dataTableSettings, {
                 ajax: function (data, callback, settings) {
                     var sortParam = util.getSortParam(data, ['brand_id', 'model_id', 'version_id', 'base_version_id']);
-                    util.send(RootConfigService.listModelByPage(JSON.stringify(merge(true, sortParam, {
+                    util.send(ModelRefService.listModelByPage(JSON.stringify(merge(true, sortParam, {
                         page: Math.floor(data.start / 10) + 1,
                         pageSize: 10,
-                        id: id
+                        id: id,
+                        type: 1
                     }))), function(response) {
                         var returnData = {};
                         var list = response.data.list;
@@ -188,7 +190,7 @@ require(['jquery', 'util', 'layer', 'rootConfigService', 'modelMgrService', 'res
                         var confirmLayer = layer.confirm('您确定删除此机型吗？', {
                             btn: ['确定','取消'] //按钮
                         }, function(){
-                            util.send(RootConfigService.removeModel(JSON.stringify({
+                            util.send(ModelRefService.remove(JSON.stringify({
                                 id: item.id
                             })), function() {
                                 viewModel.model_table.draw(false);

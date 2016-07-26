@@ -593,21 +593,23 @@
     <!-- /ko -->
 </script>
 <script type="text/html" id="menu-template">
-    <!-- ko if: sub.length > 0 -->
-    <li class="treeview">
-        <a href="#">
-            <i data-bind="css: 'fa ' + icon"></i>
-            <span data-bind="text: name"></span>
-            <i class="fa fa-angle-left pull-right"></i>
-        </a>
-        <ul class="treeview-menu">
-            <!-- ko template: {name: 'menu-template', foreach: sub} -->
-            <!-- /ko -->
-        </ul>
-    </li>
-    <!-- /ko -->
-    <!-- ko if: sub.length <= 0 -->
-    <li><a href="#" data-bind="click: $root.menuClick"><i data-bind="css: 'fa ' + icon"></i> <span data-bind="text: name"></span></a></li>
+    <!-- ko if: show -->
+        <!-- ko if: sub.length > 0 -->
+        <li class="treeview">
+            <a href="#">
+                <i data-bind="css: 'fa ' + icon"></i>
+                <span data-bind="text: name"></span>
+                <i class="fa fa-angle-left pull-right"></i>
+            </a>
+            <ul class="treeview-menu">
+                <!-- ko template: {name: 'menu-template', foreach: sub} -->
+                <!-- /ko -->
+            </ul>
+        </li>
+        <!-- /ko -->
+        <!-- ko if: sub.length <= 0 -->
+        <li><a href="#" data-bind="click: $root.menuClick"><i data-bind="css: 'fa ' + icon"></i> <span data-bind="text: name"></span></a></li>
+        <!-- /ko -->
     <!-- /ko -->
 </script>
 <script src="../plugins/require.js"></script>

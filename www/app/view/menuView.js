@@ -35,7 +35,8 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'valid
             status: ko.observable(1),
             target: ko.observable(),
             icon: ko.observable(''),
-            pid: ko.observable()
+            pid: ko.observable(),
+            show: ko.observable(1)
         },
         statusOptions: ko.observableArray([{
             name: '启用',
@@ -63,7 +64,7 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'valid
                         util.send(deferred, function (response) {
                             viewModel.grid.addRow(response.data.id, [
                                 response.data.id, '', viewModel.menu.seq(), viewModel.menu.name(), viewModel.menu.path(),
-                                viewModel.menu.status(), viewModel.menu.target(), viewModel.menu.icon()],0,isRoot ? 0 : rowId);
+                                viewModel.menu.status(), viewModel.menu.show(), viewModel.menu.target(), viewModel.menu.icon()],0,isRoot ? 0 : rowId);
                             isRoot || viewModel.grid.openItem(rowId);
                             viewModel.grid.setRowAttribute(response.data.id, 'id', response.data.id);
                             form.data('bootstrapValidator').resetForm(true);
@@ -95,6 +96,13 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'valid
                     validators: {
                         notEmpty: {
                             message: '状态不能为空'
+                        }
+                    }
+                },
+                menu_show: {
+                    validators: {
+                        notEmpty: {
+                            message: '不能为空'
                         }
                     }
                 }
@@ -163,13 +171,13 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'valid
         layer.load(2);
         var myTreeGrid = viewModel.grid = new dhtmlXGridObject('menu-grid');
         myTreeGrid.setImagePath('/plugins/dhtmlx/imgs/');
-        myTreeGrid.setHeader('ID,,序号,名称,路径,状态,选项卡,图标');
-        myTreeGrid.setColumnIds('id,tree,seq,name,path,status,target,icon');
-        myTreeGrid.setColAlign('left, left,center,center,center,center,center,center');
-        myTreeGrid.setColTypes('ro,tree,ed,ed,ed,combo,ed,ed');
+        myTreeGrid.setHeader('ID,,序号,名称,路径,状态,显示,选项卡,图标');
+        myTreeGrid.setColumnIds('id,tree,seq,name,path,status,show,target,icon');
+        myTreeGrid.setColAlign('left, left,center,center,center,center,center,center,center');
+        myTreeGrid.setColTypes('ro,tree,ed,ed,ed,combo,combo,ed,ed');
         myTreeGrid.setColumnHidden(0, true);
-        myTreeGrid.enableValidation(false,false,true,true,false,true,false,false);
-        myTreeGrid.setColValidators(',,NotEmpty,NotEmpty,,NotEmpty');
+        myTreeGrid.enableValidation(false,false,true,true,false,true,true,false,false);
+        myTreeGrid.setColValidators(',,NotEmpty,NotEmpty,,NotEmpty,NotEmpty');
         myTreeGrid.enableDragAndDrop(true);
         myTreeGrid.enableTreeGridLines();
         myTreeGrid.enableTreeCellEdit(false);
@@ -192,16 +200,13 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'valid
                 var confirm = layer.confirm('您确定删除当前菜单？', {
                     btn: ['确定','取消'] //按钮
                 }, function(){
-                    layer.load(2);
                     var deferred = PermissionsService.delMenu(JSON.stringify({
                         id: did
                     }));
                     util.send(deferred, function (response) {
                         myTreeGrid.deleteRow(rowId);
-                        layer.closeAll('loading');
                         layer.close(confirm);
                     }, function () {
-                        layer.closeAll('loading');
                         layer.close(confirm);
                     });
                 }, function(){
@@ -232,6 +237,7 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'valid
         myTreeGrid.init();
         var combo = myTreeGrid.getColumnCombo(5);//takes the column index
         util.initStatusCombo(combo);
+        util.initStatusCombo(myTreeGrid.getColumnCombo(6));
         myTreeGrid.load('/permissions/menusByMgr', function () {
             layer.closeAll('loading');
             myTreeGrid.expandAll();
@@ -245,18 +251,20 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'valid
             var name = cInd == 3 ? nValue : myTreeGrid.getRowAttribute(rId, 'name');
             var path = cInd == 4 ? nValue : myTreeGrid.getRowAttribute(rId, 'path');
             var status = cInd == 5 ? nValue : myTreeGrid.getRowAttribute(rId, 'status');
-            var target = cInd == 6 ? nValue : myTreeGrid.getRowAttribute(rId, 'target');
-            var icon = cInd == 7 ? nValue : myTreeGrid.getRowAttribute(rId, 'icon');
+            var show = cInd == 6 ? nValue : myTreeGrid.getRowAttribute(rId, 'show');
+            var target = cInd == 7 ? nValue : myTreeGrid.getRowAttribute(rId, 'target');
+            var icon = cInd == 8 ? nValue : myTreeGrid.getRowAttribute(rId, 'icon');
             if (status == 'true') status = true;
             if (status == 'false') status = false;
+            if (show == 'true') show = true;
+            if (show == 'false') show = false;
             var parentId = myTreeGrid.getParentId(rId);
             try {
                 pid = typeof pid == 'undefined' ? myTreeGrid.getRowAttribute(parentId, 'id') : pid;
             } catch (err) {
                 pid = 0
             }
-            layer.load(2);
-            var ajax = PermissionsService.updateMenu(JSON.stringify({
+            var ajax = PermissionsService.updateMenu(ko.toJSON({
                 id: id,
                 seq: seq,
                 name: name,
@@ -264,7 +272,8 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'valid
                 status: status,
                 target: target,
                 icon: icon,
-                pid: pid
+                pid: pid,
+                show: show
             }));
             util.send(ajax, function (response) {
                 myTreeGrid._h2.forEachChild(rId, function(element){
@@ -282,9 +291,6 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'valid
                         image: 'folder.gif'
                     });
                 }
-                layer.closeAll('loading');
-            }, function () {
-                layer.closeAll('loading');
             });
         }
     });

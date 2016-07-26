@@ -32,9 +32,6 @@ module.exports = class RootConfigService extends ThriftClient.referenceBean {
     update() {}
     changeAppFile() {}
     remove() {}
-    addModel() {}
-    listModelByPage() {}
-    removeModel() {}
     get type() {
         return require('../thrift/RootConfigService');
     }

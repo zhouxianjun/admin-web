@@ -27,20 +27,14 @@
 'use strict';
 define(['jquery', 'util'], function ($, util) {
     return {
-        listByPage: function(data){
-            return util.buildAjax('/rootConfig/listByPage', data);
-        },
         add: function(data){
-            return util.buildAjax('/rootConfig/add', data);
-        },
-        update: function(data){
-            return util.buildAjax('/rootConfig/update', data);
+            return util.buildAjax('/model/ref/add', data);
         },
         remove: function (data) {
-            return util.buildAjax('/rootConfig/remove', data);
+            return util.buildAjax('/model/ref/remove', data);
         },
-        updateFile: function (data) {
-            return util.buildAjax('/rootConfig/updateFile', data);
+        listModelByPage: function (data) {
+            return util.buildAjax('/model/ref/listModelByPage', data);
         }
     };
 });

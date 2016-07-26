@@ -167,6 +167,7 @@ MenuStruct = module.exports.MenuStruct = function(args) {
   this.target = null;
   this.icon = null;
   this.ow = null;
+  this.show = null;
   if (args) {
     if (args.id !== undefined && args.id !== null) {
       this.id = args.id;
@@ -200,6 +201,9 @@ MenuStruct = module.exports.MenuStruct = function(args) {
     }
     if (args.ow !== undefined && args.ow !== null) {
       this.ow = args.ow;
+    }
+    if (args.show !== undefined && args.show !== null) {
+      this.show = args.show;
     }
   }
 };
@@ -294,6 +298,13 @@ MenuStruct.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 12:
+      if (ftype == Thrift.Type.BOOL) {
+        this.show = input.readBool();
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -358,6 +369,11 @@ MenuStruct.prototype.write = function(output) {
   if (this.ow !== null && this.ow !== undefined) {
     output.writeFieldBegin('ow', Thrift.Type.BOOL, 11);
     output.writeBool(this.ow);
+    output.writeFieldEnd();
+  }
+  if (this.show !== null && this.show !== undefined) {
+    output.writeFieldBegin('show', Thrift.Type.BOOL, 12);
+    output.writeBool(this.show);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
@@ -1717,10 +1733,6 @@ AppWhiteStruct = module.exports.AppWhiteStruct = function(args) {
   this.resources_id = null;
   this.memo = null;
   this.version = null;
-  this.brand_id = null;
-  this.model_id = null;
-  this.version_id = null;
-  this.base_version_id = null;
   if (args) {
     if (args.id !== undefined && args.id !== null) {
       this.id = args.id;
@@ -1736,18 +1748,6 @@ AppWhiteStruct = module.exports.AppWhiteStruct = function(args) {
     }
     if (args.version !== undefined && args.version !== null) {
       this.version = args.version;
-    }
-    if (args.brand_id !== undefined && args.brand_id !== null) {
-      this.brand_id = args.brand_id;
-    }
-    if (args.model_id !== undefined && args.model_id !== null) {
-      this.model_id = args.model_id;
-    }
-    if (args.version_id !== undefined && args.version_id !== null) {
-      this.version_id = args.version_id;
-    }
-    if (args.base_version_id !== undefined && args.base_version_id !== null) {
-      this.base_version_id = args.base_version_id;
     }
   }
 };
@@ -1800,34 +1800,6 @@ AppWhiteStruct.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
-      case 6:
-      if (ftype == Thrift.Type.I64) {
-        this.brand_id = input.readI64();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 7:
-      if (ftype == Thrift.Type.I64) {
-        this.model_id = input.readI64();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 8:
-      if (ftype == Thrift.Type.I64) {
-        this.version_id = input.readI64();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 9:
-      if (ftype == Thrift.Type.I64) {
-        this.base_version_id = input.readI64();
-      } else {
-        input.skip(ftype);
-      }
-      break;
       default:
         input.skip(ftype);
     }
@@ -1862,26 +1834,6 @@ AppWhiteStruct.prototype.write = function(output) {
   if (this.version !== null && this.version !== undefined) {
     output.writeFieldBegin('version', Thrift.Type.STRING, 5);
     output.writeString(this.version);
-    output.writeFieldEnd();
-  }
-  if (this.brand_id !== null && this.brand_id !== undefined) {
-    output.writeFieldBegin('brand_id', Thrift.Type.I64, 6);
-    output.writeI64(this.brand_id);
-    output.writeFieldEnd();
-  }
-  if (this.model_id !== null && this.model_id !== undefined) {
-    output.writeFieldBegin('model_id', Thrift.Type.I64, 7);
-    output.writeI64(this.model_id);
-    output.writeFieldEnd();
-  }
-  if (this.version_id !== null && this.version_id !== undefined) {
-    output.writeFieldBegin('version_id', Thrift.Type.I64, 8);
-    output.writeI64(this.version_id);
-    output.writeFieldEnd();
-  }
-  if (this.base_version_id !== null && this.base_version_id !== undefined) {
-    output.writeFieldBegin('base_version_id', Thrift.Type.I64, 9);
-    output.writeI64(this.base_version_id);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
@@ -2545,7 +2497,7 @@ RequirePackageStruct.prototype.write = function(output) {
   return;
 };
 
-RootModelStruct = module.exports.RootModelStruct = function(args) {
+ModelRefStruct = module.exports.ModelRefStruct = function(args) {
   this.id = null;
   this.brand_id = null;
   this.model_id = null;
@@ -2569,8 +2521,8 @@ RootModelStruct = module.exports.RootModelStruct = function(args) {
     }
   }
 };
-RootModelStruct.prototype = {};
-RootModelStruct.prototype.read = function(input) {
+ModelRefStruct.prototype = {};
+ModelRefStruct.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -2627,8 +2579,8 @@ RootModelStruct.prototype.read = function(input) {
   return;
 };
 
-RootModelStruct.prototype.write = function(output) {
-  output.writeStructBegin('RootModelStruct');
+ModelRefStruct.prototype.write = function(output) {
+  output.writeStructBegin('ModelRefStruct');
   if (this.id !== null && this.id !== undefined) {
     output.writeFieldBegin('id', Thrift.Type.I64, 1);
     output.writeI64(this.id);

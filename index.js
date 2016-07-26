@@ -37,7 +37,7 @@ const redisStore = require('koa-redis');
 const bodyParser = require('koa-bodyparser');
 const app = new Koa();
 
-const ignoreUrl = ['/user/login', '/', '/resources/qiniuCallback'];
+const ignoreUrl = ['/user/login', '/', '/resources/qiniuCallback', '/api/boxLogin'];
 const loginUrl = ['/permissions/menus', '/user/logout', '/resources/uptoken', '/resources/qiniuDownload'];
 
 //logger
