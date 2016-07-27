@@ -54,7 +54,7 @@ app.use(bodyParser());
 app.keys = ['session_key'];
 app.use(session({
     store: redisStore(),
-    ttl: 1000 * 60 * 50
+    ttl: 1000 * 60 * 5
 }));
 app.use(function *session(next){
     yield next;
