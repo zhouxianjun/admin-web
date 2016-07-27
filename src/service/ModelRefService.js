@@ -29,6 +29,8 @@ const ThriftClient = require('node-thrift-client');
 module.exports = class ModelRefService extends ThriftClient.referenceBean {
     add() {}
     remove() {}
+    removeModel() {}
+    listByPage() {}
     listModelByPage() {}
     get type() {
         return require('../thrift/ModelRefService');

@@ -219,7 +219,9 @@ require(['jquery', 'util', 'layer', 'appWhiteService', 'modelRefService', 'model
                             btn: ['确定','取消'] //按钮
                         }, function(){
                             util.send(ModelRefService.remove(JSON.stringify({
-                                id: item.id
+                                model: item.id,
+                                ref: id,
+                                type: 2
                             })), function() {
                                 viewModel.model_table.draw(false);
                                 layer.close(confirmLayer);

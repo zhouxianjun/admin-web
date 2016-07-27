@@ -19,7 +19,7 @@ ModelRefService_add_args = function(args) {
   this.type = null;
   if (args) {
     if (args.bean !== undefined && args.bean !== null) {
-      this.bean = new PublicStruct_ttypes.ModelRefStruct(args.bean);
+      this.bean = new PublicStruct_ttypes.ModelStruct(args.bean);
     }
     if (args.ref !== undefined && args.ref !== null) {
       this.ref = args.ref;
@@ -45,7 +45,7 @@ ModelRefService_add_args.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.bean = new PublicStruct_ttypes.ModelRefStruct();
+        this.bean = new PublicStruct_ttypes.ModelStruct();
         this.bean.read(input);
       } else {
         input.skip(ftype);
@@ -168,10 +168,18 @@ ModelRefService_add_result.prototype.write = function(output) {
 };
 
 ModelRefService_remove_args = function(args) {
-  this.id = null;
+  this.ref = null;
+  this.model = null;
+  this.type = null;
   if (args) {
-    if (args.id !== undefined && args.id !== null) {
-      this.id = args.id;
+    if (args.ref !== undefined && args.ref !== null) {
+      this.ref = args.ref;
+    }
+    if (args.model !== undefined && args.model !== null) {
+      this.model = args.model;
+    }
+    if (args.type !== undefined && args.type !== null) {
+      this.type = args.type;
     }
   }
 };
@@ -191,14 +199,25 @@ ModelRefService_remove_args.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.I64) {
-        this.id = input.readI64();
+        this.ref = input.readI64();
       } else {
         input.skip(ftype);
       }
       break;
-      case 0:
+      case 2:
+      if (ftype == Thrift.Type.I64) {
+        this.model = input.readI64();
+      } else {
         input.skip(ftype);
-        break;
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.I32) {
+        this.type = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -210,9 +229,19 @@ ModelRefService_remove_args.prototype.read = function(input) {
 
 ModelRefService_remove_args.prototype.write = function(output) {
   output.writeStructBegin('ModelRefService_remove_args');
-  if (this.id !== null && this.id !== undefined) {
-    output.writeFieldBegin('id', Thrift.Type.I64, 1);
-    output.writeI64(this.id);
+  if (this.ref !== null && this.ref !== undefined) {
+    output.writeFieldBegin('ref', Thrift.Type.I64, 1);
+    output.writeI64(this.ref);
+    output.writeFieldEnd();
+  }
+  if (this.model !== null && this.model !== undefined) {
+    output.writeFieldBegin('model', Thrift.Type.I64, 2);
+    output.writeI64(this.model);
+    output.writeFieldEnd();
+  }
+  if (this.type !== null && this.type !== undefined) {
+    output.writeFieldBegin('type', Thrift.Type.I32, 3);
+    output.writeI32(this.type);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
@@ -279,6 +308,256 @@ ModelRefService_remove_result.prototype.write = function(output) {
   if (this.success !== null && this.success !== undefined) {
     output.writeFieldBegin('success', Thrift.Type.BOOL, 0);
     output.writeBool(this.success);
+    output.writeFieldEnd();
+  }
+  if (this.ex !== null && this.ex !== undefined) {
+    output.writeFieldBegin('ex', Thrift.Type.STRUCT, 1);
+    this.ex.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+ModelRefService_removeModel_args = function(args) {
+  this.id = null;
+  if (args) {
+    if (args.id !== undefined && args.id !== null) {
+      this.id = args.id;
+    }
+  }
+};
+ModelRefService_removeModel_args.prototype = {};
+ModelRefService_removeModel_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.I64) {
+        this.id = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+ModelRefService_removeModel_args.prototype.write = function(output) {
+  output.writeStructBegin('ModelRefService_removeModel_args');
+  if (this.id !== null && this.id !== undefined) {
+    output.writeFieldBegin('id', Thrift.Type.I64, 1);
+    output.writeI64(this.id);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+ModelRefService_removeModel_result = function(args) {
+  this.success = null;
+  this.ex = null;
+  if (args instanceof PublicStruct_ttypes.InvalidOperation) {
+    this.ex = args;
+    return;
+  }
+  if (args) {
+    if (args.success !== undefined && args.success !== null) {
+      this.success = args.success;
+    }
+    if (args.ex !== undefined && args.ex !== null) {
+      this.ex = args.ex;
+    }
+  }
+};
+ModelRefService_removeModel_result.prototype = {};
+ModelRefService_removeModel_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.BOOL) {
+        this.success = input.readBool();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.ex = new PublicStruct_ttypes.InvalidOperation();
+        this.ex.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+ModelRefService_removeModel_result.prototype.write = function(output) {
+  output.writeStructBegin('ModelRefService_removeModel_result');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.BOOL, 0);
+    output.writeBool(this.success);
+    output.writeFieldEnd();
+  }
+  if (this.ex !== null && this.ex !== undefined) {
+    output.writeFieldBegin('ex', Thrift.Type.STRUCT, 1);
+    this.ex.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+ModelRefService_listByPage_args = function(args) {
+  this.page = null;
+  if (args) {
+    if (args.page !== undefined && args.page !== null) {
+      this.page = new PublicStruct_ttypes.PageParamStruct(args.page);
+    }
+  }
+};
+ModelRefService_listByPage_args.prototype = {};
+ModelRefService_listByPage_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.page = new PublicStruct_ttypes.PageParamStruct();
+        this.page.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+ModelRefService_listByPage_args.prototype.write = function(output) {
+  output.writeStructBegin('ModelRefService_listByPage_args');
+  if (this.page !== null && this.page !== undefined) {
+    output.writeFieldBegin('page', Thrift.Type.STRUCT, 1);
+    this.page.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+ModelRefService_listByPage_result = function(args) {
+  this.success = null;
+  this.ex = null;
+  if (args instanceof PublicStruct_ttypes.InvalidOperation) {
+    this.ex = args;
+    return;
+  }
+  if (args) {
+    if (args.success !== undefined && args.success !== null) {
+      this.success = new PublicStruct_ttypes.PageStruct(args.success);
+    }
+    if (args.ex !== undefined && args.ex !== null) {
+      this.ex = args.ex;
+    }
+  }
+};
+ModelRefService_listByPage_result.prototype = {};
+ModelRefService_listByPage_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.success = new PublicStruct_ttypes.PageStruct();
+        this.success.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.ex = new PublicStruct_ttypes.InvalidOperation();
+        this.ex.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+ModelRefService_listByPage_result.prototype.write = function(output) {
+  output.writeStructBegin('ModelRefService_listByPage_result');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.STRUCT, 0);
+    this.success.write(output);
     output.writeFieldEnd();
   }
   if (this.ex !== null && this.ex !== undefined) {
@@ -507,7 +786,7 @@ ModelRefServiceClient.prototype.recv_add = function(input,mtype,rseqid) {
   }
   return callback('add failed: unknown result');
 };
-ModelRefServiceClient.prototype.remove = function(id, callback) {
+ModelRefServiceClient.prototype.remove = function(ref, model, type, callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
     var _defer = Q.defer();
@@ -518,19 +797,21 @@ ModelRefServiceClient.prototype.remove = function(id, callback) {
         _defer.resolve(result);
       }
     };
-    this.send_remove(id);
+    this.send_remove(ref, model, type);
     return _defer.promise;
   } else {
     this._reqs[this.seqid()] = callback;
-    this.send_remove(id);
+    this.send_remove(ref, model, type);
   }
 };
 
-ModelRefServiceClient.prototype.send_remove = function(id) {
+ModelRefServiceClient.prototype.send_remove = function(ref, model, type) {
   var output = new this.pClass(this.output);
   output.writeMessageBegin('remove', Thrift.MessageType.CALL, this.seqid());
   var args = new ModelRefService_remove_args();
-  args.id = id;
+  args.ref = ref;
+  args.model = model;
+  args.type = type;
   args.write(output);
   output.writeMessageEnd();
   return this.output.flush();
@@ -556,6 +837,106 @@ ModelRefServiceClient.prototype.recv_remove = function(input,mtype,rseqid) {
     return callback(null, result.success);
   }
   return callback('remove failed: unknown result');
+};
+ModelRefServiceClient.prototype.removeModel = function(id, callback) {
+  this._seqid = this.new_seqid();
+  if (callback === undefined) {
+    var _defer = Q.defer();
+    this._reqs[this.seqid()] = function(error, result) {
+      if (error) {
+        _defer.reject(error);
+      } else {
+        _defer.resolve(result);
+      }
+    };
+    this.send_removeModel(id);
+    return _defer.promise;
+  } else {
+    this._reqs[this.seqid()] = callback;
+    this.send_removeModel(id);
+  }
+};
+
+ModelRefServiceClient.prototype.send_removeModel = function(id) {
+  var output = new this.pClass(this.output);
+  output.writeMessageBegin('removeModel', Thrift.MessageType.CALL, this.seqid());
+  var args = new ModelRefService_removeModel_args();
+  args.id = id;
+  args.write(output);
+  output.writeMessageEnd();
+  return this.output.flush();
+};
+
+ModelRefServiceClient.prototype.recv_removeModel = function(input,mtype,rseqid) {
+  var callback = this._reqs[rseqid] || function() {};
+  delete this._reqs[rseqid];
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(input);
+    input.readMessageEnd();
+    return callback(x);
+  }
+  var result = new ModelRefService_removeModel_result();
+  result.read(input);
+  input.readMessageEnd();
+
+  if (null !== result.ex) {
+    return callback(result.ex);
+  }
+  if (null !== result.success) {
+    return callback(null, result.success);
+  }
+  return callback('removeModel failed: unknown result');
+};
+ModelRefServiceClient.prototype.listByPage = function(page, callback) {
+  this._seqid = this.new_seqid();
+  if (callback === undefined) {
+    var _defer = Q.defer();
+    this._reqs[this.seqid()] = function(error, result) {
+      if (error) {
+        _defer.reject(error);
+      } else {
+        _defer.resolve(result);
+      }
+    };
+    this.send_listByPage(page);
+    return _defer.promise;
+  } else {
+    this._reqs[this.seqid()] = callback;
+    this.send_listByPage(page);
+  }
+};
+
+ModelRefServiceClient.prototype.send_listByPage = function(page) {
+  var output = new this.pClass(this.output);
+  output.writeMessageBegin('listByPage', Thrift.MessageType.CALL, this.seqid());
+  var args = new ModelRefService_listByPage_args();
+  args.page = page;
+  args.write(output);
+  output.writeMessageEnd();
+  return this.output.flush();
+};
+
+ModelRefServiceClient.prototype.recv_listByPage = function(input,mtype,rseqid) {
+  var callback = this._reqs[rseqid] || function() {};
+  delete this._reqs[rseqid];
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(input);
+    input.readMessageEnd();
+    return callback(x);
+  }
+  var result = new ModelRefService_listByPage_result();
+  result.read(input);
+  input.readMessageEnd();
+
+  if (null !== result.ex) {
+    return callback(result.ex);
+  }
+  if (null !== result.success) {
+    return callback(null, result.success);
+  }
+  return callback('listByPage failed: unknown result');
 };
 ModelRefServiceClient.prototype.listModelByPage = function(page, ref, type, callback) {
   this._seqid = this.new_seqid();
@@ -671,8 +1052,8 @@ ModelRefServiceProcessor.prototype.process_remove = function(seqid, input, outpu
   var args = new ModelRefService_remove_args();
   args.read(input);
   input.readMessageEnd();
-  if (this._handler.remove.length === 1) {
-    Q.fcall(this._handler.remove, args.id)
+  if (this._handler.remove.length === 3) {
+    Q.fcall(this._handler.remove, args.ref, args.model, args.type)
       .then(function(result) {
         var result = new ModelRefService_remove_result({success: result});
         output.writeMessageBegin("remove", Thrift.MessageType.REPLY, seqid);
@@ -692,13 +1073,93 @@ ModelRefServiceProcessor.prototype.process_remove = function(seqid, input, outpu
         output.flush();
       });
   } else {
-    this._handler.remove(args.id, function (err, result) {
+    this._handler.remove(args.ref, args.model, args.type, function (err, result) {
       if (err == null || err instanceof PublicStruct_ttypes.InvalidOperation) {
         var result = new ModelRefService_remove_result((err != null ? err : {success: result}));
         output.writeMessageBegin("remove", Thrift.MessageType.REPLY, seqid);
       } else {
         var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
         output.writeMessageBegin("remove", Thrift.MessageType.EXCEPTION, seqid);
+      }
+      result.write(output);
+      output.writeMessageEnd();
+      output.flush();
+    });
+  }
+}
+
+ModelRefServiceProcessor.prototype.process_removeModel = function(seqid, input, output) {
+  var args = new ModelRefService_removeModel_args();
+  args.read(input);
+  input.readMessageEnd();
+  if (this._handler.removeModel.length === 1) {
+    Q.fcall(this._handler.removeModel, args.id)
+      .then(function(result) {
+        var result = new ModelRefService_removeModel_result({success: result});
+        output.writeMessageBegin("removeModel", Thrift.MessageType.REPLY, seqid);
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      }, function (err) {
+        if (err instanceof PublicStruct_ttypes.InvalidOperation) {
+          var result = new ModelRefService_removeModel_result(err);
+          output.writeMessageBegin("removeModel", Thrift.MessageType.REPLY, seqid);
+        } else {
+          var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+          output.writeMessageBegin("removeModel", Thrift.MessageType.EXCEPTION, seqid);
+        }
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      });
+  } else {
+    this._handler.removeModel(args.id, function (err, result) {
+      if (err == null || err instanceof PublicStruct_ttypes.InvalidOperation) {
+        var result = new ModelRefService_removeModel_result((err != null ? err : {success: result}));
+        output.writeMessageBegin("removeModel", Thrift.MessageType.REPLY, seqid);
+      } else {
+        var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+        output.writeMessageBegin("removeModel", Thrift.MessageType.EXCEPTION, seqid);
+      }
+      result.write(output);
+      output.writeMessageEnd();
+      output.flush();
+    });
+  }
+}
+
+ModelRefServiceProcessor.prototype.process_listByPage = function(seqid, input, output) {
+  var args = new ModelRefService_listByPage_args();
+  args.read(input);
+  input.readMessageEnd();
+  if (this._handler.listByPage.length === 1) {
+    Q.fcall(this._handler.listByPage, args.page)
+      .then(function(result) {
+        var result = new ModelRefService_listByPage_result({success: result});
+        output.writeMessageBegin("listByPage", Thrift.MessageType.REPLY, seqid);
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      }, function (err) {
+        if (err instanceof PublicStruct_ttypes.InvalidOperation) {
+          var result = new ModelRefService_listByPage_result(err);
+          output.writeMessageBegin("listByPage", Thrift.MessageType.REPLY, seqid);
+        } else {
+          var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+          output.writeMessageBegin("listByPage", Thrift.MessageType.EXCEPTION, seqid);
+        }
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      });
+  } else {
+    this._handler.listByPage(args.page, function (err, result) {
+      if (err == null || err instanceof PublicStruct_ttypes.InvalidOperation) {
+        var result = new ModelRefService_listByPage_result((err != null ? err : {success: result}));
+        output.writeMessageBegin("listByPage", Thrift.MessageType.REPLY, seqid);
+      } else {
+        var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+        output.writeMessageBegin("listByPage", Thrift.MessageType.EXCEPTION, seqid);
       }
       result.write(output);
       output.writeMessageEnd();

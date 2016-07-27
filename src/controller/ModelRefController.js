@@ -35,7 +35,7 @@ module.exports = class {
     }
     * add() {
         let params = this.request.body;
-        let res = yield modelRefService.add(new PublicStruct.ModelRefStruct(params), params.id, params.type);
+        let res = yield modelRefService.add(new PublicStruct.ModelStruct(params), params.id, params.type);
         Utils.writeResult(this, new Result(res ? true : false, {
             key: 'id',
             value: res.toNumber()
@@ -49,9 +49,22 @@ module.exports = class {
             value: res
         }));
     }
+    * listByPage() {
+        let params = this.request.body;
+        let res = yield modelRefService.listByPage(new PublicStruct.PageParamStruct(params));
+        Utils.writeResult(this, new Result(true, {
+            key: 'list',
+            value: res
+        }));
+    }
     * remove() {
         let params = this.request.body;
-        let res = yield modelRefService.remove(params.id);
+        let res = yield modelRefService.remove(params.ref, params.model, params.type);
+        Utils.writeResult(this, new Result(res ? true : false));
+    }
+    * removeModel() {
+        let params = this.request.body;
+        let res = yield modelRefService.removeModel(params.id);
         Utils.writeResult(this, new Result(res ? true : false));
     }
 };

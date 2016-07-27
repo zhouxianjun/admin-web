@@ -68,10 +68,17 @@ module.exports = class {
         }));
     }
     * getBoxResourcesList() {
-        let res = yield apiService.getBoxResourcesList(this.session.user.id);
+        console.log(this.ips);
+        console.log(this.ip);
+        let res = yield apiService.getBoxResourcesList(this.session.user.id, '/resources/qiniuDownload?key=');
         Utils.writeResult(this, new Result(true, {
             key: 'map',
             value: JSON.parse(res)
         }));
+    }
+    * uploadBrush() {
+        let params = this.request.body;
+        let res = yield apiService.uploadBrush(this.session.user.box_id, JSON.stringify(params), this.session.user.id, this.ip);
+        Utils.writeResult(this, new Result(res));
     }
 };

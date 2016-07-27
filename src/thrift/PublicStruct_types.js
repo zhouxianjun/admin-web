@@ -2497,7 +2497,7 @@ RequirePackageStruct.prototype.write = function(output) {
   return;
 };
 
-ModelRefStruct = module.exports.ModelRefStruct = function(args) {
+ModelStruct = module.exports.ModelStruct = function(args) {
   this.id = null;
   this.brand_id = null;
   this.model_id = null;
@@ -2521,8 +2521,8 @@ ModelRefStruct = module.exports.ModelRefStruct = function(args) {
     }
   }
 };
-ModelRefStruct.prototype = {};
-ModelRefStruct.prototype.read = function(input) {
+ModelStruct.prototype = {};
+ModelStruct.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -2579,8 +2579,8 @@ ModelRefStruct.prototype.read = function(input) {
   return;
 };
 
-ModelRefStruct.prototype.write = function(output) {
-  output.writeStructBegin('ModelRefStruct');
+ModelStruct.prototype.write = function(output) {
+  output.writeStructBegin('ModelStruct');
   if (this.id !== null && this.id !== undefined) {
     output.writeFieldBegin('id', Thrift.Type.I64, 1);
     output.writeI64(this.id);

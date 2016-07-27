@@ -25,8 +25,8 @@
  *           佛祖保佑       永无BUG
  */
 'use strict';
-require(['jquery', 'util', 'layer', 'appPackageService', 'appService', 'packageService', 'modelMgrService', 'ko', 'moment', 'merge', 'datatables', 'validator', 'slimScroll', 'datatables-tabletools', 'select2'],
-    function ($, util, layer, AppPackageService, AppService, PackageService, ModelMgrService, ko, moment) {
+require(['jquery', 'util', 'layer', 'appPackageService', 'appService', 'packageService', 'modelMgrService', 'modelRefService', 'ko', 'moment', 'merge', 'datatables', 'validator', 'slimScroll', 'datatables-tabletools', 'select2'],
+    function ($, util, layer, AppPackageService, AppService, PackageService, ModelMgrService, ModelRefService, ko, moment) {
     var viewModel = {
         table: null,
         util: util,
@@ -43,6 +43,14 @@ require(['jquery', 'util', 'layer', 'appPackageService', 'appService', 'packageS
             package_id: ko.observable(),
             pre: ko.observableArray([]),
             install: ko.observableArray([])
+        },
+        model: {
+            id: ko.observable(),
+            brand_id: ko.observable(),
+            model_id: ko.observable(),
+            version_id: ko.observable(),
+            base_version_id: ko.observable(),
+            type: 3
         },
         model_id: null,
         version_id: null,
@@ -103,6 +111,45 @@ require(['jquery', 'util', 'layer', 'appPackageService', 'appService', 'packageS
                             if (viewModel.base_version_id) {
                                 viewModel.app.base_version_id(viewModel.base_version_id);
                                 viewModel.base_version_id = null;
+                            }
+                        }
+                    });
+                }
+            });
+            viewModel.model.brand_id.subscribe(function (newValue) {
+                viewModel.modelOptions([]);
+                if (typeof newValue != 'undefined' && newValue != null) {
+                    util.send(ModelMgrService.modelList(newValue)).then(function (response) {
+                        var list = response.data.list;
+                        if (list && list.length) {
+                            for (var i = 0; i < list.length; i++) {
+                                viewModel.modelOptions.push(list[i]);
+                            }
+                        }
+                    });
+                }
+            });
+            viewModel.model.model_id.subscribe(function (newValue) {
+                viewModel.versionOptions([]);
+                if (typeof newValue != 'undefined' && newValue != null) {
+                    util.send(ModelMgrService.versionList(newValue)).then(function (response) {
+                        var list = response.data.list;
+                        if (list && list.length) {
+                            for (var i = 0; i < list.length; i++) {
+                                viewModel.versionOptions.push(list[i]);
+                            }
+                        }
+                    });
+                }
+            });
+            viewModel.model.version_id.subscribe(function (newValue) {
+                viewModel.baseOptions([]);
+                if (typeof newValue != 'undefined' && newValue != null) {
+                    util.send(ModelMgrService.baseVersionList(newValue)).then(function (response) {
+                        var list = response.data.list;
+                        if (list && list.length) {
+                            for (var i = 0; i < list.length; i++) {
+                                viewModel.baseOptions.push(list[i]);
                             }
                         }
                     });
@@ -225,6 +272,114 @@ require(['jquery', 'util', 'layer', 'appPackageService', 'appService', 'packageS
             });
             $('#install_select').on('select2:unselect', function (evt) {
                 $('#pre_select').append('<option value="'+ evt.params.data.id +'">'+evt.params.data.text+'</option>');
+            });
+        },
+        addModel: function () {
+            var form = $('#addModel');
+            form.data('bootstrapValidator').validate();
+            if (form.data('bootstrapValidator').isValid()) {
+                util.send(ModelRefService.add(ko.toJSON(viewModel.model))).then(function() {
+                    viewModel.model_table.draw(false);
+                    var id = viewModel.model.id();
+                    util.clearViewModel(viewModel.model);
+                    viewModel.model.id(id);
+                });
+            }
+        },
+        openModel: function(id) {
+            layer.open({
+                type: 1,
+                title: '支持机型列表',
+                area: ['600px', '400px'], //宽高
+                content: $('#layer_model').html()
+            });
+            viewModel.model.id(id);
+            viewModel.model_table = $('#active-table').DataTable(merge(true, util.dataTableSettings, {
+                ajax: function (data, callback, settings) {
+                    var sortParam = util.getSortParam(data, ['brand_id', 'model_id', 'version_id', 'base_version_id']);
+                    util.send(ModelRefService.listModelByPage(JSON.stringify(merge(true, sortParam, {
+                        page: Math.floor(data.start / 10) + 1,
+                        pageSize: 10,
+                        id: id,
+                        type: 3
+                    }))), function(response) {
+                        var returnData = {};
+                        var list = response.data.list;
+                        returnData.draw = data.draw;
+                        returnData.recordsTotal = list.count;
+                        returnData.recordsFiltered = list.count;
+                        returnData.data = list.count == 0 ? [] : JSON.parse(list.items);
+                        callback(returnData);
+                    });
+                },
+                drawCallback: function (setting) {
+                    $('._model_table_remove').click(function () {
+                        var item = viewModel.model_table.row($(this).closest('tr')).data();
+                        var confirmLayer = layer.confirm('您确定删除此机型吗？', {
+                            btn: ['确定','取消'] //按钮
+                        }, function(){
+                            util.send(ModelRefService.remove(JSON.stringify({
+                                model: item.id,
+                                ref: id,
+                                type: 3
+                            })), function() {
+                                viewModel.model_table.draw(false);
+                                layer.close(confirmLayer);
+                            });
+                        });
+                    });
+                    util.adjustIframeHeight();
+                },
+                columns: [{
+                    data: 'brand_name'
+                }, {
+                    data: 'model_name'
+                }, {
+                    data: 'version_name'
+                }, {
+                    data: 'base_version_name'
+                }, {
+                    data: null,
+                    orderable: false,
+                    render: function() {
+                        return '<button type="button" class="_model_table_remove btn btn-default fa fa-remove">删除</button>';
+                    }
+                }]
+            }));
+            util.initValidForm($('#addModel'), {
+                app_brand: {
+                    validators: {
+                        notEmpty: {
+                            message: '不能为空'
+                        }
+                    }
+                },
+                app_model: {
+                    validators: {
+                        notEmpty: {
+                            message: '不能为空'
+                        }
+                    }
+                },
+                app_version: {
+                    validators: {
+                        notEmpty: {
+                            message: '不能为空'
+                        }
+                    }
+                },
+                app_base: {
+                    validators: {
+                        notEmpty: {
+                            message: '不能为空'
+                        }
+                    }
+                }
+            });
+            ko.applyBindings(viewModel, $('#addModel')[0]);
+            $('#modelBox').slimScroll({
+                height: '100%', //可滚动区域高度
+                disableFadeOut: true
             });
         },
         openPreApp: function(id) {
@@ -417,6 +572,10 @@ require(['jquery', 'util', 'layer', 'appPackageService', 'appService', 'packageS
                     viewModel.app.package_id(item.package_id);
                     viewModel.openForm(item.id);
                 });
+                $('._data_table_model').click(function () {
+                    var item = viewModel.table.row($(this).closest('tr')).data();
+                    viewModel.openModel(item.id);
+                });
                 $('._data_table_app_pre').click(function () {
                     var item = viewModel.table.row($(this).closest('tr')).data();
                     viewModel.openPreApp(item.id);
@@ -471,6 +630,7 @@ require(['jquery', 'util', 'layer', 'appPackageService', 'appService', 'packageS
                         '<ul class="dropdown-menu">' +
                             '<li><a href="#" class="_data_table_app_pre">预置应用</a></li>' +
                             '<li><a href="#" class="_data_table_app_install">安装应用</a></li>' +
+                            '<li><a href="#" class="_data_table_model">适用机型</a></li>' +
                             '<li><a href="#" class="_data_table_remove">删除</a></li>' +
                         '</ul>' +
                     '</div>';

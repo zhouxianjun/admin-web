@@ -305,9 +305,13 @@ ApiService_checkBoxVersion_result.prototype.write = function(output) {
 
 ApiService_getBoxResourcesList_args = function(args) {
   this.user = null;
+  this.url = null;
   if (args) {
     if (args.user !== undefined && args.user !== null) {
       this.user = args.user;
+    }
+    if (args.url !== undefined && args.url !== null) {
+      this.url = args.url;
     }
   }
 };
@@ -332,9 +336,13 @@ ApiService_getBoxResourcesList_args.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
-      case 0:
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.url = input.readString();
+      } else {
         input.skip(ftype);
-        break;
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -349,6 +357,11 @@ ApiService_getBoxResourcesList_args.prototype.write = function(output) {
   if (this.user !== null && this.user !== undefined) {
     output.writeFieldBegin('user', Thrift.Type.I64, 1);
     output.writeI64(this.user);
+    output.writeFieldEnd();
+  }
+  if (this.url !== null && this.url !== undefined) {
+    output.writeFieldBegin('url', Thrift.Type.STRING, 2);
+    output.writeString(this.url);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
@@ -430,12 +443,20 @@ ApiService_getBoxResourcesList_result.prototype.write = function(output) {
 ApiService_uploadBrush_args = function(args) {
   this.box_id = null;
   this.data = null;
+  this.user = null;
+  this.ip = null;
   if (args) {
     if (args.box_id !== undefined && args.box_id !== null) {
       this.box_id = args.box_id;
     }
     if (args.data !== undefined && args.data !== null) {
       this.data = args.data;
+    }
+    if (args.user !== undefined && args.user !== null) {
+      this.user = args.user;
+    }
+    if (args.ip !== undefined && args.ip !== null) {
+      this.ip = args.ip;
     }
   }
 };
@@ -467,6 +488,20 @@ ApiService_uploadBrush_args.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 3:
+      if (ftype == Thrift.Type.I64) {
+        this.user = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 4:
+      if (ftype == Thrift.Type.STRING) {
+        this.ip = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -486,6 +521,16 @@ ApiService_uploadBrush_args.prototype.write = function(output) {
   if (this.data !== null && this.data !== undefined) {
     output.writeFieldBegin('data', Thrift.Type.STRING, 2);
     output.writeString(this.data);
+    output.writeFieldEnd();
+  }
+  if (this.user !== null && this.user !== undefined) {
+    output.writeFieldBegin('user', Thrift.Type.I64, 3);
+    output.writeI64(this.user);
+    output.writeFieldEnd();
+  }
+  if (this.ip !== null && this.ip !== undefined) {
+    output.writeFieldBegin('ip', Thrift.Type.STRING, 4);
+    output.writeString(this.ip);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
@@ -524,8 +569,8 @@ ApiService_uploadBrush_result.prototype.read = function(input) {
     switch (fid)
     {
       case 0:
-      if (ftype == Thrift.Type.STRING) {
-        this.success = input.readString();
+      if (ftype == Thrift.Type.BOOL) {
+        this.success = input.readBool();
       } else {
         input.skip(ftype);
       }
@@ -550,8 +595,8 @@ ApiService_uploadBrush_result.prototype.read = function(input) {
 ApiService_uploadBrush_result.prototype.write = function(output) {
   output.writeStructBegin('ApiService_uploadBrush_result');
   if (this.success !== null && this.success !== undefined) {
-    output.writeFieldBegin('success', Thrift.Type.STRING, 0);
-    output.writeString(this.success);
+    output.writeFieldBegin('success', Thrift.Type.BOOL, 0);
+    output.writeBool(this.success);
     output.writeFieldEnd();
   }
   if (this.ex !== null && this.ex !== undefined) {
@@ -676,7 +721,7 @@ ApiServiceClient.prototype.recv_checkBoxVersion = function(input,mtype,rseqid) {
   }
   return callback('checkBoxVersion failed: unknown result');
 };
-ApiServiceClient.prototype.getBoxResourcesList = function(user, callback) {
+ApiServiceClient.prototype.getBoxResourcesList = function(user, url, callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
     var _defer = Q.defer();
@@ -687,19 +732,20 @@ ApiServiceClient.prototype.getBoxResourcesList = function(user, callback) {
         _defer.resolve(result);
       }
     };
-    this.send_getBoxResourcesList(user);
+    this.send_getBoxResourcesList(user, url);
     return _defer.promise;
   } else {
     this._reqs[this.seqid()] = callback;
-    this.send_getBoxResourcesList(user);
+    this.send_getBoxResourcesList(user, url);
   }
 };
 
-ApiServiceClient.prototype.send_getBoxResourcesList = function(user) {
+ApiServiceClient.prototype.send_getBoxResourcesList = function(user, url) {
   var output = new this.pClass(this.output);
   output.writeMessageBegin('getBoxResourcesList', Thrift.MessageType.CALL, this.seqid());
   var args = new ApiService_getBoxResourcesList_args();
   args.user = user;
+  args.url = url;
   args.write(output);
   output.writeMessageEnd();
   return this.output.flush();
@@ -726,7 +772,7 @@ ApiServiceClient.prototype.recv_getBoxResourcesList = function(input,mtype,rseqi
   }
   return callback('getBoxResourcesList failed: unknown result');
 };
-ApiServiceClient.prototype.uploadBrush = function(box_id, data, callback) {
+ApiServiceClient.prototype.uploadBrush = function(box_id, data, user, ip, callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
     var _defer = Q.defer();
@@ -737,20 +783,22 @@ ApiServiceClient.prototype.uploadBrush = function(box_id, data, callback) {
         _defer.resolve(result);
       }
     };
-    this.send_uploadBrush(box_id, data);
+    this.send_uploadBrush(box_id, data, user, ip);
     return _defer.promise;
   } else {
     this._reqs[this.seqid()] = callback;
-    this.send_uploadBrush(box_id, data);
+    this.send_uploadBrush(box_id, data, user, ip);
   }
 };
 
-ApiServiceClient.prototype.send_uploadBrush = function(box_id, data) {
+ApiServiceClient.prototype.send_uploadBrush = function(box_id, data, user, ip) {
   var output = new this.pClass(this.output);
   output.writeMessageBegin('uploadBrush', Thrift.MessageType.CALL, this.seqid());
   var args = new ApiService_uploadBrush_args();
   args.box_id = box_id;
   args.data = data;
+  args.user = user;
+  args.ip = ip;
   args.write(output);
   output.writeMessageEnd();
   return this.output.flush();
@@ -879,8 +927,8 @@ ApiServiceProcessor.prototype.process_getBoxResourcesList = function(seqid, inpu
   var args = new ApiService_getBoxResourcesList_args();
   args.read(input);
   input.readMessageEnd();
-  if (this._handler.getBoxResourcesList.length === 1) {
-    Q.fcall(this._handler.getBoxResourcesList, args.user)
+  if (this._handler.getBoxResourcesList.length === 2) {
+    Q.fcall(this._handler.getBoxResourcesList, args.user, args.url)
       .then(function(result) {
         var result = new ApiService_getBoxResourcesList_result({success: result});
         output.writeMessageBegin("getBoxResourcesList", Thrift.MessageType.REPLY, seqid);
@@ -900,7 +948,7 @@ ApiServiceProcessor.prototype.process_getBoxResourcesList = function(seqid, inpu
         output.flush();
       });
   } else {
-    this._handler.getBoxResourcesList(args.user, function (err, result) {
+    this._handler.getBoxResourcesList(args.user, args.url, function (err, result) {
       if (err == null || err instanceof PublicStruct_ttypes.InvalidOperation) {
         var result = new ApiService_getBoxResourcesList_result((err != null ? err : {success: result}));
         output.writeMessageBegin("getBoxResourcesList", Thrift.MessageType.REPLY, seqid);
@@ -919,8 +967,8 @@ ApiServiceProcessor.prototype.process_uploadBrush = function(seqid, input, outpu
   var args = new ApiService_uploadBrush_args();
   args.read(input);
   input.readMessageEnd();
-  if (this._handler.uploadBrush.length === 2) {
-    Q.fcall(this._handler.uploadBrush, args.box_id, args.data)
+  if (this._handler.uploadBrush.length === 4) {
+    Q.fcall(this._handler.uploadBrush, args.box_id, args.data, args.user, args.ip)
       .then(function(result) {
         var result = new ApiService_uploadBrush_result({success: result});
         output.writeMessageBegin("uploadBrush", Thrift.MessageType.REPLY, seqid);
@@ -940,7 +988,7 @@ ApiServiceProcessor.prototype.process_uploadBrush = function(seqid, input, outpu
         output.flush();
       });
   } else {
-    this._handler.uploadBrush(args.box_id, args.data, function (err, result) {
+    this._handler.uploadBrush(args.box_id, args.data, args.user, args.ip, function (err, result) {
       if (err == null || err instanceof PublicStruct_ttypes.InvalidOperation) {
         var result = new ApiService_uploadBrush_result((err != null ? err : {success: result}));
         output.writeMessageBegin("uploadBrush", Thrift.MessageType.REPLY, seqid);

@@ -164,6 +164,42 @@
         </div>
     </div>
 </script>
+<script type="text/html" id="layer_model">
+    <div class="box box-info" style="overflow: hidden" id="modelBox">
+        <div class="box-body">
+            <form id="addModel">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <div class="col-sm-3" style="padding-left: 0px;padding-right: 0px;">
+                            <select class="form-control" name="app_brand" data-bind="options:brandOptions,optionsText:'name',optionsValue:'id',value: model.brand_id,optionsCaption: '-选择-'"></select>
+                        </div>
+                        <div class="col-sm-3" style="padding-left: 0px;padding-right: 0px;">
+                            <select class="form-control" name="app_model" data-bind="options:modelOptions,optionsText:'name',optionsValue:'id',value: model.model_id,optionsCaption: '-选择-'"></select>
+                        </div>
+                        <div class="col-sm-3" style="padding-left: 0px;padding-right: 0px;">
+                            <select class="form-control" name="app_mversion" data-bind="options:versionOptions,optionsText:'name',optionsValue:'id',value: model.version_id,optionsCaption: '-选择-'"></select>
+                        </div>
+                        <div class="col-sm-3" style="padding-left: 0px;padding-right: 0px;">
+                            <select class="form-control" name="app_base" data-bind="options:baseOptions,optionsText:'name',optionsValue:'id',value: model.base_version_id,optionsCaption: '-选择-'"></select>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary pull-right margin" data-bind="click: function() {$root.addModel();}"><i class="fa fa-plus"></i> 添加机型</button>
+            </form>
+            <table id="active-table" class="table table-bordered table-striped table-hover">
+                <thead>
+                <tr>
+                    <th>品牌</th>
+                    <th>机型</th>
+                    <th>版本</th>
+                    <th>基带</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</script>
 </body>
 <script src="../plugins/require.js"></script>
 <script src="../config.js"></script>
