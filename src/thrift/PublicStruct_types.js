@@ -3035,6 +3035,184 @@ InstallActiveStruct.prototype.write = function(output) {
   return;
 };
 
+DeductionStruct = module.exports.DeductionStruct = function(args) {
+  this.id = null;
+  this.name = null;
+  this.percent = null;
+  this.start = null;
+  this.model = null;
+  this.status = null;
+  this.start_time = null;
+  this.end_time = null;
+  this.user_id = null;
+  if (args) {
+    if (args.id !== undefined && args.id !== null) {
+      this.id = args.id;
+    }
+    if (args.name !== undefined && args.name !== null) {
+      this.name = args.name;
+    }
+    if (args.percent !== undefined && args.percent !== null) {
+      this.percent = args.percent;
+    }
+    if (args.start !== undefined && args.start !== null) {
+      this.start = args.start;
+    }
+    if (args.model !== undefined && args.model !== null) {
+      this.model = args.model;
+    }
+    if (args.status !== undefined && args.status !== null) {
+      this.status = args.status;
+    }
+    if (args.start_time !== undefined && args.start_time !== null) {
+      this.start_time = args.start_time;
+    }
+    if (args.end_time !== undefined && args.end_time !== null) {
+      this.end_time = args.end_time;
+    }
+    if (args.user_id !== undefined && args.user_id !== null) {
+      this.user_id = args.user_id;
+    }
+  }
+};
+DeductionStruct.prototype = {};
+DeductionStruct.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.I64) {
+        this.id = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.name = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.I32) {
+        this.percent = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 4:
+      if (ftype == Thrift.Type.I32) {
+        this.start = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 5:
+      if (ftype == Thrift.Type.I32) {
+        this.model = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 6:
+      if (ftype == Thrift.Type.BOOL) {
+        this.status = input.readBool();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 7:
+      if (ftype == Thrift.Type.I64) {
+        this.start_time = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 8:
+      if (ftype == Thrift.Type.I64) {
+        this.end_time = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 9:
+      if (ftype == Thrift.Type.I64) {
+        this.user_id = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+DeductionStruct.prototype.write = function(output) {
+  output.writeStructBegin('DeductionStruct');
+  if (this.id !== null && this.id !== undefined) {
+    output.writeFieldBegin('id', Thrift.Type.I64, 1);
+    output.writeI64(this.id);
+    output.writeFieldEnd();
+  }
+  if (this.name !== null && this.name !== undefined) {
+    output.writeFieldBegin('name', Thrift.Type.STRING, 2);
+    output.writeString(this.name);
+    output.writeFieldEnd();
+  }
+  if (this.percent !== null && this.percent !== undefined) {
+    output.writeFieldBegin('percent', Thrift.Type.I32, 3);
+    output.writeI32(this.percent);
+    output.writeFieldEnd();
+  }
+  if (this.start !== null && this.start !== undefined) {
+    output.writeFieldBegin('start', Thrift.Type.I32, 4);
+    output.writeI32(this.start);
+    output.writeFieldEnd();
+  }
+  if (this.model !== null && this.model !== undefined) {
+    output.writeFieldBegin('model', Thrift.Type.I32, 5);
+    output.writeI32(this.model);
+    output.writeFieldEnd();
+  }
+  if (this.status !== null && this.status !== undefined) {
+    output.writeFieldBegin('status', Thrift.Type.BOOL, 6);
+    output.writeBool(this.status);
+    output.writeFieldEnd();
+  }
+  if (this.start_time !== null && this.start_time !== undefined) {
+    output.writeFieldBegin('start_time', Thrift.Type.I64, 7);
+    output.writeI64(this.start_time);
+    output.writeFieldEnd();
+  }
+  if (this.end_time !== null && this.end_time !== undefined) {
+    output.writeFieldBegin('end_time', Thrift.Type.I64, 8);
+    output.writeI64(this.end_time);
+    output.writeFieldEnd();
+  }
+  if (this.user_id !== null && this.user_id !== undefined) {
+    output.writeFieldBegin('user_id', Thrift.Type.I64, 9);
+    output.writeI64(this.user_id);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 InvalidOperation = module.exports.InvalidOperation = function(args) {
   Thrift.TException.call(this, "InvalidOperation")
   this.name = "InvalidOperation"

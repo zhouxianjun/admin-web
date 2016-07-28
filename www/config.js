@@ -52,6 +52,7 @@ require.config({
         'fileupload': '/plugins/ajaxfileupload',
         'bootstrap-upload': '/plugins/bootstrap-fileupload.min',
         'select2': '/plugins/select2/select2.min',
+        'daterange': '/plugins/daterangepicker/daterangepicker',
 
         // service
         'userService': 'service/UserService',
@@ -69,7 +70,8 @@ require.config({
         'rootConfigService': 'service/RootConfigService',
         'pushService': 'service/PushService',
         'installActiveService': 'service/InstallActiveService',
-        'modelRefService': 'service/ModelRefService'
+        'modelRefService': 'service/ModelRefService',
+        'deductionService': 'service/DeductionService'
     },
     shim: {
         'jquery-tmpl': ['jquery'],
@@ -86,6 +88,7 @@ require.config({
         'fileinput': ['jquery'],
         'fileupload': ['jquery'],
         'bootstrap-upload': ['bootstrap'],
-        'select2': ['jquery', 'bootstrap']
+        'select2': ['jquery', 'bootstrap'],
+        'daterange': ['jquery', 'bootstrap', 'moment']
     }
 });

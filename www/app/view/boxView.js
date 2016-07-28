@@ -248,9 +248,7 @@ require(['jquery', 'util', 'layer', 'boxService', 'ko', 'moment', 'merge', 'data
                 }
             }, {
                 data: 'status',
-                render: function(status) {
-                    return status ? '<span class="text-green">启用</span>' : '<span class="text-muted">禁用</span>';
-                }
+                render: util.RENDER.STATUS
             }, {
                 data: 'province_id',
                 render: function(province_id) {

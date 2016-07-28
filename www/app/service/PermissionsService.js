@@ -115,6 +115,14 @@ define(['jquery'], function ($) {
                 contentType : 'application/json'
             });
         },
+        users: function () {
+            return $.ajax({
+                url: '/permissions/users',
+                type: 'post',
+                dataType: 'json',
+                contentType : 'application/json'
+            });
+        },
         updateRoleStatus: function(data) {
             return $.ajax({
                 url: '/permissions/updateRoleStatus',

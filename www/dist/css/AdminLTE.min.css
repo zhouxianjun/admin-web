@@ -30,3 +30,6 @@
     padding: 1px 10px;
     color: #fff;
 }
+.daterangepicker.dropdown-menu {
+    z-index: 99999999;
+}

@@ -256,6 +256,9 @@ define(['jquery', 'layer', 'moment', 'underscore', 'dhtmlx'], function ($, layer
             },
             ELLIPSIS_URL: function (data, type, row, meta) {
                 return data ? '<a href="'+ data +'" target="_blank" title="' + data + '">' + data + '</a>' : '';
+            },
+            STATUS: function(status) {
+                return status ? '<span class="text-green">启用</span>' : '<span class="text-muted">禁用</span>';
             }
         },
         dataTableSettings: {
