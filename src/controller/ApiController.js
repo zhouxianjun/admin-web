@@ -70,6 +70,7 @@ module.exports = class {
     * getBoxResourcesList() {
         console.log(this.ips);
         console.log(this.ip);
+        console.log(getClientIp(this.req));
         let res = yield apiService.getBoxResourcesList(this.session.user.id, '/resources/qiniuDownload?key=');
         Utils.writeResult(this, new Result(true, {
             key: 'map',
@@ -81,4 +82,10 @@ module.exports = class {
         let res = yield apiService.uploadBrush(this.session.user.box_id, JSON.stringify(params), this.session.user.id, this.ip);
         Utils.writeResult(this, new Result(res));
     }
+};
+function getClientIp(req) {
+    return req.headers['x-forwarded-for'] ||
+        req.connection.remoteAddress ||
+        req.socket.remoteAddress ||
+        req.connection.socket.remoteAddress;
 };

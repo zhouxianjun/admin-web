@@ -125,11 +125,12 @@ router.get('/', function *(next) {
 app.on('error', (err, ctx) => {
     logger.error('server error', err, ctx);
 });
+process.on('uncaughtException', err => {logger.error('uncaughtException', err)});
 
 app.use(router.routes()).use(router.allowedMethods());
 
 require('./src/ThirftClient')(() => {
     // router
     new FileRouter(router).auto('./src/controller');
-    app.listen(3000);
+    app.listen(3000, '0.0.0.0');
 });
