@@ -58,7 +58,7 @@ define(['jquery', 'layer', 'moment', 'underscore', 'dhtmlx'], function ($, layer
         ajaxResponse: function (response, callback, errorFn) {
             var defer = $.Deferred();
             if (response.code == 99) {
-                window.location.href = '/';
+                this.getTopWin().location.href = '/';
                 return;
             }
             if (response.code != 1 && typeof response.code != 'undefined') {
@@ -74,6 +74,16 @@ define(['jquery', 'layer', 'moment', 'underscore', 'dhtmlx'], function ($, layer
                 callback(response);
             }
             return defer.promise();
+        },
+        getTopWin: function () {
+            return (function (p, c){
+                //noinspection JSValidateTypes
+                while(p != c){
+                    c = p;
+                    p = p.parent;
+                }
+                return c
+            })(window.parent, window);
         },
         send: function (deferred, callback, errorFn) {
             var defer = $.Deferred();

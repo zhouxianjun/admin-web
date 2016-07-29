@@ -26,7 +26,6 @@
  */
 'use strict';
 const apiService = require('../service/ApiService').instance();
-const interfaceService = require('../service/InterfaceService').instance();
 const Result = require('../dto/Result');
 const Utils = require('../util/Utils');
 const PublicStruct = require('../thrift/PublicStruct_types');
@@ -40,24 +39,12 @@ module.exports = class {
             this.throw(400);
             return;
         }
-        let res = yield apiService.boxLogin(params.username, params.password, params.box_id);
-        let success = false;
-        if (res && res.toNumber() > 0) {
-            this.session.user = {
-                id: res.toNumber(),
-                box_id: params.box_id
-            };
-            this.session.interfaces = yield interfaceService.interfacesByUser(this.session.user.id);
-            yield this.sessionStore.set(this.sessionId, this.session, 1000 * 60 * 60 * 24);
-            success = true;
-        }
-        Utils.writeResult(this, new Result(success));
+        let res = yield Utils.boxLogin(this, params);
+        Utils.writeResult(this, new Result(res));
     }
     * checkBoxVersion() {
         let params = this.request.body;
-        console.log(params);
         let res = yield apiService.checkBoxVersion(this.session.user.box_id, params.version_code);
-        console.log(res);
         res = JSON.parse(res);
         if (res.md5) {
             res.url = '/resources/qiniuDownload?key=' + res.md5;
@@ -80,6 +67,16 @@ module.exports = class {
     * uploadBrush() {
         let params = this.request.body;
         let res = yield apiService.uploadBrush(this.session.user.box_id, JSON.stringify(params), this.session.user.id, this.ip);
+        Utils.writeResult(this, new Result(res));
+    }
+    * appActive() {
+        let params = this.request.body;
+        let res = yield apiService.appActive(this.session.user.box_id, JSON.stringify(params), this.session.user.id, this.ip);
+        Utils.writeResult(this, new Result(res));
+    }
+    * mobileActive() {
+        let params = this.request.body;
+        let res = yield apiService.mobileActive(this.session.user.box_id, JSON.stringify(params), this.session.user.id, this.ip);
         Utils.writeResult(this, new Result(res));
     }
 };

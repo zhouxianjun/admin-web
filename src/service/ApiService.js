@@ -31,6 +31,8 @@ module.exports = class ApiService extends ThriftClient.referenceBean {
     checkBoxVersion() {}
     getBoxResourcesList() {}
     uploadBrush() {}
+    appActive() {}
+    mobileActive() {}
     get type() {
         return require('../thrift/ApiService');
     }

@@ -609,6 +609,344 @@ ApiService_uploadBrush_result.prototype.write = function(output) {
   return;
 };
 
+ApiService_appActive_args = function(args) {
+  this.box_id = null;
+  this.data = null;
+  this.user = null;
+  this.ip = null;
+  if (args) {
+    if (args.box_id !== undefined && args.box_id !== null) {
+      this.box_id = args.box_id;
+    }
+    if (args.data !== undefined && args.data !== null) {
+      this.data = args.data;
+    }
+    if (args.user !== undefined && args.user !== null) {
+      this.user = args.user;
+    }
+    if (args.ip !== undefined && args.ip !== null) {
+      this.ip = args.ip;
+    }
+  }
+};
+ApiService_appActive_args.prototype = {};
+ApiService_appActive_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.box_id = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.data = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.I64) {
+        this.user = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 4:
+      if (ftype == Thrift.Type.STRING) {
+        this.ip = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+ApiService_appActive_args.prototype.write = function(output) {
+  output.writeStructBegin('ApiService_appActive_args');
+  if (this.box_id !== null && this.box_id !== undefined) {
+    output.writeFieldBegin('box_id', Thrift.Type.STRING, 1);
+    output.writeString(this.box_id);
+    output.writeFieldEnd();
+  }
+  if (this.data !== null && this.data !== undefined) {
+    output.writeFieldBegin('data', Thrift.Type.STRING, 2);
+    output.writeString(this.data);
+    output.writeFieldEnd();
+  }
+  if (this.user !== null && this.user !== undefined) {
+    output.writeFieldBegin('user', Thrift.Type.I64, 3);
+    output.writeI64(this.user);
+    output.writeFieldEnd();
+  }
+  if (this.ip !== null && this.ip !== undefined) {
+    output.writeFieldBegin('ip', Thrift.Type.STRING, 4);
+    output.writeString(this.ip);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+ApiService_appActive_result = function(args) {
+  this.success = null;
+  this.ex = null;
+  if (args instanceof PublicStruct_ttypes.InvalidOperation) {
+    this.ex = args;
+    return;
+  }
+  if (args) {
+    if (args.success !== undefined && args.success !== null) {
+      this.success = args.success;
+    }
+    if (args.ex !== undefined && args.ex !== null) {
+      this.ex = args.ex;
+    }
+  }
+};
+ApiService_appActive_result.prototype = {};
+ApiService_appActive_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.BOOL) {
+        this.success = input.readBool();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.ex = new PublicStruct_ttypes.InvalidOperation();
+        this.ex.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+ApiService_appActive_result.prototype.write = function(output) {
+  output.writeStructBegin('ApiService_appActive_result');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.BOOL, 0);
+    output.writeBool(this.success);
+    output.writeFieldEnd();
+  }
+  if (this.ex !== null && this.ex !== undefined) {
+    output.writeFieldBegin('ex', Thrift.Type.STRUCT, 1);
+    this.ex.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+ApiService_mobileActive_args = function(args) {
+  this.box_id = null;
+  this.data = null;
+  this.user = null;
+  this.ip = null;
+  if (args) {
+    if (args.box_id !== undefined && args.box_id !== null) {
+      this.box_id = args.box_id;
+    }
+    if (args.data !== undefined && args.data !== null) {
+      this.data = args.data;
+    }
+    if (args.user !== undefined && args.user !== null) {
+      this.user = args.user;
+    }
+    if (args.ip !== undefined && args.ip !== null) {
+      this.ip = args.ip;
+    }
+  }
+};
+ApiService_mobileActive_args.prototype = {};
+ApiService_mobileActive_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.box_id = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.data = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.I64) {
+        this.user = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 4:
+      if (ftype == Thrift.Type.STRING) {
+        this.ip = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+ApiService_mobileActive_args.prototype.write = function(output) {
+  output.writeStructBegin('ApiService_mobileActive_args');
+  if (this.box_id !== null && this.box_id !== undefined) {
+    output.writeFieldBegin('box_id', Thrift.Type.STRING, 1);
+    output.writeString(this.box_id);
+    output.writeFieldEnd();
+  }
+  if (this.data !== null && this.data !== undefined) {
+    output.writeFieldBegin('data', Thrift.Type.STRING, 2);
+    output.writeString(this.data);
+    output.writeFieldEnd();
+  }
+  if (this.user !== null && this.user !== undefined) {
+    output.writeFieldBegin('user', Thrift.Type.I64, 3);
+    output.writeI64(this.user);
+    output.writeFieldEnd();
+  }
+  if (this.ip !== null && this.ip !== undefined) {
+    output.writeFieldBegin('ip', Thrift.Type.STRING, 4);
+    output.writeString(this.ip);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+ApiService_mobileActive_result = function(args) {
+  this.success = null;
+  this.ex = null;
+  if (args instanceof PublicStruct_ttypes.InvalidOperation) {
+    this.ex = args;
+    return;
+  }
+  if (args) {
+    if (args.success !== undefined && args.success !== null) {
+      this.success = args.success;
+    }
+    if (args.ex !== undefined && args.ex !== null) {
+      this.ex = args.ex;
+    }
+  }
+};
+ApiService_mobileActive_result.prototype = {};
+ApiService_mobileActive_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.BOOL) {
+        this.success = input.readBool();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.ex = new PublicStruct_ttypes.InvalidOperation();
+        this.ex.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+ApiService_mobileActive_result.prototype.write = function(output) {
+  output.writeStructBegin('ApiService_mobileActive_result');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.BOOL, 0);
+    output.writeBool(this.success);
+    output.writeFieldEnd();
+  }
+  if (this.ex !== null && this.ex !== undefined) {
+    output.writeFieldBegin('ex', Thrift.Type.STRUCT, 1);
+    this.ex.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 ApiServiceClient = exports.Client = function(output, pClass) {
     this.output = output;
     this.pClass = pClass;
@@ -825,6 +1163,112 @@ ApiServiceClient.prototype.recv_uploadBrush = function(input,mtype,rseqid) {
   }
   return callback('uploadBrush failed: unknown result');
 };
+ApiServiceClient.prototype.appActive = function(box_id, data, user, ip, callback) {
+  this._seqid = this.new_seqid();
+  if (callback === undefined) {
+    var _defer = Q.defer();
+    this._reqs[this.seqid()] = function(error, result) {
+      if (error) {
+        _defer.reject(error);
+      } else {
+        _defer.resolve(result);
+      }
+    };
+    this.send_appActive(box_id, data, user, ip);
+    return _defer.promise;
+  } else {
+    this._reqs[this.seqid()] = callback;
+    this.send_appActive(box_id, data, user, ip);
+  }
+};
+
+ApiServiceClient.prototype.send_appActive = function(box_id, data, user, ip) {
+  var output = new this.pClass(this.output);
+  output.writeMessageBegin('appActive', Thrift.MessageType.CALL, this.seqid());
+  var args = new ApiService_appActive_args();
+  args.box_id = box_id;
+  args.data = data;
+  args.user = user;
+  args.ip = ip;
+  args.write(output);
+  output.writeMessageEnd();
+  return this.output.flush();
+};
+
+ApiServiceClient.prototype.recv_appActive = function(input,mtype,rseqid) {
+  var callback = this._reqs[rseqid] || function() {};
+  delete this._reqs[rseqid];
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(input);
+    input.readMessageEnd();
+    return callback(x);
+  }
+  var result = new ApiService_appActive_result();
+  result.read(input);
+  input.readMessageEnd();
+
+  if (null !== result.ex) {
+    return callback(result.ex);
+  }
+  if (null !== result.success) {
+    return callback(null, result.success);
+  }
+  return callback('appActive failed: unknown result');
+};
+ApiServiceClient.prototype.mobileActive = function(box_id, data, user, ip, callback) {
+  this._seqid = this.new_seqid();
+  if (callback === undefined) {
+    var _defer = Q.defer();
+    this._reqs[this.seqid()] = function(error, result) {
+      if (error) {
+        _defer.reject(error);
+      } else {
+        _defer.resolve(result);
+      }
+    };
+    this.send_mobileActive(box_id, data, user, ip);
+    return _defer.promise;
+  } else {
+    this._reqs[this.seqid()] = callback;
+    this.send_mobileActive(box_id, data, user, ip);
+  }
+};
+
+ApiServiceClient.prototype.send_mobileActive = function(box_id, data, user, ip) {
+  var output = new this.pClass(this.output);
+  output.writeMessageBegin('mobileActive', Thrift.MessageType.CALL, this.seqid());
+  var args = new ApiService_mobileActive_args();
+  args.box_id = box_id;
+  args.data = data;
+  args.user = user;
+  args.ip = ip;
+  args.write(output);
+  output.writeMessageEnd();
+  return this.output.flush();
+};
+
+ApiServiceClient.prototype.recv_mobileActive = function(input,mtype,rseqid) {
+  var callback = this._reqs[rseqid] || function() {};
+  delete this._reqs[rseqid];
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(input);
+    input.readMessageEnd();
+    return callback(x);
+  }
+  var result = new ApiService_mobileActive_result();
+  result.read(input);
+  input.readMessageEnd();
+
+  if (null !== result.ex) {
+    return callback(result.ex);
+  }
+  if (null !== result.success) {
+    return callback(null, result.success);
+  }
+  return callback('mobileActive failed: unknown result');
+};
 ApiServiceProcessor = exports.Processor = function(handler) {
   this._handler = handler
 }
@@ -995,6 +1439,86 @@ ApiServiceProcessor.prototype.process_uploadBrush = function(seqid, input, outpu
       } else {
         var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
         output.writeMessageBegin("uploadBrush", Thrift.MessageType.EXCEPTION, seqid);
+      }
+      result.write(output);
+      output.writeMessageEnd();
+      output.flush();
+    });
+  }
+}
+
+ApiServiceProcessor.prototype.process_appActive = function(seqid, input, output) {
+  var args = new ApiService_appActive_args();
+  args.read(input);
+  input.readMessageEnd();
+  if (this._handler.appActive.length === 4) {
+    Q.fcall(this._handler.appActive, args.box_id, args.data, args.user, args.ip)
+      .then(function(result) {
+        var result = new ApiService_appActive_result({success: result});
+        output.writeMessageBegin("appActive", Thrift.MessageType.REPLY, seqid);
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      }, function (err) {
+        if (err instanceof PublicStruct_ttypes.InvalidOperation) {
+          var result = new ApiService_appActive_result(err);
+          output.writeMessageBegin("appActive", Thrift.MessageType.REPLY, seqid);
+        } else {
+          var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+          output.writeMessageBegin("appActive", Thrift.MessageType.EXCEPTION, seqid);
+        }
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      });
+  } else {
+    this._handler.appActive(args.box_id, args.data, args.user, args.ip, function (err, result) {
+      if (err == null || err instanceof PublicStruct_ttypes.InvalidOperation) {
+        var result = new ApiService_appActive_result((err != null ? err : {success: result}));
+        output.writeMessageBegin("appActive", Thrift.MessageType.REPLY, seqid);
+      } else {
+        var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+        output.writeMessageBegin("appActive", Thrift.MessageType.EXCEPTION, seqid);
+      }
+      result.write(output);
+      output.writeMessageEnd();
+      output.flush();
+    });
+  }
+}
+
+ApiServiceProcessor.prototype.process_mobileActive = function(seqid, input, output) {
+  var args = new ApiService_mobileActive_args();
+  args.read(input);
+  input.readMessageEnd();
+  if (this._handler.mobileActive.length === 4) {
+    Q.fcall(this._handler.mobileActive, args.box_id, args.data, args.user, args.ip)
+      .then(function(result) {
+        var result = new ApiService_mobileActive_result({success: result});
+        output.writeMessageBegin("mobileActive", Thrift.MessageType.REPLY, seqid);
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      }, function (err) {
+        if (err instanceof PublicStruct_ttypes.InvalidOperation) {
+          var result = new ApiService_mobileActive_result(err);
+          output.writeMessageBegin("mobileActive", Thrift.MessageType.REPLY, seqid);
+        } else {
+          var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+          output.writeMessageBegin("mobileActive", Thrift.MessageType.EXCEPTION, seqid);
+        }
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      });
+  } else {
+    this._handler.mobileActive(args.box_id, args.data, args.user, args.ip, function (err, result) {
+      if (err == null || err instanceof PublicStruct_ttypes.InvalidOperation) {
+        var result = new ApiService_mobileActive_result((err != null ? err : {success: result}));
+        output.writeMessageBegin("mobileActive", Thrift.MessageType.REPLY, seqid);
+      } else {
+        var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+        output.writeMessageBegin("mobileActive", Thrift.MessageType.EXCEPTION, seqid);
       }
       result.write(output);
       output.writeMessageEnd();

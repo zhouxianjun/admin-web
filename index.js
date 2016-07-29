@@ -29,6 +29,7 @@ const logger = require('./src/util/LogUtils').log();
 const FileRouter = require('./src/util/FileRouter');
 const Utils = require('./src/util/Utils');
 const Result = require('./src/dto/Result');
+const config = require('./config.json');
 const Koa = require('koa');
 const router = require('koa-router')();
 const Static = require('koa-static');
@@ -37,8 +38,8 @@ const redisStore = require('koa-redis');
 const bodyParser = require('koa-bodyparser');
 const app = new Koa();
 
-const ignoreUrl = ['/user/login', '/', '/resources/qiniuCallback', '/api/boxLogin'];
-const loginUrl = ['/permissions/menus', '/user/logout', '/resources/uptoken', '/resources/qiniuDownload'];
+const ignoreUrl = config.ignoreUrl;
+const loginUrl = config.loginUrl;
 
 //logger
 app.use(function* log(next) {
@@ -54,7 +55,7 @@ app.use(bodyParser());
 app.keys = ['session_key'];
 app.use(session({
     store: redisStore(),
-    ttl: 1000 * 60 * 30
+    ttl: config.session_ttl
 }));
 app.use(function *session(next){
     yield next;
@@ -73,6 +74,14 @@ app.use(function* rbac(next) {
         yield next;
     } else {
         if (ignoreUrl.indexOf(this.path) == -1 && !this.session.user) {
+            let params = this.request.body;
+            if (params.username && params.password) {
+                let res = params.box_id ? yield Utils.boxLogin(this, params) : yield Utils.login(this, params);
+                if (res) {
+                    yield next;
+                    return;
+                }
+            }
             Utils.writeResult(this, new Result(Result.CODE.NO_LOGIN));
             return;
         }
@@ -132,5 +141,5 @@ app.use(router.routes()).use(router.allowedMethods());
 require('./src/ThirftClient')(() => {
     // router
     new FileRouter(router).auto('./src/controller');
-    app.listen(3000, '0.0.0.0');
+    app.listen(config.port, '0.0.0.0');
 });

@@ -25,8 +25,6 @@
  *           佛祖保佑       永无BUG
  */
 'use strict';
-const userService = require('../service/UserService').instance();
-const interfaceService = require('../service/InterfaceService').instance();
 const userRefService = require('../service/UserRefService').instance();
 const Result = require('../dto/Result');
 const Utils = require('../util/Utils');
@@ -40,16 +38,8 @@ module.exports = class {
     }
     * login() {
         let param = this.request.body;
-        if (!param || !param.username) {
-            this.throw(400);
-            return;
-        }
-        let user = yield userService.login(param.username, param.password);
-        if (user && user.id.toNumber() > 0) {
-            user.id = user.id.toNumber();
-            this.session.user = user;
-            let res = yield interfaceService.interfacesByUser(this.session.user.id);
-            this.session.interfaces = res;
+        let res = yield Utils.login(this, param);
+        if (res) {
             this.redirect('/pages/index.html');
         } else {
             this.redirect('/pages/login.html?error=500');

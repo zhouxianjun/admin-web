@@ -195,4 +195,39 @@ module.exports = class Utils {
         }
         return array;
     }
+    static * login(ctx, param) {
+        if (!param || !param.username) {
+            ctx.throw(400);
+            return false;
+        }
+        let userService = require('../service/UserService').instance();
+        let interfaceService = require('../service/InterfaceService').instance();
+        let user = yield userService.login(param.username, param.password);
+        if (user && user.id.toNumber() > 0) {
+            user.id = user.id.toNumber();
+            ctx.session.user = user;
+            ctx.session.interfaces = yield interfaceService.interfacesByUser(ctx.session.user.id);
+            return true;
+        }
+        return false;
+    }
+
+    static * boxLogin(ctx, param) {
+        if (!param || !param.username) {
+            ctx.throw(400);
+            return false;
+        }
+        let apiService = require('../service/ApiService').instance();
+        let interfaceService = require('../service/InterfaceService').instance();
+        let res = yield apiService.boxLogin(param.username, param.password, param.box_id);
+        if (res && res.toNumber() > 0) {
+            ctx.session.user = {
+                id: res.toNumber(),
+                box_id: param.box_id
+            };
+            ctx.session.interfaces = yield interfaceService.interfacesByUser(ctx.session.user.id);
+            return true;
+        }
+        return false;
+    }
 };

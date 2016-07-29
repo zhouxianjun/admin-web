@@ -25,8 +25,9 @@
  *           佛祖保佑       永无BUG
  */
 'use strict';
+const config = require('../config.json');
 const ThriftClient = require('node-thrift-client');
-const client = ThriftClient.zookeeper.createClient('127.0.0.1:2181');
+const client = ThriftClient.zookeeper.createClient(config.zookeeper);
 let self = null;
 module.exports = function(callback) {
     if (self) return;

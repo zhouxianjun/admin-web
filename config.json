@@ -1,0 +1,22 @@
+{
+  "server_url": "http://alone.ngrok.cc",
+  "port": 3000,
+  "session_ttl": 300000,
+  "ignoreUrl": [
+    "/user/login",
+    "/",
+    "/resources/qiniuCallback",
+    "/api/boxLogin"
+  ],
+  "loginUrl": [
+    "/permissions/menus",
+    "/user/logout",
+    "/resources/uptoken",
+    "/resources/qiniuDownload"
+  ],
+  "qiniu": {
+    "ACCESS_KEY": "qZq3Y85XBAWIWvwZpbl-REEd3SfSlOrjc55gcgxO",
+    "SECRET_KEY": "kdW-1Ynd-1H5nw-gfHi-BKgDodsVSdcaZi_GUhpZ"
+  },
+  "zookeeper": "127.0.0.1:2181"
+}

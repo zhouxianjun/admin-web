@@ -28,19 +28,19 @@
 const resourcesService = require('../service/ResourcesService').instance();
 const Result = require('../dto/Result');
 const Utils = require('../util/Utils');
+const config = require('../../config.json');
 const _ = require('underscore');
 const querystring = require('querystring');
 const fs = require("fs");
 const qiniu = require('qiniu');
 //需要填写你的 Access Key 和 Secret Key
-qiniu.conf.ACCESS_KEY = 'qZq3Y85XBAWIWvwZpbl-REEd3SfSlOrjc55gcgxO';
-qiniu.conf.SECRET_KEY = 'kdW-1Ynd-1H5nw-gfHi-BKgDodsVSdcaZi_GUhpZ';
+qiniu.conf.ACCESS_KEY = config.qiniu.ACCESS_KEY;
+qiniu.conf.SECRET_KEY = config.qiniu.SECRET_KEY;
 //要上传的空间
 const bucket = 'hlyt';
 const baseUrl = 'http://oalnquhic.bkt.clouddn.com/';
-const callBack = 'http://alone.ngrok.cc/resources/qiniuCallback';
 const callBackBody = 'filename=$(fname)&filesize=$(fsize)&md5=$(etag)';
-const putPolicy = new qiniu.rs.PutPolicy(`${bucket}`, callBack, callBackBody);
+const putPolicy = new qiniu.rs.PutPolicy(`${bucket}`, `${config.server_url}/resources/qiniuCallback`, callBackBody);
 const getPolicy = new qiniu.rs.GetPolicy(60 * 5);
 module.exports = class {
     static get path() {
