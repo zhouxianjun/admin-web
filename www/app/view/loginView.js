@@ -25,7 +25,7 @@
  *           佛祖保佑       永无BUG
  */
 'use strict';
-require(['jquery', 'ko', 'userService', 'util', 'bootstrap', 'icheck', 'validator'], function ($, ko, UserService, util) {
+require(['jquery', 'ko', 'userService', 'util', 'layer', 'bootstrap', 'icheck', 'validator'], function ($, ko, UserService, util, layer) {
     var viewModel = {
         username: ko.observable(),
         password: ko.observable(),
@@ -35,7 +35,7 @@ require(['jquery', 'ko', 'userService', 'util', 'bootstrap', 'icheck', 'validato
     $(function () {
         var error = util.getUrlParam('error');
         if (error) {
-            alert('登录失败');
+            layer.msg(error || '登录失败', {icon: 5});
         }
         $('input').iCheck({
             checkboxClass: 'icheckbox_square-blue',

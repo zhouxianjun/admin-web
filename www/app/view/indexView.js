@@ -24,11 +24,22 @@
  *^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
  *           佛祖保佑       永无BUG
  */
-require(['jquery', 'ko', 'permissionsService', 'util', 'jquery-tmpl', 'app', 'bootstrap'], function($, ko, PermissionsService, util) {
+require(['jquery', 'ko', 'permissionsService', 'userService', 'util', 'layer', 'app', 'bootstrap', 'validator'], function($, ko, PermissionsService, UserService, util, layer) {
     var viewModel = {
         tabs: ko.observableArray([]),
         name: ko.observable(''),
-        menus: ko.observableArray([]),
+        menus: ko.observableArray(),
+        user: {
+            name: ko.observable(),
+            real_name: ko.observable(),
+            company: ko.observable(),
+            phone: ko.observable(),
+            province_text: ko.observable(),
+            city_text: ko.observable(),
+            email: ko.observable(),
+            password: ko.observable(),
+            role_name: ko.observable()
+        },
         getMenuById: function(menus, id) {
             for (var i = 0; i < menus.length; i++) {
                 if (menus[i].id == id) {
@@ -84,12 +95,97 @@ require(['jquery', 'ko', 'permissionsService', 'util', 'jquery-tmpl', 'app', 'bo
             }
             viewModel.tabs.remove(menu);
         },
+        openUserForm: function () {
+            var lwin = layer.open({
+                type: 1,
+                title: '个人信息修改',
+                area: ['500px', '400px'], //宽高
+                content: $('#layer_user_info').html(),
+                btn: ['确定', '取消'],
+                yes: function () {
+                    var form = $('#userFrom');
+                    form.data('bootstrapValidator').validate();
+                    if (form.data('bootstrapValidator').isValid()) {
+                        util.send(UserService.update(ko.toJSON(viewModel.user))).then(function () {
+                            viewModel.loadInfo();
+                            layer.close(lwin);
+                        });
+                    }
+                }
+            });
+            util.initValidForm($('#userFrom'), {
+                user_password: {
+                    validators: {
+                        identical: {
+                            field: 'user_confirm_password'
+                        },
+                        regexp: {
+                            regexp: /^[a-zA-Z]\w{5,17}$/
+                        }
+                    }
+                },
+                user_confirm_password: {
+                    validators: {
+                        identical: {
+                            field: 'user_password'
+                        },
+                        regexp: {
+                            regexp: /^[a-zA-Z]\w{5,17}$/
+                        }
+                    }
+                },
+                user_name: {
+                    validators: {
+                        notEmpty: {
+                            message: '不能为空'
+                        }
+                    }
+                },
+                user_phone: {
+                    validators: {
+                        regexp: {
+                            regexp: /(^(\d{3,4}-)?\d{7,8})$|(13[0-9]{9})/,
+                            message: '请输入正确的电话与手机号码'
+                        }
+                    }
+                },
+                user_real_name: {
+                    validators: {
+                        regexp: {
+                            regexp: /[\u4E00-\u9FA5]{2,5}(?:·[\u4E00-\u9FA5]{2,5})*/,
+                            message: '请输入正确姓名'
+                        }
+                    }
+                },
+                user_email: {
+                    validators: {
+                        email: {
+                            message: '请输入正确到邮箱地址'
+                        }
+                    }
+                }
+            });
+            ko.applyBindings(viewModel, $('#userFrom')[0]);
+            $('#userFrom').slimScroll({
+                height: '100%', //可滚动区域高度
+                disableFadeOut: true
+            });
+        },
         initMenus: function() {
             var deferred = PermissionsService.menus();
             util.send(deferred, function(response) {
                 viewModel.menus(response.data.menus);
-                viewModel.name(response.data.user.name);
                 ko.applyBindings(viewModel);
+            });
+            viewModel.loadInfo();
+        },
+        loadInfo: function () {
+            util.send(UserService.info()).then(function (response) {
+                util.setViewModelData(viewModel.user, response.data.user);
+                viewModel.user.province_text(util.getProvinceNameById(response.data.user.province_id));
+                viewModel.user.city_text(util.getCityNameById(response.data.user.city_id));
+                if (!viewModel.user.real_name())
+                    $('#real_name_text').text('none');
             });
         },
         logout: function () {

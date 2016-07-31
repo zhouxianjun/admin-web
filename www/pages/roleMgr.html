@@ -27,11 +27,14 @@
         <h3 class="panel-title">
             <i class="fa fa-user"></i>
             角色配置
+            <a class="btn btn-box-tool pull-right" title="刷新" data-bind="click: function(){window.location.reload()}">
+                <i class="glyphicon glyphicon-refresh"></i>
+            </a>
         </h3>
     </div>
     <div class="panel-body">
-        <legend>角色信息</legend>
-        <div id="tree_role" style="width: 99%;max-height: 650px;height: 400px;overflow: hidden">
+        <button type="button" class="btn btn-primary margin-bottom" data-bind="click: function() {$root.openAdd();}"><i class="fa fa-plus"></i> 添加根角色</button>
+        <div class="main-treegrid" id="tree_role" style="width: 99%;overflow: hidden">
         </div>
     </div>
 </div>

@@ -119,7 +119,7 @@ require(['jquery', 'util', 'layer', 'appRequireService', 'resourcesService', 'ko
                     if (form.data('bootstrapValidator').isValid() && $('#app_file_resource')[0].files[0]) {
                         viewModel.app_file.id(id);
                         ResourcesService.uploadFile([$('#app_file_resource')[0].files[0]]).then(function(resList) {
-                            util.send(AppRequireService.updateFile(JSON.stringify({
+                            util.send(AppRequireService.updateFile(ko.toJSON({
                                 id: id,
                                 resources: resList[0]
                             }))).then(function() {
@@ -152,7 +152,7 @@ require(['jquery', 'util', 'layer', 'appRequireService', 'resourcesService', 'ko
         },
         openImg: function (id) {
             viewModel.app_img_array([]);
-            util.send(AppRequireService.imgs(JSON.stringify({id: id}))).then(function(response) {
+            util.send(AppRequireService.imgs(ko.toJSON({id: id}))).then(function(response) {
                 for (var i = 0; i < response.data.list.length; i++) {
                     viewModel.app_img_array.push({
                         index: i,
@@ -206,7 +206,7 @@ require(['jquery', 'util', 'layer', 'appRequireService', 'resourcesService', 'ko
                                 resList.push(ids[j]);
                             }
                         }
-                        util.send(AppRequireService.updateImg(JSON.stringify({
+                        util.send(AppRequireService.updateImg(ko.toJSON({
                             id: id,
                             resources: resList
                         }))).then(function() {
@@ -230,11 +230,12 @@ require(['jquery', 'util', 'layer', 'appRequireService', 'resourcesService', 'ko
         }
     };
     $(function () {
+        util.tableToolsButton();
         viewModel.table = $('#app-table').DataTable(merge(true, util.dataTableSettings, {
             dom: 'T<"clear">lfrtip',
             ajax: function (data, callback, settings) {
                 var sortParam = util.getSortParam(data, ['name', 'type', 'memo', 'create_time']);
-                util.send(AppRequireService.listByPage(JSON.stringify(merge(true, sortParam, {
+                util.send(AppRequireService.listByPage(ko.toJSON(merge(true, sortParam, {
                     page: Math.floor(data.start / 10) + 1,
                     pageSize: 10
                 }))), function(response) {
@@ -269,7 +270,7 @@ require(['jquery', 'util', 'layer', 'appRequireService', 'resourcesService', 'ko
                     var confirmLayer = layer.confirm('您确定删除此应用吗？', {
                         btn: ['确定','取消'] //按钮
                     }, function(){
-                        util.send(AppRequireService.remove(JSON.stringify({
+                        util.send(AppRequireService.remove(ko.toJSON({
                             id: item.id
                         })), function() {
                             viewModel.table.draw(false);

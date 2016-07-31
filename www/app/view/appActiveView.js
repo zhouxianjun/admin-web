@@ -105,11 +105,12 @@ require(['jquery', 'util', 'layer', 'appActiveService', 'ko', 'moment', 'merge',
         }
     };
     $(function () {
+        util.tableToolsButton();
         viewModel.table = $('#box-table').DataTable(merge(true, util.dataTableSettings, {
             dom: 'T<"clear">lfrtip',
             ajax: function (data, callback, settings) {
                 var sortParam = util.getSortParam(data, ['name', 'open_count', 'flow', 'stay_days', 'show_time', 'open_network', 'create_time']);
-                util.send(AppActiveService.listByPage(JSON.stringify(merge(true, sortParam, {
+                util.send(AppActiveService.listByPage(ko.toJSON(merge(true, sortParam, {
                     page: Math.floor(data.start / 10) + 1,
                     pageSize: 10
                 }))), function(response) {
@@ -135,7 +136,7 @@ require(['jquery', 'util', 'layer', 'appActiveService', 'ko', 'moment', 'merge',
                     var confirmLayer = layer.confirm('您确定删除此策略吗？', {
                         btn: ['确定','取消'] //按钮
                     }, function(){
-                        util.send(AppActiveService.remove(JSON.stringify({
+                        util.send(AppActiveService.remove(ko.toJSON({
                             id: item.id
                         })), function() {
                             viewModel.table.draw(false);

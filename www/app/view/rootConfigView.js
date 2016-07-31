@@ -115,7 +115,7 @@ require(['jquery', 'util', 'layer', 'rootConfigService', 'modelRefService', 'mod
                     if (form.data('bootstrapValidator').isValid() && $('#app_file_resource')[0].files[0]) {
                         viewModel.app_file.id(id);
                         ResourcesService.uploadFile([$('#app_file_resource')[0].files[0]]).then(function(resList) {
-                            util.send(RootConfigService.updateFile(JSON.stringify({
+                            util.send(RootConfigService.updateFile(ko.toJSON({
                                 id: id,
                                 resources: resList[0]
                             }))).then(function() {
@@ -169,7 +169,7 @@ require(['jquery', 'util', 'layer', 'rootConfigService', 'modelRefService', 'mod
             viewModel.model_table = $('#active-table').DataTable(merge(true, util.dataTableSettings, {
                 ajax: function (data, callback, settings) {
                     var sortParam = util.getSortParam(data, ['brand_id', 'model_id', 'version_id', 'base_version_id']);
-                    util.send(ModelRefService.listModelByPage(JSON.stringify(merge(true, sortParam, {
+                    util.send(ModelRefService.listModelByPage(ko.toJSON(merge(true, sortParam, {
                         page: Math.floor(data.start / 10) + 1,
                         pageSize: 10,
                         id: id,
@@ -190,7 +190,7 @@ require(['jquery', 'util', 'layer', 'rootConfigService', 'modelRefService', 'mod
                         var confirmLayer = layer.confirm('您确定删除此机型吗？', {
                             btn: ['确定','取消'] //按钮
                         }, function(){
-                            util.send(ModelRefService.remove(JSON.stringify({
+                            util.send(ModelRefService.remove(ko.toJSON({
                                 model: item.id,
                                 ref: id,
                                 type: 1
@@ -308,11 +308,12 @@ require(['jquery', 'util', 'layer', 'rootConfigService', 'modelRefService', 'mod
         }
     };
     $(function () {
+        util.tableToolsButton();
         viewModel.table = $('#app-table').DataTable(merge(true, util.dataTableSettings, {
             dom: 'T<"clear">lfrtip',
             ajax: function (data, callback, settings) {
                 var sortParam = util.getSortParam(data, ['name', 'version', 'memo', 'create_time']);
-                util.send(RootConfigService.listByPage(JSON.stringify(merge(true, sortParam, {
+                util.send(RootConfigService.listByPage(ko.toJSON(merge(true, sortParam, {
                     page: Math.floor(data.start / 10) + 1,
                     pageSize: 10
                 }))), function(response) {
@@ -347,7 +348,7 @@ require(['jquery', 'util', 'layer', 'rootConfigService', 'modelRefService', 'mod
                     var confirmLayer = layer.confirm('您确定删除此配置吗？', {
                         btn: ['确定','取消'] //按钮
                     }, function(){
-                        util.send(RootConfigService.remove(JSON.stringify({
+                        util.send(RootConfigService.remove(ko.toJSON({
                             id: item.id
                         })), function() {
                             viewModel.table.draw(false);

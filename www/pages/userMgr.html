@@ -28,11 +28,14 @@
         <h3 class="panel-title">
             <i class="fa fa-user"></i>
             用户配置
+            <a class="btn btn-box-tool pull-right" title="刷新" data-bind="click: function(){window.location.reload()}">
+                <i class="glyphicon glyphicon-refresh"></i>
+            </a>
         </h3>
     </div>
     <div class="panel-body">
-        <legend>用户信息</legend>
-        <div id="tree_user" style="max-height: 650px;width: 100%;height: 400px;overflow: hidden"></div>
+        <button type="button" class="btn btn-primary margin-bottom" data-bind="click: function() {$root.openUserForm(false, 0, $root.tree, 1);}"><i class="fa fa-plus"></i> 添加根用户</button>
+        <div class="main-treegrid" id="tree_user" style="width: 99%;overflow: hidden"></div>
     </div>
 </div>
 <script type="text/html" id="layer_add_user">
@@ -50,6 +53,15 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label class="col-sm-3 control-label">
+                        <span class="icon-require">*</span>密码
+                    </label>
+
+                    <div class="col-sm-8">
+                        <input type="password" name="user_password" data-bind="value: user.password" class="form-control" placeholder="用户登录密码">
+                    </div>
+                </div>
+                <div class="form-group">
                     <label for="user_name" class="col-sm-3 control-label">名称</label>
 
                     <div class="col-sm-8">
@@ -60,7 +72,12 @@
                     <label for="user_phone" class="col-sm-3 control-label">电话</label>
 
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" name="user_phone" data-bind="value: user.phone" id="user_phone" placeholder="联系电话">
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-phone"></i>
+                            </div>
+                            <input type="text" class="form-control" name="user_phone" data-bind="value: user.phone" id="user_phone" placeholder="联系电话">
+                        </div>
                     </div>
                 </div>
                 <div class="form-group">
@@ -89,10 +106,13 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="user_email" class="col-sm-3 control-label"><span class="icon-require">*</span>邮箱</label>
+                    <label for="user_email" class="col-sm-3 control-label">邮箱</label>
 
                     <div class="col-sm-8">
-                        <input type="email" class="form-control" name="user_email" data-bind="value: user.email" id="user_email" placeholder="邮箱地址">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                            <input type="email" class="form-control" name="user_email" data-bind="value: user.email" id="user_email" placeholder="邮箱地址">
+                        </div>
                     </div>
                 </div>
                 <div class="form-group">

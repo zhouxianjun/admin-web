@@ -91,7 +91,7 @@ require(['jquery', 'util', 'layer', 'packageService', 'ko', 'moment', 'merge', '
             $('#app-package-table').DataTable(merge(true, util.dataTableSettings, {
                 ajax: function (data, callback, settings) {
                     var sortParam = util.getSortParam(data, ['name', 'common', 'root', 'create_time']);
-                    util.send(PackageService.listPackageByPage(JSON.stringify(merge(true, sortParam, {
+                    util.send(PackageService.listPackageByPage(ko.toJSON(merge(true, sortParam, {
                         page: Math.floor(data.start / 10) + 1,
                         pageSize: 10,
                         id: id
@@ -132,11 +132,12 @@ require(['jquery', 'util', 'layer', 'packageService', 'ko', 'moment', 'merge', '
         }
     };
     $(function () {
+        util.tableToolsButton();
         viewModel.table = $('#app-table').DataTable(merge(true, util.dataTableSettings, {
             dom: 'T<"clear">lfrtip',
             ajax: function (data, callback, settings) {
                 var sortParam = util.getSortParam(data, ['name', 'price', 'create_time']);
-                util.send(PackageService.listByPage(JSON.stringify(merge(true, sortParam, {
+                util.send(PackageService.listByPage(ko.toJSON(merge(true, sortParam, {
                     page: Math.floor(data.start / 10) + 1,
                     pageSize: 10
                 }))), function(response) {
@@ -165,7 +166,7 @@ require(['jquery', 'util', 'layer', 'packageService', 'ko', 'moment', 'merge', '
                     var confirmLayer = layer.confirm('您确定删除此应用吗？', {
                         btn: ['确定','取消'] //按钮
                     }, function(){
-                        util.send(PackageService.remove(JSON.stringify({
+                        util.send(PackageService.remove(ko.toJSON({
                             id: item.id
                         })), function() {
                             viewModel.table.draw(false);
@@ -179,9 +180,7 @@ require(['jquery', 'util', 'layer', 'packageService', 'ko', 'moment', 'merge', '
                 data: 'name'
             }, {
                 data: 'price',
-                render: function (price) {
-                    return '$' + price;
-                }
+                render: util.RENDER.PRICE
             }, {
                 data: 'create_time',
                 render: function(create_time) {

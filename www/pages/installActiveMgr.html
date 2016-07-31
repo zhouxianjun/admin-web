@@ -28,9 +28,12 @@
             <h3 class="panel-title">
                 <i class="fa fa-user"></i>
                 装机激活配置
+                <a class="btn btn-box-tool pull-right" title="刷新" data-bind="click: function(){window.location.reload()}">
+                    <i class="glyphicon glyphicon-refresh"></i>
+                </a>
             </h3>
         </div>
-        <div class="panel-body">
+        <div class="panel-body slimScroll">
             <button type="button" class="btn btn-primary" data-bind="click: function() {$root.openForm();}"><i class="fa fa-plus"></i> 添加</button>
             <table id="box-table" class="table table-bordered table-striped table-hover">
                 <thead>

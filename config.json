@@ -4,13 +4,15 @@
   "session_ttl": 300000,
   "ignoreUrl": [
     "/user/login",
+    "/user/logout",
     "/",
     "/resources/qiniuCallback",
     "/api/boxLogin"
   ],
   "loginUrl": [
     "/permissions/menus",
-    "/user/logout",
+    "/user/info",
+    "/user/update",
     "/resources/uptoken",
     "/resources/qiniuDownload"
   ],

@@ -25,7 +25,7 @@
  *           佛祖保佑       永无BUG
  */
 'use strict';
-define(['jquery', 'layer', 'moment', 'underscore', 'dhtmlx'], function ($, layer, moment, _) {
+define(['jquery', 'layer', 'moment', 'underscore', 'dhtmlx', 'slimScroll'], function ($, layer, moment, _) {
     //----------------------扩展列类型---------------------------
     window.eXcell_ltro = function (cell) { // the eXcell name is defined here
         if (cell) {            // the default pattern, just copy it
@@ -54,7 +54,7 @@ define(['jquery', 'layer', 'moment', 'underscore', 'dhtmlx'], function ($, layer
         return _.isBoolean(a);
     };
 
-    return {
+    var Util = {
         ajaxResponse: function (response, callback, errorFn) {
             var defer = $.Deferred();
             if (response.code == 99) {
@@ -66,7 +66,7 @@ define(['jquery', 'layer', 'moment', 'underscore', 'dhtmlx'], function ($, layer
                 defer.reject(response);
                 if (typeof errorFn === 'function') {
                     errorFn(response);
-                    return;
+                    return defer.promise();
                 }
             }
             defer.resolve(response);
@@ -101,21 +101,15 @@ define(['jquery', 'layer', 'moment', 'underscore', 'dhtmlx'], function ($, layer
             });
             return defer.promise();
         },
-        adjustIframeHeight: function (hasParent) {
-            var p = parent;
-            if (hasParent) {
-                p = parent.parent;
-            }
-            if (p != null && typeof p != 'undefined') {
-                if ($('body').height() < 400 && !hasParent) {
-                    var height = p.window.innerHeight - 166 < 400 ? 400 : parent.window.innerHeight - 166;
-                    p.$('div.active iframe').height(height);
-                } else {
-                    p.$('div.active iframe').height($('body').height());
-                }
-            }
+        adjustIframeHeight: function () {
+            var win = this.getTopWin();
+            var height = $(win.document.body).height() - 180;
+            win.$('div.active iframe').height(height);
+            $('div.panel-body').height(height - 70);
+            $('div.main-treegrid').height(height - 70 - 35);
         },
         initStatusCombo: function (combo) {
+            combo.setSkin("material");
             combo.enableFilteringMode(false);
             combo.addOption([
                 {value: true, text: '启用', css: 'color:green;'},
@@ -123,6 +117,7 @@ define(['jquery', 'layer', 'moment', 'underscore', 'dhtmlx'], function ($, layer
             ]);
         },
         initProvinceCombo: function (combo) {
+            combo.setSkin("material");
             combo.enableFilteringMode(false);
             var options = [];
             for (var i = 0; i < _p_data.length; i++) {
@@ -134,6 +129,7 @@ define(['jquery', 'layer', 'moment', 'underscore', 'dhtmlx'], function ($, layer
             combo.addOption(options);
         },
         initCityCombo: function (combo) {
+            combo.setSkin("material");
             combo.enableFilteringMode(false);
             var options = [];
             for (var i = 0; i < _c_data.length; i++) {
@@ -159,12 +155,12 @@ define(['jquery', 'layer', 'moment', 'underscore', 'dhtmlx'], function ($, layer
             });
         },
         getUrlParam(name) {
-            //构造一个含有目标参数的正则表达式对象  
+            //构造一个含有目标参数的正则表达式对象
             var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-            //匹配目标参数  
+            //匹配目标参数
             var r = window.location.search.substr(1).match(reg);
-            //返回参数值  
-            if (r != null) return unescape(r[2]);
+            //返回参数值
+            if (r != null) return decodeURIComponent(r[2]);
             return null;
         },
         loadCityList: function (province) {
@@ -269,6 +265,15 @@ define(['jquery', 'layer', 'moment', 'underscore', 'dhtmlx'], function ($, layer
             },
             STATUS: function(status) {
                 return status ? '<span class="text-green">启用</span>' : '<span class="text-muted">禁用</span>';
+            },
+            PRICE: function (price) {
+                return '￥' + (price || 0)
+            }
+        },
+        tableToolsButton: function () {
+            if ($.fn.DataTable && $.fn.DataTable.TableTools) {
+                $.fn.DataTable.TableTools.defaults["aButtons"] = [ "copy", "csv"];
+                $.fn.DataTable.TableTools.buttons["copy"]["sButtonText"] = '复制';
             }
         },
         dataTableSettings: {
@@ -307,6 +312,16 @@ define(['jquery', 'layer', 'moment', 'underscore', 'dhtmlx'], function ($, layer
             pagingType: 'full_numbers'
         }
     };
+    $(window).resize(function() {
+        Util.adjustIframeHeight();
+    });
+    $('div.slimScroll').slimScroll({
+        height: '100%', //可滚动区域高度
+        width: '100%',
+        disableFadeOut: true
+    });
+    Util.getTopWin().AdminLTE && Util.getTopWin().AdminLTE.boxWidget && Util.getTopWin().AdminLTE.boxWidget.activate(window.document);
+    return Util;
 });
 var _p_data = [
     {

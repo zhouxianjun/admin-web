@@ -26,6 +26,8 @@
  */
 'use strict';
 const userRefService = require('../service/UserRefService').instance();
+const userService = require('../service/UserService').instance();
+const PublicStruct = require('../thrift/PublicStruct_types');
 const Result = require('../dto/Result');
 const Utils = require('../util/Utils');
 module.exports = class {
@@ -45,6 +47,13 @@ module.exports = class {
             this.redirect('/pages/login.html?error=500');
         }
     }
+    * info() {
+        let res = yield userService.info(this.session.user.id);
+        Utils.writeResult(this, new Result(true, {
+            key: 'user',
+            value: JSON.parse(res)
+        }));
+    }
     * setRef() {
         let param = this.request.body;
         if (!param.user || !param.type) {
@@ -62,5 +71,11 @@ module.exports = class {
         }
         let res = yield userRefService.setRefs(param.user, param.box, param.app_package, param.require_package, param.app_white, param.install_active);
         Utils.writeResult(this, new Result(res));
+    }
+    * update() {
+        let params = this.request.body;
+        params.id = this.session.user.id;
+        let res = yield userService.update(new PublicStruct.UserStruct(params));
+        Utils.writeResult(this, new Result(res ? true : false));
     }
 };

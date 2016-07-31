@@ -665,6 +665,344 @@ PushService_listByPage_result.prototype.write = function(output) {
   return;
 };
 
+PushService_listUnRead_args = function(args) {
+  this.user = null;
+  this.client_code = null;
+  this.type = null;
+  this.url = null;
+  if (args) {
+    if (args.user !== undefined && args.user !== null) {
+      this.user = args.user;
+    }
+    if (args.client_code !== undefined && args.client_code !== null) {
+      this.client_code = args.client_code;
+    }
+    if (args.type !== undefined && args.type !== null) {
+      this.type = args.type;
+    }
+    if (args.url !== undefined && args.url !== null) {
+      this.url = args.url;
+    }
+  }
+};
+PushService_listUnRead_args.prototype = {};
+PushService_listUnRead_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.I64) {
+        this.user = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.client_code = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.I32) {
+        this.type = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 4:
+      if (ftype == Thrift.Type.STRING) {
+        this.url = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+PushService_listUnRead_args.prototype.write = function(output) {
+  output.writeStructBegin('PushService_listUnRead_args');
+  if (this.user !== null && this.user !== undefined) {
+    output.writeFieldBegin('user', Thrift.Type.I64, 1);
+    output.writeI64(this.user);
+    output.writeFieldEnd();
+  }
+  if (this.client_code !== null && this.client_code !== undefined) {
+    output.writeFieldBegin('client_code', Thrift.Type.STRING, 2);
+    output.writeString(this.client_code);
+    output.writeFieldEnd();
+  }
+  if (this.type !== null && this.type !== undefined) {
+    output.writeFieldBegin('type', Thrift.Type.I32, 3);
+    output.writeI32(this.type);
+    output.writeFieldEnd();
+  }
+  if (this.url !== null && this.url !== undefined) {
+    output.writeFieldBegin('url', Thrift.Type.STRING, 4);
+    output.writeString(this.url);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+PushService_listUnRead_result = function(args) {
+  this.success = null;
+  this.ex = null;
+  if (args instanceof PublicStruct_ttypes.InvalidOperation) {
+    this.ex = args;
+    return;
+  }
+  if (args) {
+    if (args.success !== undefined && args.success !== null) {
+      this.success = args.success;
+    }
+    if (args.ex !== undefined && args.ex !== null) {
+      this.ex = args.ex;
+    }
+  }
+};
+PushService_listUnRead_result.prototype = {};
+PushService_listUnRead_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.STRING) {
+        this.success = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.ex = new PublicStruct_ttypes.InvalidOperation();
+        this.ex.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+PushService_listUnRead_result.prototype.write = function(output) {
+  output.writeStructBegin('PushService_listUnRead_result');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.STRING, 0);
+    output.writeString(this.success);
+    output.writeFieldEnd();
+  }
+  if (this.ex !== null && this.ex !== undefined) {
+    output.writeFieldBegin('ex', Thrift.Type.STRUCT, 1);
+    this.ex.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+PushService_readPush_args = function(args) {
+  this.user = null;
+  this.client_code = null;
+  this.type = null;
+  this.push = null;
+  if (args) {
+    if (args.user !== undefined && args.user !== null) {
+      this.user = args.user;
+    }
+    if (args.client_code !== undefined && args.client_code !== null) {
+      this.client_code = args.client_code;
+    }
+    if (args.type !== undefined && args.type !== null) {
+      this.type = args.type;
+    }
+    if (args.push !== undefined && args.push !== null) {
+      this.push = args.push;
+    }
+  }
+};
+PushService_readPush_args.prototype = {};
+PushService_readPush_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.I64) {
+        this.user = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.client_code = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.I32) {
+        this.type = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 4:
+      if (ftype == Thrift.Type.I64) {
+        this.push = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+PushService_readPush_args.prototype.write = function(output) {
+  output.writeStructBegin('PushService_readPush_args');
+  if (this.user !== null && this.user !== undefined) {
+    output.writeFieldBegin('user', Thrift.Type.I64, 1);
+    output.writeI64(this.user);
+    output.writeFieldEnd();
+  }
+  if (this.client_code !== null && this.client_code !== undefined) {
+    output.writeFieldBegin('client_code', Thrift.Type.STRING, 2);
+    output.writeString(this.client_code);
+    output.writeFieldEnd();
+  }
+  if (this.type !== null && this.type !== undefined) {
+    output.writeFieldBegin('type', Thrift.Type.I32, 3);
+    output.writeI32(this.type);
+    output.writeFieldEnd();
+  }
+  if (this.push !== null && this.push !== undefined) {
+    output.writeFieldBegin('push', Thrift.Type.I64, 4);
+    output.writeI64(this.push);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+PushService_readPush_result = function(args) {
+  this.success = null;
+  this.ex = null;
+  if (args instanceof PublicStruct_ttypes.InvalidOperation) {
+    this.ex = args;
+    return;
+  }
+  if (args) {
+    if (args.success !== undefined && args.success !== null) {
+      this.success = args.success;
+    }
+    if (args.ex !== undefined && args.ex !== null) {
+      this.ex = args.ex;
+    }
+  }
+};
+PushService_readPush_result.prototype = {};
+PushService_readPush_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.BOOL) {
+        this.success = input.readBool();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.ex = new PublicStruct_ttypes.InvalidOperation();
+        this.ex.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+PushService_readPush_result.prototype.write = function(output) {
+  output.writeStructBegin('PushService_readPush_result');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.BOOL, 0);
+    output.writeBool(this.success);
+    output.writeFieldEnd();
+  }
+  if (this.ex !== null && this.ex !== undefined) {
+    output.writeFieldBegin('ex', Thrift.Type.STRUCT, 1);
+    this.ex.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 PushServiceClient = exports.Client = function(output, pClass) {
     this.output = output;
     this.pClass = pClass;
@@ -926,6 +1264,112 @@ PushServiceClient.prototype.recv_listByPage = function(input,mtype,rseqid) {
   }
   return callback('listByPage failed: unknown result');
 };
+PushServiceClient.prototype.listUnRead = function(user, client_code, type, url, callback) {
+  this._seqid = this.new_seqid();
+  if (callback === undefined) {
+    var _defer = Q.defer();
+    this._reqs[this.seqid()] = function(error, result) {
+      if (error) {
+        _defer.reject(error);
+      } else {
+        _defer.resolve(result);
+      }
+    };
+    this.send_listUnRead(user, client_code, type, url);
+    return _defer.promise;
+  } else {
+    this._reqs[this.seqid()] = callback;
+    this.send_listUnRead(user, client_code, type, url);
+  }
+};
+
+PushServiceClient.prototype.send_listUnRead = function(user, client_code, type, url) {
+  var output = new this.pClass(this.output);
+  output.writeMessageBegin('listUnRead', Thrift.MessageType.CALL, this.seqid());
+  var args = new PushService_listUnRead_args();
+  args.user = user;
+  args.client_code = client_code;
+  args.type = type;
+  args.url = url;
+  args.write(output);
+  output.writeMessageEnd();
+  return this.output.flush();
+};
+
+PushServiceClient.prototype.recv_listUnRead = function(input,mtype,rseqid) {
+  var callback = this._reqs[rseqid] || function() {};
+  delete this._reqs[rseqid];
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(input);
+    input.readMessageEnd();
+    return callback(x);
+  }
+  var result = new PushService_listUnRead_result();
+  result.read(input);
+  input.readMessageEnd();
+
+  if (null !== result.ex) {
+    return callback(result.ex);
+  }
+  if (null !== result.success) {
+    return callback(null, result.success);
+  }
+  return callback('listUnRead failed: unknown result');
+};
+PushServiceClient.prototype.readPush = function(user, client_code, type, push, callback) {
+  this._seqid = this.new_seqid();
+  if (callback === undefined) {
+    var _defer = Q.defer();
+    this._reqs[this.seqid()] = function(error, result) {
+      if (error) {
+        _defer.reject(error);
+      } else {
+        _defer.resolve(result);
+      }
+    };
+    this.send_readPush(user, client_code, type, push);
+    return _defer.promise;
+  } else {
+    this._reqs[this.seqid()] = callback;
+    this.send_readPush(user, client_code, type, push);
+  }
+};
+
+PushServiceClient.prototype.send_readPush = function(user, client_code, type, push) {
+  var output = new this.pClass(this.output);
+  output.writeMessageBegin('readPush', Thrift.MessageType.CALL, this.seqid());
+  var args = new PushService_readPush_args();
+  args.user = user;
+  args.client_code = client_code;
+  args.type = type;
+  args.push = push;
+  args.write(output);
+  output.writeMessageEnd();
+  return this.output.flush();
+};
+
+PushServiceClient.prototype.recv_readPush = function(input,mtype,rseqid) {
+  var callback = this._reqs[rseqid] || function() {};
+  delete this._reqs[rseqid];
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(input);
+    input.readMessageEnd();
+    return callback(x);
+  }
+  var result = new PushService_readPush_result();
+  result.read(input);
+  input.readMessageEnd();
+
+  if (null !== result.ex) {
+    return callback(result.ex);
+  }
+  if (null !== result.success) {
+    return callback(null, result.success);
+  }
+  return callback('readPush failed: unknown result');
+};
 PushServiceProcessor = exports.Processor = function(handler) {
   this._handler = handler
 }
@@ -1136,6 +1580,86 @@ PushServiceProcessor.prototype.process_listByPage = function(seqid, input, outpu
       } else {
         var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
         output.writeMessageBegin("listByPage", Thrift.MessageType.EXCEPTION, seqid);
+      }
+      result.write(output);
+      output.writeMessageEnd();
+      output.flush();
+    });
+  }
+}
+
+PushServiceProcessor.prototype.process_listUnRead = function(seqid, input, output) {
+  var args = new PushService_listUnRead_args();
+  args.read(input);
+  input.readMessageEnd();
+  if (this._handler.listUnRead.length === 4) {
+    Q.fcall(this._handler.listUnRead, args.user, args.client_code, args.type, args.url)
+      .then(function(result) {
+        var result = new PushService_listUnRead_result({success: result});
+        output.writeMessageBegin("listUnRead", Thrift.MessageType.REPLY, seqid);
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      }, function (err) {
+        if (err instanceof PublicStruct_ttypes.InvalidOperation) {
+          var result = new PushService_listUnRead_result(err);
+          output.writeMessageBegin("listUnRead", Thrift.MessageType.REPLY, seqid);
+        } else {
+          var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+          output.writeMessageBegin("listUnRead", Thrift.MessageType.EXCEPTION, seqid);
+        }
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      });
+  } else {
+    this._handler.listUnRead(args.user, args.client_code, args.type, args.url, function (err, result) {
+      if (err == null || err instanceof PublicStruct_ttypes.InvalidOperation) {
+        var result = new PushService_listUnRead_result((err != null ? err : {success: result}));
+        output.writeMessageBegin("listUnRead", Thrift.MessageType.REPLY, seqid);
+      } else {
+        var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+        output.writeMessageBegin("listUnRead", Thrift.MessageType.EXCEPTION, seqid);
+      }
+      result.write(output);
+      output.writeMessageEnd();
+      output.flush();
+    });
+  }
+}
+
+PushServiceProcessor.prototype.process_readPush = function(seqid, input, output) {
+  var args = new PushService_readPush_args();
+  args.read(input);
+  input.readMessageEnd();
+  if (this._handler.readPush.length === 4) {
+    Q.fcall(this._handler.readPush, args.user, args.client_code, args.type, args.push)
+      .then(function(result) {
+        var result = new PushService_readPush_result({success: result});
+        output.writeMessageBegin("readPush", Thrift.MessageType.REPLY, seqid);
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      }, function (err) {
+        if (err instanceof PublicStruct_ttypes.InvalidOperation) {
+          var result = new PushService_readPush_result(err);
+          output.writeMessageBegin("readPush", Thrift.MessageType.REPLY, seqid);
+        } else {
+          var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+          output.writeMessageBegin("readPush", Thrift.MessageType.EXCEPTION, seqid);
+        }
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      });
+  } else {
+    this._handler.readPush(args.user, args.client_code, args.type, args.push, function (err, result) {
+      if (err == null || err instanceof PublicStruct_ttypes.InvalidOperation) {
+        var result = new PushService_readPush_result((err != null ? err : {success: result}));
+        output.writeMessageBegin("readPush", Thrift.MessageType.REPLY, seqid);
+      } else {
+        var result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+        output.writeMessageBegin("readPush", Thrift.MessageType.EXCEPTION, seqid);
       }
       result.write(output);
       output.writeMessageEnd();

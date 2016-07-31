@@ -32,6 +32,7 @@ module.exports = class UserService extends ThriftClient.referenceBean {
     update() {}
     setRoles() {}
     usersByUser() {}
+    info() {}
     login() {}
     get type() {
         return require('../thrift/UserService');

@@ -1,6 +1,6 @@
 require(['jquery', 'slimScroll'], function ($) {
     "use strict";
-    $.AdminLTE = {};
+    window.AdminLTE = $.AdminLTE = {};
     $.AdminLTE.options = {
         //Add slimscroll to navbar menus
         //This requires you to load the slimscroll plugin
@@ -150,6 +150,10 @@ require(['jquery', 'slimScroll'], function ($) {
             $.AdminLTE.pushMenu.activate(o.sidebarToggleSelector);
         }
 
+        //Activate box widget
+        if (o.enableBoxWidget) {
+            $.AdminLTE.boxWidget.activate();
+        }
 
         /*
          * INITIALIZE BUTTON TOGGLE

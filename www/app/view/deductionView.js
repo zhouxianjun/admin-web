@@ -157,7 +157,7 @@ require(['jquery', 'util', 'layer', 'deductionService', 'permissionsService', 'a
                     }
                 });
                 $('#date_range').data('daterangepicker').setStartDate(new Date(viewModel.app.start_time()));
-                $('#date_range').data('daterangepicker').setEndDate(new Date(viewModel.app.start_time()));
+                $('#date_range').data('daterangepicker').setEndDate(new Date(viewModel.app.end_time()));
             }
         },
         openUsers: function (id) {
@@ -192,7 +192,7 @@ require(['jquery', 'util', 'layer', 'deductionService', 'permissionsService', 'a
                     return items;
                 });
                 tree = new dhtmlXTreeObject("users_list", "100%", "100%", 0);
-                tree.setImagePath("/plugins/dhtmlx/imgs/dhxtree_skyblue/");
+                tree.setImagePath("/plugins/dhtmlx/imgs/dhxtree_material/");
                 tree.enableCheckBoxes(true);
                 tree.enableThreeStateCheckboxes(true);
                 response[0].open = 1;
@@ -222,11 +222,12 @@ require(['jquery', 'util', 'layer', 'deductionService', 'permissionsService', 'a
         }
     };
     $(function () {
+        util.tableToolsButton();
         viewModel.table = $('#app-table').DataTable(merge(true, util.dataTableSettings, {
             dom: 'T<"clear">lfrtip',
             ajax: function (data, callback, settings) {
                 var sortParam = util.getSortParam(data, ['name', 'start', 'percent', 'model', 'start_time', 'end_time', 'status', 'create_time']);
-                util.send(DeductionService.listByPage(JSON.stringify(merge(true, sortParam, {
+                util.send(DeductionService.listByPage(ko.toJSON(merge(true, sortParam, {
                     page: Math.floor(data.start / 10) + 1,
                     pageSize: 10
                 }))), function(response) {
@@ -255,7 +256,7 @@ require(['jquery', 'util', 'layer', 'deductionService', 'permissionsService', 'a
                     var confirmLayer = layer.confirm('您确定删除此扣量吗？', {
                         btn: ['确定','取消'] //按钮
                     }, function(){
-                        util.send(DeductionService.remove(JSON.stringify({
+                        util.send(DeductionService.remove(ko.toJSON({
                             id: item.id
                         })), function() {
                             viewModel.table.draw(false);

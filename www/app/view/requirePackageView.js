@@ -62,7 +62,7 @@ require(['jquery', 'util', 'layer', 'requirePackageService', 'appRequireService'
         initKoSubscribe: function() {
         },
         setApp: function (id, type, select, delSelect) {
-            util.send(RequirePackageService.appAllList(JSON.stringify({
+            util.send(RequirePackageService.appAllList(ko.toJSON({
                 id: id,
                 type: type
             }))).then(function (response) {
@@ -185,7 +185,7 @@ require(['jquery', 'util', 'layer', 'requirePackageService', 'appRequireService'
             var pre_table = $('#app-pre-table').DataTable(merge(true, util.dataTableSettings, {
                 ajax: function (data, callback, settings) {
                     var sortParam = util.getSortParam(data, ['name', 'type', 'create_time']);
-                    util.send(RequirePackageService.listAppByPage(JSON.stringify(merge(true, sortParam, {
+                    util.send(RequirePackageService.listAppByPage(ko.toJSON(merge(true, sortParam, {
                         page: Math.floor(data.start / 10) + 1,
                         pageSize: 10,
                         id: id,
@@ -206,7 +206,7 @@ require(['jquery', 'util', 'layer', 'requirePackageService', 'appRequireService'
                         var confirmLayer = layer.confirm('您确定删除此应用的关联吗？', {
                             btn: ['确定','取消'] //按钮
                         }, function(){
-                            util.send(RequirePackageService.removeApp(JSON.stringify({
+                            util.send(RequirePackageService.removeApp(ko.toJSON({
                                 id: id,
                                 app: item.id,
                                 type: 1
@@ -255,7 +255,7 @@ require(['jquery', 'util', 'layer', 'requirePackageService', 'appRequireService'
             var install_table = $('#app-install-table').DataTable(merge(true, util.dataTableSettings, {
                 ajax: function (data, callback, settings) {
                     var sortParam = util.getSortParam(data, ['name', 'type', 'create_time']);
-                    util.send(RequirePackageService.listAppByPage(JSON.stringify(merge(true, sortParam, {
+                    util.send(RequirePackageService.listAppByPage(ko.toJSON(merge(true, sortParam, {
                         page: Math.floor(data.start / 10) + 1,
                         pageSize: 10,
                         id: id,
@@ -276,7 +276,7 @@ require(['jquery', 'util', 'layer', 'requirePackageService', 'appRequireService'
                         var confirmLayer = layer.confirm('您确定删除此应用的关联吗？', {
                             btn: ['确定','取消'] //按钮
                         }, function(){
-                            util.send(RequirePackageService.removeApp(JSON.stringify({
+                            util.send(RequirePackageService.removeApp(ko.toJSON({
                                 id: id,
                                 app: item.id,
                                 type: 2
@@ -324,11 +324,12 @@ require(['jquery', 'util', 'layer', 'requirePackageService', 'appRequireService'
         }
     };
     $(function () {
+        util.tableToolsButton();
         viewModel.table = $('#app-table').DataTable(merge(true, util.dataTableSettings, {
             dom: 'T<"clear">lfrtip',
             ajax: function (data, callback, settings) {
                 var sortParam = util.getSortParam(data, ['name', 'android_version', 'app_count', 'app_size', 'create_time']);
-                util.send(RequirePackageService.listByPage(JSON.stringify(merge(true, sortParam, {
+                util.send(RequirePackageService.listByPage(ko.toJSON(merge(true, sortParam, {
                     page: Math.floor(data.start / 10) + 1,
                     pageSize: 10
                 }))), function(response) {
@@ -362,7 +363,7 @@ require(['jquery', 'util', 'layer', 'requirePackageService', 'appRequireService'
                     var confirmLayer = layer.confirm('您确定删除此应用包吗？', {
                         btn: ['确定','取消'] //按钮
                     }, function(){
-                        util.send(RequirePackageService.remove(JSON.stringify({
+                        util.send(RequirePackageService.remove(ko.toJSON({
                             id: item.id
                         })), function() {
                             viewModel.table.draw(false);

@@ -26,12 +26,14 @@
             <h3 class="panel-title">
                 <i class="fa fa-user"></i>
                 菜单配置
+                <a class="btn btn-box-tool pull-right" title="刷新" data-bind="click: function(){window.location.reload()}">
+                    <i class="glyphicon glyphicon-refresh"></i>
+                </a>
             </h3>
         </div>
         <div class="panel-body">
-            <legend>菜单信息</legend>
-            <button type="button" class="btn btn-primary" data-bind="click: function() {$root.openAddMenu(true);}"><i class="fa fa-plus"></i> 添加根菜单</button>
-            <div style="margin-top: 10px;max-height: 650px;width: 99%;height: 400px;overflow-x: hidden;overflow-y: auto" id="menu-grid">
+            <button type="button" class="btn btn-primary margin-bottom" data-bind="click: function() {$root.openAddMenu(true);}"><i class="fa fa-plus"></i> 添加根菜单</button>
+            <div class="main-treegrid" style="width: 99%;overflow: hidden;" id="menu-grid">
             </div>
         </div>
     </div>

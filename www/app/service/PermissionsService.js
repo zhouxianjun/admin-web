@@ -25,184 +25,70 @@
  *           佛祖保佑       永无BUG
  */
 'use strict';
-define(['jquery'], function ($) {
+define(['jquery', 'util'], function ($, util) {
     return {
         menus: function(){
-            return $.ajax({
-                url: '/permissions/menus',
-                type: 'get',
-                dataType: 'json',
-                contentType : 'application/json'
-            });
+            return util.buildAjax('/permissions/menus', null, 'get');
         },
         addMenu: function(data) {
-            return $.ajax({
-                url: '/permissions/addMenu',
-                type: 'post',
-                dataType: 'json',
-                data: data,
-                contentType : 'application/json'
-            });
+            return util.buildAjax('/permissions/addMenu', data);
         },
         updateMenu: function(data) {
-            return $.ajax({
-                url: '/permissions/updateMenu',
-                type: 'post',
-                dataType: 'json',
-                data: data,
-                contentType : 'application/json'
-            });
+            return util.buildAjax('/permissions/updateMenu', data);
         },
         delMenu: function(data) {
-            return $.ajax({
-                url: '/permissions/delMenu',
-                type: 'post',
-                dataType: 'json',
-                data: data,
-                contentType : 'application/json'
-            });
+            return util.buildAjax('/permissions/delMenu', data);
         },
         menusBySetRole: function(data) {
-            return $.ajax({
-                url: '/permissions/menusBySetRole',
-                type: 'post',
-                dataType: 'json',
-                data: data,
-                contentType : 'application/json'
-            });
+            return util.buildAjax('/permissions/menusBySetRole', data);
+        },
+        menusByMgr: function() {
+            return util.buildAjax('/permissions/menusByMgr');
         },
         setMenus: function (data) {
-            return $.ajax({
-                url: '/permissions/setMenus',
-                type: 'post',
-                dataType: 'json',
-                data: data,
-                contentType : 'application/json'
-            });
+            return util.buildAjax('/permissions/setMenus', data);
         },
         addRole: function(data) {
-            return $.ajax({
-                url: '/permissions/addRole',
-                type: 'post',
-                dataType: 'json',
-                data: data,
-                contentType : 'application/json'
-            });
+            return util.buildAjax('/permissions/addRole', data);
         },
         updateRole: function(data) {
-            return $.ajax({
-                url: '/permissions/updateRole',
-                type: 'post',
-                dataType: 'json',
-                data: data,
-                contentType : 'application/json'
-            });
+            return util.buildAjax('/permissions/updateRole', data);
         },
         rolesByMgr: function () {
-            return $.ajax({
-                url: '/permissions/rolesByMgr',
-                type: 'get',
-                dataType: 'json',
-                contentType : 'application/json'
-            });
+            return util.buildAjax('/permissions/rolesByMgr');
         },
         rolesBySetUser: function(data) {
-            return $.ajax({
-                url: '/permissions/rolesBySetUser',
-                type: 'post',
-                dataType: 'json',
-                data: data,
-                contentType : 'application/json'
-            });
+            return util.buildAjax('/permissions/rolesBySetUser', data);
         },
         users: function () {
-            return $.ajax({
-                url: '/permissions/users',
-                type: 'post',
-                dataType: 'json',
-                contentType : 'application/json'
-            });
+            return util.buildAjax('/permissions/users');
         },
         updateRoleStatus: function(data) {
-            return $.ajax({
-                url: '/permissions/updateRoleStatus',
-                type: 'post',
-                dataType: 'json',
-                data: data,
-                contentType : 'application/json'
-            });
+            return util.buildAjax('/permissions/updateRoleStatus', data);
         },
         addUser: function(data) {
-            return $.ajax({
-                url: '/permissions/addUser',
-                type: 'post',
-                dataType: 'json',
-                data: data,
-                contentType : 'application/json'
-            });
+            return util.buildAjax('/permissions/addUser', data);
         },
         updateUser: function(data) {
-            return $.ajax({
-                url: '/permissions/updateUser',
-                type: 'post',
-                dataType: 'json',
-                data: data,
-                contentType : 'application/json'
-            });
+            return util.buildAjax('/permissions/updateUser', data);
         },
         setRoles: function(data) {
-            return $.ajax({
-                url: '/permissions/setRoles',
-                type: 'post',
-                dataType: 'json',
-                data: data,
-                contentType : 'application/json'
-            });
+            return util.buildAjax('/permissions/setRoles', data);
         },
         interfaceByMgr: function(data) {
-            return $.ajax({
-                url: '/permissions/interfaceByMgr',
-                type: 'post',
-                dataType: 'json',
-                data: data,
-                contentType : 'application/json'
-            });
+            return util.buildAjax('/permissions/interfaceByMgr', data);
         },
         updateInterface: function(data) {
-            return $.ajax({
-                url: '/permissions/updateInterface',
-                type: 'post',
-                dataType: 'json',
-                data: data,
-                contentType : 'application/json'
-            });
+            return util.buildAjax('/permissions/updateInterface', data);
         },
         addInterface: function(data) {
-            return $.ajax({
-                url: '/permissions/addInterface',
-                type: 'post',
-                dataType: 'json',
-                data: data,
-                contentType : 'application/json'
-            });
+            return util.buildAjax('/permissions/addInterface', data)
         },
         interfacesBySetMenu: function(data) {
-            return $.ajax({
-                url: '/permissions/interfacesBySetMenu',
-                type: 'post',
-                dataType: 'json',
-                data: data,
-                contentType : 'application/json'
-            });
+            return util.buildAjax('/permissions/interfacesBySetMenu', data);
         },
         setInterfaces: function (data) {
-            return $.ajax({
-                url: '/permissions/setInterfaces',
-                type: 'post',
-                dataType: 'json',
-                data: data,
-                contentType : 'application/json'
-            });
+            return util.buildAjax('/permissions/setInterfaces', data);
         }
     };
 });

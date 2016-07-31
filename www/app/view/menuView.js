@@ -123,7 +123,7 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'valid
                 btn: ['确定', '取消'],
                 yes: function () {
                     var setInterfaceLoad = layer.load(2);
-                    util.send(PermissionsService.setInterfaces(JSON.stringify({
+                    util.send(PermissionsService.setInterfaces(ko.toJSON({
                         id: id,
                         interfaces: tree.getAllChecked().split(',')
                     })), function() {
@@ -134,7 +134,7 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'valid
                     });
                 }
             });
-            util.send(PermissionsService.interfacesBySetMenu(JSON.stringify({menu: id})), function(response) {
+            util.send(PermissionsService.interfacesBySetMenu(ko.toJSON({menu: id})), function(response) {
                 var checked = [];
                 (function(fn) {
                     response = fn.call(fn, response.data.interfaces);
@@ -151,7 +151,7 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'valid
                     return items;
                 });
                 tree = new dhtmlXTreeObject("interfaces_list", "100%", "100%", 0);
-                tree.setImagePath("/plugins/dhtmlx/imgs/dhxtree_skyblue/");
+                tree.setImagePath("/plugins/dhtmlx/imgs/dhxtree_material/");
                 tree.enableCheckBoxes(true);
                 tree.enableThreeStateCheckboxes(true);
                 tree.loadJSONObject({id: 0, item: response}, function () {
@@ -171,19 +171,22 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'valid
         layer.load(2);
         var myTreeGrid = viewModel.grid = new dhtmlXGridObject('menu-grid');
         myTreeGrid.setImagePath('/plugins/dhtmlx/imgs/');
+        myTreeGrid.setSkin("material");
         myTreeGrid.setHeader('ID,,序号,名称,路径,状态,显示,选项卡,图标');
         myTreeGrid.setColumnIds('id,tree,seq,name,path,status,show,target,icon');
-        myTreeGrid.setColAlign('left, left,center,center,center,center,center,center,center');
         myTreeGrid.setColTypes('ro,tree,ed,ed,ed,combo,combo,ed,ed');
+        myTreeGrid.setInitWidths("140");
+        myTreeGrid.enableResizing('false,false,false,false,false,false,false,false,false');
         myTreeGrid.setColumnHidden(0, true);
         myTreeGrid.enableValidation(false,false,true,true,false,true,true,false,false);
         myTreeGrid.setColValidators(',,NotEmpty,NotEmpty,,NotEmpty,NotEmpty');
         myTreeGrid.enableDragAndDrop(true);
         myTreeGrid.enableTreeGridLines();
         myTreeGrid.enableTreeCellEdit(false);
-        myTreeGrid.enableAutoHeight(true, 0, true);
+        myTreeGrid.enableAutoHeight(false);
+        myTreeGrid.enableAutoWidth(true);
         var menu = new dhtmlXMenuObject({
-            icons_path: '/plugins/dhtmlx/imgs/dhxmenu_skyblue/',
+            icons_path: '/plugins/dhtmlx/imgs/dhxmenu_material/',
             context: true,
             items: [
                 {id: 'add', text: '新增'},
@@ -191,6 +194,7 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'valid
                 {id: 'setInterface', text: '配置接口'}
             ]
         });
+        menu.setSkin("material");
         menu.attachEvent("onClick", function(id, zoneId, cas){
             if (id == 'add') {
                 viewModel.openAddMenu(false);
@@ -200,7 +204,7 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'valid
                 var confirm = layer.confirm('您确定删除当前菜单？', {
                     btn: ['确定','取消'] //按钮
                 }, function(){
-                    var deferred = PermissionsService.delMenu(JSON.stringify({
+                    var deferred = PermissionsService.delMenu(ko.toJSON({
                         id: did
                     }));
                     util.send(deferred, function (response) {
@@ -238,12 +242,12 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'valid
         var combo = myTreeGrid.getColumnCombo(5);//takes the column index
         util.initStatusCombo(combo);
         util.initStatusCombo(myTreeGrid.getColumnCombo(6));
-        myTreeGrid.load('/permissions/menusByMgr', function () {
-            layer.closeAll('loading');
+        util.adjustIframeHeight();
+        util.send(PermissionsService.menusByMgr()).then(function (response) {
+            myTreeGrid.parse(response, 'js');
             myTreeGrid.expandAll();
             ko.applyBindings(viewModel);
-            util.adjustIframeHeight();
-        }, 'js');
+        });
 
         function update(rId, cInd, nValue, pid, oldPid) {
             var id = myTreeGrid.getRowAttribute(rId, 'id');
@@ -279,14 +283,14 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'dhtmlx', 'valid
                 myTreeGrid._h2.forEachChild(rId, function(element){
                     myTreeGrid.cellById(element.id, 5).setValue(status);
                 });
-                if (typeof oldPid != 'undefined' && !myTreeGrid.hasChildren(oldPid)) {
-                    myTreeGrid.setItemImage(oldPid, '/plugins/dhtmlx/imgs/dhxgrid_skyblue/tree/leaf.gif');
+                if (typeof oldPid != 'undefined' && oldPid > 0 && !myTreeGrid.hasChildren(oldPid)) {
+                    myTreeGrid.setItemImage(oldPid, '/plugins/dhtmlx/imgs/dhxgrid_material/tree/leaf.gif');
                     myTreeGrid.setRowAttribute(oldPid, 'tree', {
                         image: 'leaf.gif'
                     });
                 }
-                if (typeof pid != 'undefined' && myTreeGrid.hasChildren(pid)) {
-                    myTreeGrid.setItemImage(pid, '/plugins/dhtmlx/imgs/dhxgrid_skyblue/tree/folder.gif');
+                if (typeof pid != 'undefined' && pid > 0 && myTreeGrid.hasChildren(pid)) {
+                    myTreeGrid.setItemImage(pid, '/plugins/dhtmlx/imgs/dhxgrid_material/tree/folder.gif');
                     myTreeGrid.setRowAttribute(pid, 'tree', {
                         image: 'folder.gif'
                     });

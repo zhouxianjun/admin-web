@@ -29,6 +29,10 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'moment', 'merge
     function ($, util, layer, PermissionsService, ko, moment) {
     var viewModel = {
         table: null,
+        query: {
+            name: ko.observable(),
+            auth: ko.observable()
+        },
         interface: {
             id: ko.observable(),
             name: ko.observable(),
@@ -43,6 +47,9 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'moment', 'merge
             name: '禁用',
             id: 0
         }]),
+        doQuery: function() {
+            viewModel.table.draw(false);
+        },
         openForm: function (id) {
             var interfaceLayer = layer.open({
                 type: 1,
@@ -96,9 +103,10 @@ require(['jquery', 'util', 'layer', 'permissionsService', 'ko', 'moment', 'merge
         viewModel.table = $('#interface-table').DataTable(merge(true, util.dataTableSettings, {
             ajax: function (data, callback, settings) {
                 var sortParam = util.getSortParam(data, ['name', 'auth', 'description', 'status', 'create_time']);
-                util.send(PermissionsService.interfaceByMgr(JSON.stringify(merge(true, sortParam, {
+                util.send(PermissionsService.interfaceByMgr(ko.toJSON(merge(true, sortParam, {
                     page: Math.floor(data.start / 10) + 1,
-                    pageSize: 10
+                    pageSize: 10,
+                    query: ko.toJS(viewModel.query)
                 }))), function(response) {
                     var returnData = {};
                     var interfaces = response.data.interfaces;

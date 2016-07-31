@@ -157,7 +157,7 @@ require(['jquery', 'util', 'layer', 'appPackageService', 'appService', 'packageS
             });
         },
         setApp: function (id, type, select, delSelect) {
-            util.send(AppPackageService.appAllList(JSON.stringify({
+            util.send(AppPackageService.appAllList(ko.toJSON({
                 id: id,
                 type: type
             }))).then(function (response) {
@@ -297,7 +297,7 @@ require(['jquery', 'util', 'layer', 'appPackageService', 'appService', 'packageS
             viewModel.model_table = $('#active-table').DataTable(merge(true, util.dataTableSettings, {
                 ajax: function (data, callback, settings) {
                     var sortParam = util.getSortParam(data, ['brand_id', 'model_id', 'version_id', 'base_version_id']);
-                    util.send(ModelRefService.listModelByPage(JSON.stringify(merge(true, sortParam, {
+                    util.send(ModelRefService.listModelByPage(ko.toJSON(merge(true, sortParam, {
                         page: Math.floor(data.start / 10) + 1,
                         pageSize: 10,
                         id: id,
@@ -318,7 +318,7 @@ require(['jquery', 'util', 'layer', 'appPackageService', 'appService', 'packageS
                         var confirmLayer = layer.confirm('您确定删除此机型吗？', {
                             btn: ['确定','取消'] //按钮
                         }, function(){
-                            util.send(ModelRefService.remove(JSON.stringify({
+                            util.send(ModelRefService.remove(ko.toJSON({
                                 model: item.id,
                                 ref: id,
                                 type: 3
@@ -392,7 +392,7 @@ require(['jquery', 'util', 'layer', 'appPackageService', 'appService', 'packageS
             var pre_table = $('#app-pre-table').DataTable(merge(true, util.dataTableSettings, {
                 ajax: function (data, callback, settings) {
                     var sortParam = util.getSortParam(data, ['name', 'zh_name', 'cp_name', 'price', 'create_time']);
-                    util.send(AppPackageService.listAppByPage(JSON.stringify(merge(true, sortParam, {
+                    util.send(AppPackageService.listAppByPage(ko.toJSON(merge(true, sortParam, {
                         page: Math.floor(data.start / 10) + 1,
                         pageSize: 10,
                         id: id,
@@ -413,7 +413,7 @@ require(['jquery', 'util', 'layer', 'appPackageService', 'appService', 'packageS
                         var confirmLayer = layer.confirm('您确定删除此应用的关联吗？', {
                             btn: ['确定','取消'] //按钮
                         }, function(){
-                            util.send(AppPackageService.removeApp(JSON.stringify({
+                            util.send(AppPackageService.removeApp(ko.toJSON({
                                 id: id,
                                 app: item.id,
                                 type: 1
@@ -434,9 +434,7 @@ require(['jquery', 'util', 'layer', 'appPackageService', 'appService', 'packageS
                     data: 'cp_name'
                 }, {
                     data: 'price',
-                    render: function (price) {
-                        return '$' + price;
-                    }
+                    render: util.RENDER.PRICE
                 }, {
                     data: 'create_time',
                     render: function(create_time) {
@@ -461,7 +459,7 @@ require(['jquery', 'util', 'layer', 'appPackageService', 'appService', 'packageS
             var install_table = $('#app-install-table').DataTable(merge(true, util.dataTableSettings, {
                 ajax: function (data, callback, settings) {
                     var sortParam = util.getSortParam(data, ['name', 'zh_name', 'cp_name', 'price', 'create_time']);
-                    util.send(AppPackageService.listAppByPage(JSON.stringify(merge(true, sortParam, {
+                    util.send(AppPackageService.listAppByPage(ko.toJSON(merge(true, sortParam, {
                         page: Math.floor(data.start / 10) + 1,
                         pageSize: 10,
                         id: id,
@@ -482,7 +480,7 @@ require(['jquery', 'util', 'layer', 'appPackageService', 'appService', 'packageS
                         var confirmLayer = layer.confirm('您确定删除此应用的关联吗？', {
                             btn: ['确定','取消'] //按钮
                         }, function(){
-                            util.send(AppPackageService.removeApp(JSON.stringify({
+                            util.send(AppPackageService.removeApp(ko.toJSON({
                                 id: id,
                                 app: item.id,
                                 type: 2
@@ -503,9 +501,7 @@ require(['jquery', 'util', 'layer', 'appPackageService', 'appService', 'packageS
                     data: 'cp_name'
                 }, {
                     data: 'price',
-                    render: function (price) {
-                        return '$' + price;
-                    }
+                    render: util.RENDER.PRICE
                 }, {
                     data: 'create_time',
                     render: function(create_time) {
@@ -540,11 +536,12 @@ require(['jquery', 'util', 'layer', 'appPackageService', 'appService', 'packageS
         }
     };
     $(function () {
+        util.tableToolsButton();
         viewModel.table = $('#app-table').DataTable(merge(true, util.dataTableSettings, {
             dom: 'T<"clear">lfrtip',
             ajax: function (data, callback, settings) {
                 var sortParam = util.getSortParam(data, ['name', 'common', 'app_count', 'app_size', 'create_time']);
-                util.send(AppPackageService.listByPage(JSON.stringify(merge(true, sortParam, {
+                util.send(AppPackageService.listByPage(ko.toJSON(merge(true, sortParam, {
                     page: Math.floor(data.start / 10) + 1,
                     pageSize: 10
                 }))), function(response) {
@@ -589,7 +586,7 @@ require(['jquery', 'util', 'layer', 'appPackageService', 'appService', 'packageS
                     var confirmLayer = layer.confirm('您确定删除此应用包吗？', {
                         btn: ['确定','取消'] //按钮
                     }, function(){
-                        util.send(AppPackageService.remove(JSON.stringify({
+                        util.send(AppPackageService.remove(ko.toJSON({
                             id: item.id
                         })), function() {
                             viewModel.table.draw(false);

@@ -28,6 +28,7 @@
 require(['jquery', 'util', 'layer', 'userService', 'permissionsService', 'boxService', 'appPackageService', 'requirePackageService', 'appWhiteService', 'installActiveService', 'ko', 'dhtmlx', 'validator', 'slimScroll', 'select2'],
     function ($, util, layer, UserService, PermissionsService, BoxService, AppPackageService, RequirePackageService, AppWhiteService, InstallActiveService, ko) {
     var viewModel = {
+        tree: null,
         user: {
             id: ko.observable(),
             username: ko.observable(),
@@ -39,7 +40,8 @@ require(['jquery', 'util', 'layer', 'userService', 'permissionsService', 'boxSer
             city_id: ko.observable(),
             status: ko.observable(),
             email: ko.observable(),
-            pid: ko.observable()
+            pid: ko.observable(),
+            password: ko.observable()
         },
         ref: {
             box: null,
@@ -134,7 +136,7 @@ require(['jquery', 'util', 'layer', 'userService', 'permissionsService', 'boxSer
                     if (rowId > 0) {
                         myTreeGrid.setRowAttribute(response.data.id, 'id', response.data.id);
                         myTreeGrid.openItem(rowId);
-                        myTreeGrid.setItemImage(rowId, '/plugins/dhtmlx/imgs/dhxgrid_skyblue/tree/folder.gif');
+                        myTreeGrid.setItemImage(rowId, '/plugins/dhtmlx/imgs/dhxgrid_material/tree/folder.gif');
                     }
                     util.adjustIframeHeight();
                 }
@@ -161,7 +163,7 @@ require(['jquery', 'util', 'layer', 'userService', 'permissionsService', 'boxSer
                     });
                 }
             });
-            util.send(PermissionsService.rolesBySetUser(JSON.stringify({id: id})), function(response) {
+            util.send(PermissionsService.rolesBySetUser(ko.toJSON({id: id})), function(response) {
                 var checked = [];
                 (function(fn) {
                     response = fn.call(fn, response.data.roles);
@@ -178,7 +180,7 @@ require(['jquery', 'util', 'layer', 'userService', 'permissionsService', 'boxSer
                     return items;
                 });
                 tree = new dhtmlXTreeObject("roles_list", "100%", "100%", 0);
-                tree.setImagePath("/plugins/dhtmlx/imgs/dhxtree_skyblue/");
+                tree.setImagePath("/plugins/dhtmlx/imgs/dhxtree_material/");
                 tree.enableCheckBoxes(true);
                 //tree.enableThreeStateCheckboxes(true);
                 response[0].open = 1;
@@ -203,6 +205,10 @@ require(['jquery', 'util', 'layer', 'userService', 'permissionsService', 'boxSer
                 yes: function () {
                     var form = $('#addUserForm');
                     form.data('bootstrapValidator').validate();
+                    if (!update && !viewModel.user.password()) {
+                        layer.msg('密码不能为空');
+                        return;
+                    }
                     if (form.data('bootstrapValidator').isValid()) {
                         viewModel.addOrUpdate(update, rowId, myTreeGrid, form, lwin);
                     }
@@ -219,6 +225,7 @@ require(['jquery', 'util', 'layer', 'userService', 'permissionsService', 'boxSer
                 viewModel.user.city_id(myTreeGrid.getRowAttribute(rowId, 'city_id'));
                 viewModel.user.status(myTreeGrid.getRowAttribute(rowId, 'status'));
                 viewModel.user.email(myTreeGrid.getRowAttribute(rowId, 'email'));
+                $('#user_username').attr('readonly', true);
             } else {
                 viewModel.clearAddForm();
                 viewModel.user.pid(id);
@@ -244,6 +251,13 @@ require(['jquery', 'util', 'layer', 'userService', 'permissionsService', 'boxSer
                     validators: {
                         notEmpty: {
                             message: '不能为空'
+                        }
+                    }
+                },
+                user_password: {
+                    validators: {
+                        regexp: {
+                            regexp: /^[a-zA-Z]\w{5,17}$/
                         }
                     }
                 },
@@ -279,9 +293,6 @@ require(['jquery', 'util', 'layer', 'userService', 'permissionsService', 'boxSer
                 },
                 user_email: {
                     validators: {
-                        notEmpty: {
-                            message: '不能为空'
-                        },
                         email: {
                             message: '请输入正确到邮箱地址'
                         }
@@ -352,12 +363,11 @@ require(['jquery', 'util', 'layer', 'userService', 'permissionsService', 'boxSer
     };
     viewModel.init();
     $(function () {
-        layer.load(2);
-        var myTreeGrid = new dhtmlXGridObject('tree_user');
+        var myTreeGrid = viewModel.tree = new dhtmlXGridObject('tree_user');
         myTreeGrid.setImagePath('/plugins/dhtmlx/imgs/');
+        myTreeGrid.setSkin("material");
         myTreeGrid.setHeader('ID,real_name,company,email,,用户名,名称,电话,省,市,状态,创建时间');
         myTreeGrid.setColumnIds('id,real_name,company,email,tree,username,name,phone,province_id,city_id,status,create_time');
-        myTreeGrid.setColAlign('left,left,left,left,left,center,center,center,center,center,center,center');
         myTreeGrid.setColTypes('ro,ro,ro,ro,tree,ro,ro,ro,combo,combo,combo,ltro');
         myTreeGrid.setInitWidths("*,*,*,*,*,*,*,*,*,*,*,140");
         myTreeGrid.enableResizing('false,false,false,false,false,false,false,false,false,false,false,false');
@@ -369,9 +379,10 @@ require(['jquery', 'util', 'layer', 'userService', 'permissionsService', 'boxSer
         myTreeGrid.enableTreeGridLines();
         myTreeGrid.enableTreeCellEdit(false);
         myTreeGrid.enableAutoHeight(false);
+        myTreeGrid.enableAutoWidth(true);
         myTreeGrid.setEditable(false);
         var menu = new dhtmlXMenuObject({
-            icons_path: '/plugins/dhtmlx/imgs/dhxmenu_skyblue/',
+            icons_path: '/plugins/dhtmlx/imgs/dhxmenu_material/',
             context: true,
             items: [
                 {id: 'add', text: '新增'},
@@ -381,6 +392,7 @@ require(['jquery', 'util', 'layer', 'userService', 'permissionsService', 'boxSer
                 {id: 'setRef', text: '资源关联'}
             ]
         });
+        menu.setSkin("material");
         menu.attachEvent("onClick", function(id, zoneId, cas) {
             var rowId = myTreeGrid.contextID.split('_')[0];
             var myId = myTreeGrid.getRowAttribute(rowId, 'id');
@@ -400,27 +412,23 @@ require(['jquery', 'util', 'layer', 'userService', 'permissionsService', 'boxSer
             var id = myTreeGrid.getRowAttribute(sId, 'id');
             var pid = myTreeGrid.getRowAttribute(tId, 'id');
             var parentId = myTreeGrid.getParentId(sId);
-            layer.load(2);
-            var ajax = PermissionsService.updateUser(JSON.stringify({
+            var ajax = PermissionsService.updateUser(ko.toJSON({
                 id: id,
                 pid: pid
             }));
             util.send(ajax, function (response) {
-                if (!myTreeGrid.hasChildren(parentId)) {
-                    myTreeGrid.setItemImage(parentId, '/plugins/dhtmlx/imgs/dhxgrid_skyblue/tree/leaf.gif');
+                if (!myTreeGrid.hasChildren(parentId) && parentId > 0) {
+                    myTreeGrid.setItemImage(parentId, '/plugins/dhtmlx/imgs/dhxgrid_material/tree/leaf.gif');
                     myTreeGrid.setRowAttribute(parentId, 'tree', {
                         image: 'leaf.gif'
                     });
                 }
-                if (myTreeGrid.hasChildren(tId)) {
-                    myTreeGrid.setItemImage(tId, '/plugins/dhtmlx/imgs/dhxgrid_skyblue/tree/folder.gif');
+                if (myTreeGrid.hasChildren(tId) && tId > 0) {
+                    myTreeGrid.setItemImage(tId, '/plugins/dhtmlx/imgs/dhxgrid_material/tree/folder.gif');
                     myTreeGrid.setRowAttribute(tId, 'tree', {
                         image: 'folder.gif'
                     });
                 }
-                layer.closeAll('loading');
-            }, function () {
-                layer.closeAll('loading');
             });
             return true;
         });
@@ -429,15 +437,11 @@ require(['jquery', 'util', 'layer', 'userService', 'permissionsService', 'boxSer
         util.initStatusCombo(myTreeGrid.getColumnCombo(10));
         util.initProvinceCombo(myTreeGrid.getColumnCombo(8));
         util.initCityCombo(myTreeGrid.getColumnCombo(9));
-        myTreeGrid.load('/permissions/users', function () {
-            layer.closeAll('loading');
+        util.send(PermissionsService.users()).then(function (response) {
+            myTreeGrid.parse(response, 'js');
             myTreeGrid.expandAll();
             ko.applyBindings(viewModel);
-            var count = myTreeGrid.getRowsNum();
-            if (!count || count <= 0) {
-                viewModel.openUserForm(false, 0, myTreeGrid, 1);
-            }
-        }, 'js');
+        });
         util.adjustIframeHeight();
     });
 });

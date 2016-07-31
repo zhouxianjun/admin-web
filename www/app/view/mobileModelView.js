@@ -36,7 +36,7 @@ require(['jquery', 'util', 'layer', 'modelMgrService', 'ko', 'moment', 'merge', 
             var prompt = layer.prompt({
                 title: '请输入品牌名称'
             }, function(val){
-                var ajax = ModelMgrService.addBrand(JSON.stringify({
+                var ajax = ModelMgrService.addBrand(ko.toJSON({
                     name: val
                 }));
                 util.send(ajax, function (response) {
@@ -50,7 +50,7 @@ require(['jquery', 'util', 'layer', 'modelMgrService', 'ko', 'moment', 'merge', 
             var prompt = layer.prompt({
                 title: '请输入型号名称'
             }, function(val){
-                var ajax = ModelMgrService.addModel(JSON.stringify({
+                var ajax = ModelMgrService.addModel(ko.toJSON({
                     name: val,
                     brand: id
                 }));
@@ -65,7 +65,7 @@ require(['jquery', 'util', 'layer', 'modelMgrService', 'ko', 'moment', 'merge', 
             var prompt = layer.prompt({
                 title: '请输入版本名称'
             }, function(val){
-                var ajax = ModelMgrService.addVersion(JSON.stringify({
+                var ajax = ModelMgrService.addVersion(ko.toJSON({
                     name: val,
                     model: id
                 }));
@@ -80,7 +80,7 @@ require(['jquery', 'util', 'layer', 'modelMgrService', 'ko', 'moment', 'merge', 
             var prompt = layer.prompt({
                 title: '请输入基带名称'
             }, function(val){
-                var ajax = ModelMgrService.addBaseVersion(JSON.stringify({
+                var ajax = ModelMgrService.addBaseVersion(ko.toJSON({
                     name: val,
                     version: id
                 }));
@@ -100,7 +100,7 @@ require(['jquery', 'util', 'layer', 'modelMgrService', 'ko', 'moment', 'merge', 
             pagingType: 'simple',
             ajax: function (data, callback, settings) {
                 var sortParam = util.getSortParam(data, ['name']);
-                util.send(ModelMgrService.brandByPage(JSON.stringify(merge(true, sortParam, {
+                util.send(ModelMgrService.brandByPage(ko.toJSON(merge(true, sortParam, {
                     page: Math.floor(data.start / 10) + 1,
                     pageSize: 10
                 }))), function(response) {
@@ -120,7 +120,7 @@ require(['jquery', 'util', 'layer', 'modelMgrService', 'ko', 'moment', 'merge', 
                 });
                 $('._brand_table_remove').click(function () {
                     var item = viewModel.brand_table.row($(this).closest('tr')).data();
-                    util.send(ModelMgrService.removeBrand(JSON.stringify({
+                    util.send(ModelMgrService.removeBrand(ko.toJSON({
                         id: item.id
                     })), function (response) {
                         viewModel.brand_table.draw(false);
@@ -161,7 +161,7 @@ require(['jquery', 'util', 'layer', 'modelMgrService', 'ko', 'moment', 'merge', 
             pagingType: 'simple',
             ajax: function (data, callback, settings) {
                 var sortParam = util.getSortParam(data, ['name']);
-                util.send(ModelMgrService.modelByPage(JSON.stringify(merge(true, sortParam, {
+                util.send(ModelMgrService.modelByPage(ko.toJSON(merge(true, sortParam, {
                     page: Math.floor(data.start / 10) + 1,
                     pageSize: 10,
                     brand: brand
@@ -182,7 +182,7 @@ require(['jquery', 'util', 'layer', 'modelMgrService', 'ko', 'moment', 'merge', 
                 });
                 $('._model_table_remove').click(function () {
                     var item = viewModel.model_table.row($(this).closest('tr')).data();
-                    util.send(ModelMgrService.removeModel(JSON.stringify({
+                    util.send(ModelMgrService.removeModel(ko.toJSON({
                         id: item.id
                     })), function (response) {
                         viewModel.model_table.draw(false);
@@ -223,7 +223,7 @@ require(['jquery', 'util', 'layer', 'modelMgrService', 'ko', 'moment', 'merge', 
             pagingType: 'simple',
             ajax: function (data, callback, settings) {
                 var sortParam = util.getSortParam(data, ['name']);
-                util.send(ModelMgrService.versionByPage(JSON.stringify(merge(true, sortParam, {
+                util.send(ModelMgrService.versionByPage(ko.toJSON(merge(true, sortParam, {
                     page: Math.floor(data.start / 10) + 1,
                     pageSize: 10,
                     model: model
@@ -244,7 +244,7 @@ require(['jquery', 'util', 'layer', 'modelMgrService', 'ko', 'moment', 'merge', 
                 });
                 $('._version_table_remove').click(function () {
                     var item = viewModel.version_table.row($(this).closest('tr')).data();
-                    util.send(ModelMgrService.removeVersion(JSON.stringify({
+                    util.send(ModelMgrService.removeVersion(ko.toJSON({
                         id: item.id
                     })), function (response) {
                         viewModel.version_table.draw(false);
@@ -285,7 +285,7 @@ require(['jquery', 'util', 'layer', 'modelMgrService', 'ko', 'moment', 'merge', 
             pagingType: 'simple',
             ajax: function (data, callback, settings) {
                 var sortParam = util.getSortParam(data, ['name']);
-                util.send(ModelMgrService.baseVersionByPage(JSON.stringify(merge(true, sortParam, {
+                util.send(ModelMgrService.baseVersionByPage(ko.toJSON(merge(true, sortParam, {
                     page: Math.floor(data.start / 10) + 1,
                     pageSize: 10,
                     version: version
@@ -302,7 +302,7 @@ require(['jquery', 'util', 'layer', 'modelMgrService', 'ko', 'moment', 'merge', 
             drawCallback: function (setting) {
                 $('._base_table_remove').click(function () {
                     var item = viewModel.base_version_table.row($(this).closest('tr')).data();
-                    util.send(ModelMgrService.removeBaseVersion(JSON.stringify({
+                    util.send(ModelMgrService.removeBaseVersion(ko.toJSON({
                         id: item.id
                     })), function (response) {
                         viewModel.base_version_table.draw(false);

@@ -28,6 +28,7 @@
 const path = require('path');
 const watch = require('watch');
 const thrift = require('thrift');
+const querystring = require('querystring');
 const enumerables = ['hasOwnProperty', 'valueOf', 'isPrototypeOf', 'propertyIsEnumerable',
     'toLocaleString', 'toString', 'constructor'];
 module.exports = class Utils {
@@ -148,6 +149,10 @@ module.exports = class Utils {
     }
 
     static writeResult(ctx, result) {
+        if (ctx.path.startsWith('/user/login')) {
+            ctx.redirect(`/pages/login.html?error=${querystring.escape(result.json.msg)}`);
+            return;
+        }
         switch (ctx.accepts('html', 'json')) {
             case 'html':
                 if (result.code == 99) {

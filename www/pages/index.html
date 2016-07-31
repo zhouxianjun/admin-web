@@ -19,6 +19,7 @@
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="../plugins/layer/skin/layer.css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -35,7 +36,7 @@
         <!-- Logo -->
         <a href="#" class="logo navbar-fixed-top">
             <!-- mini logo for sidebar mini 50x50 pixels -->
-            <span class="logo-mini">HAILIN</span>
+            <span class="logo-mini">HLYT</span>
             <!-- logo for regular state and mobile devices -->
             <span class="logo-lg">数据管理系统</span>
         </a>
@@ -260,7 +261,7 @@
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <img src="../dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-                            <span class="hidden-xs" data-bind="text: name">Alexander Pierce</span>
+                            <span class="hidden-xs" data-bind="text: user.name"></span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
@@ -268,15 +269,15 @@
                                 <img src="../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
                                 <p>
-                                    一些资料显示
-                                    <small>XXXXXXX</small>
+                                    <span id="real_name_text" data-bind="text: user.real_name"></span>
+                                    <small data-bind="text: user.role_name"></small>
                                 </p>
                             </li>
                             <!-- Menu Body -->
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-left">
-                                    <a href="#" class="btn btn-default btn-flat">资料</a>
+                                    <a href="#" class="btn btn-default btn-flat" data-bind="click: openUserForm">资料</a>
                                 </div>
                                 <div class="pull-right">
                                     <a href="#" data-bind="click: logout" class="btn btn-default btn-flat">退出</a>
@@ -303,7 +304,7 @@
                     <img src="../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
                 </div>
                 <div class="pull-left info">
-                    <p data-bind="text: name">Alexander Pierce</p>
+                    <p data-bind="text: user.name"></p>
                     <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                 </div>
             </div>
@@ -611,6 +612,85 @@
         <li><a href="#" data-bind="click: $root.menuClick"><i data-bind="css: 'fa ' + icon"></i> <span data-bind="text: name"></span></a></li>
         <!-- /ko -->
     <!-- /ko -->
+</script>
+<script type="text/html" id="layer_user_info">
+    <div class="box box-info" style="overflow: hidden" id="userFrom">
+        <!-- form start -->
+        <form class="form-horizontal">
+            <div class="box-body">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">
+                        <span class="icon-require">*</span>用户名
+                    </label>
+
+                    <div class="col-sm-8 form-control-static" data-bind="text: user.name">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">
+                        <span class="icon-require">*</span>新密码
+                    </label>
+
+                    <div class="col-sm-8">
+                        <input type="password" name="user_password" data-bind="value: user.password" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">
+                        <span class="icon-require">*</span>重复新密码
+                    </label>
+
+                    <div class="col-sm-8">
+                        <input type="password" name="user_confirm_password" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="user_name" class="col-sm-3 control-label">名称</label>
+
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="user_name" data-bind="value: user.name" id="user_name" placeholder="显示名称">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="user_phone" class="col-sm-3 control-label">电话</label>
+
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="user_phone" data-bind="value: user.phone" id="user_phone" placeholder="联系电话">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="user_real_name" class="col-sm-3 control-label">真实姓名</label>
+
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="user_real_name" data-bind="value: user.real_name" id="user_real_name" placeholder="真实姓名">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="user_company" class="col-sm-3 control-label">公司名称</label>
+
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="user_company" data-bind="value: user.company" id="user_company" placeholder="公司名称">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label"><span class="icon-require">*</span>地区</label>
+                    <div class="col-sm-8">
+                        <div class="col-sm-5 form-control-static" style="padding-left: 0px;padding-right: 0px;" data-bind="text: user.province_text">
+                        </div>
+                        <div class="col-sm-5 form-control-static" style="padding-left: 0px;padding-right: 0px;" data-bind="text: user.city_text">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="user_email" class="col-sm-3 control-label">邮箱</label>
+
+                    <div class="col-sm-8">
+                        <input type="email" class="form-control" name="user_email" data-bind="value: user.email" id="user_email" placeholder="邮箱地址">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
 </script>
 <script src="../plugins/require.js"></script>
 <script src="../config.js"></script>

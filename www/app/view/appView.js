@@ -142,7 +142,7 @@ require(['jquery', 'util', 'layer', 'appService', 'appActiveService', 'resources
                     if (form.data('bootstrapValidator').isValid()) {
                         viewModel.app_file.id(id);
                         ResourcesService.uploadFile([$('#app_file_resource')[0].files[0]]).then(function(resList) {
-                            util.send(AppService.updateFile(JSON.stringify({
+                            util.send(AppService.updateFile(ko.toJSON({
                                 id: id,
                                 resources: resList[0]
                             }))).then(function() {
@@ -175,7 +175,7 @@ require(['jquery', 'util', 'layer', 'appService', 'appActiveService', 'resources
         },
         openImg: function (id) {
             viewModel.app_img_array([]);
-            util.send(AppService.imgs(JSON.stringify({id: id}))).then(function(response) {
+            util.send(AppService.imgs(ko.toJSON({id: id}))).then(function(response) {
                 for (var i = 0; i < response.data.list.length; i++) {
                     console.log(response.data.list[i].id);
                     viewModel.app_img_array.push({
@@ -230,7 +230,7 @@ require(['jquery', 'util', 'layer', 'appService', 'appActiveService', 'resources
                                 resList.push(ids[j]);
                             }
                         }
-                        util.send(AppService.updateImg(JSON.stringify({
+                        util.send(AppService.updateImg(ko.toJSON({
                             id: id,
                             resources: resList
                         }))).then(function() {
@@ -280,7 +280,7 @@ require(['jquery', 'util', 'layer', 'appService', 'appActiveService', 'resources
             $('#active-table').DataTable(merge(true, util.dataTableSettings, {
                 ajax: function (data, callback, settings) {
                     var sortParam = util.getSortParam(data, ['name', 'open_count', 'flow', 'stay_days', 'show_time', 'open_network']);
-                    util.send(AppActiveService.listByPage(JSON.stringify(merge(true, sortParam, {
+                    util.send(AppActiveService.listByPage(ko.toJSON(merge(true, sortParam, {
                         page: Math.floor(data.start / 10) + 1,
                         pageSize: 10
                     }))), function(response) {
@@ -324,11 +324,12 @@ require(['jquery', 'util', 'layer', 'appService', 'appActiveService', 'resources
         }
     };
     $(function () {
+        util.tableToolsButton();
         viewModel.table = $('#app-table').DataTable(merge(true, util.dataTableSettings, {
             dom: 'T<"clear">lfrtip',
             ajax: function (data, callback, settings) {
                 var sortParam = util.getSortParam(data, ['name', 'zh_name', 'cp_name', 'size', 'price', 'network', 'create_time']);
-                util.send(AppService.listByPage(JSON.stringify(merge(true, sortParam, {
+                util.send(AppService.listByPage(ko.toJSON(merge(true, sortParam, {
                     page: Math.floor(data.start / 10) + 1,
                     pageSize: 10
                 }))), function(response) {
@@ -372,7 +373,7 @@ require(['jquery', 'util', 'layer', 'appService', 'appActiveService', 'resources
                     var confirmLayer = layer.confirm('您确定删除此应用吗？', {
                         btn: ['确定','取消'] //按钮
                     }, function(){
-                        util.send(AppService.remove(JSON.stringify({
+                        util.send(AppService.remove(ko.toJSON({
                             id: item.id
                         })), function() {
                             viewModel.table.draw(false);
@@ -395,9 +396,7 @@ require(['jquery', 'util', 'layer', 'appService', 'appActiveService', 'resources
                 }
             }, {
                 data: 'price',
-                render: function(price) {
-                    return '$' + price;
-                }
+                render: util.RENDER.PRICE
             }, {
                 data: 'network',
                 render: function(network) {

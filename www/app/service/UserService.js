@@ -28,15 +28,16 @@
 define(['jquery', 'util'], function ($, util) {
     return {
         login: function(data){
-            return $.ajax({
-                url: '/user/login',
-                type: 'POST',
-                data: data,
-                contentType : 'application/json'
-            });
+            return util.buildAjax('/user/login', data);
         },
         setRefs: function (data) {
             return util.buildAjax('/user/setRefs', data);
+        },
+        update: function(data) {
+            return util.buildAjax('/user/update', data);
+        },
+        info: function() {
+            return util.buildAjax('/user/info');
         }
     };
 });

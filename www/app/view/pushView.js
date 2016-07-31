@@ -25,7 +25,7 @@
  *           佛祖保佑       永无BUG
  */
 'use strict';
-require(['jquery', 'util', 'layer', 'pushService', 'resourcesService', 'ko', 'moment', 'merge', 'datatables', 'validator', 'slimScroll', 'datatables-tabletools', 'bootstrap-upload', 'fileupload'],
+require(['jquery', 'util', 'layer', 'pushService', 'resourcesService', 'ko', 'moment', 'merge', 'datatables', 'validator', 'slimScroll', 'datatables-tabletools', 'bootstrap-upload', 'fileupload', 'daterange'],
     function ($, util, layer, PushService, ResourcesService, ko, moment) {
     var viewModel = {
         table: null,
@@ -40,6 +40,8 @@ require(['jquery', 'util', 'layer', 'pushService', 'resourcesService', 'ko', 'mo
             app: ko.observable(),
             deduct: ko.observable(),
             url: ko.observable(),
+            start_time: ko.observable(),
+            end_time: ko.observable(),
             text: ko.observable()
         },
         app_file: {
@@ -137,7 +139,19 @@ require(['jquery', 'util', 'layer', 'pushService', 'resourcesService', 'ko', 'mo
                             message: '不能为空'
                         }
                     }
+                },
+                app_url: {
+                    validators: {
+                        uri: {}
+                    }
                 }
+            });
+            $('#date_range').daterangepicker({
+                format: 'YYYY-MM-DD'
+            });
+            $('#date_range').on('apply.daterangepicker', function (e, datePicker) {
+                viewModel.app.start_time(datePicker.startDate.toDate().getTime());
+                viewModel.app.end_time(datePicker.endDate.toDate().getTime());
             });
             id || util.clearViewModel(viewModel.app);
             viewModel.update = id ? true : false;
@@ -147,6 +161,10 @@ require(['jquery', 'util', 'layer', 'pushService', 'resourcesService', 'ko', 'mo
                 height: '100%', //可滚动区域高度
                 disableFadeOut: true
             });
+            if (id) {
+                $('#date_range').data('daterangepicker').setStartDate(new Date(viewModel.app.start_time()));
+                $('#date_range').data('daterangepicker').setEndDate(new Date(viewModel.app.end_time()));
+            }
         },
         openFile: function (id, img) {
             var fileLayer = layer.open({
@@ -161,7 +179,7 @@ require(['jquery', 'util', 'layer', 'pushService', 'resourcesService', 'ko', 'mo
                     if (form.data('bootstrapValidator').isValid() && $('#app_file_resource')[0].files[0]) {
                         viewModel.app_file.id(id);
                         ResourcesService.uploadFile([$('#app_file_resource')[0].files[0]]).then(function(resList) {
-                            util.send((img ? PushService.updateImg : PushService.updateApp)(JSON.stringify({
+                            util.send((img ? PushService.updateImg : PushService.updateApp)(ko.toJSON({
                                 id: id,
                                 resources: resList[0]
                             }))).then(function() {
@@ -192,14 +210,6 @@ require(['jquery', 'util', 'layer', 'pushService', 'resourcesService', 'ko', 'mo
                 disableFadeOut: true
             });
         },
-        send: function (id) {
-            util.send(PushService.send(ko.toJSON({
-                id: id
-            }))).then(function () {
-                layer.msg('发送成功');
-                viewModel.table.draw(false);
-            });
-        },
         status: function (id, status) {
             util.clearViewModel(viewModel.app);
             viewModel.app.id(id);
@@ -214,11 +224,12 @@ require(['jquery', 'util', 'layer', 'pushService', 'resourcesService', 'ko', 'mo
         }
     };
     $(function () {
+        util.tableToolsButton();
         viewModel.table = $('#app-table').DataTable(merge(true, util.dataTableSettings, {
             dom: 'T<"clear">lfrtip',
             ajax: function (data, callback, settings) {
                 var sortParam = util.getSortParam(data, ['name', 'ow', 'type', 'text', 'client_type', 'deduct', 'url', 'status', 'create_time']);
-                util.send(PushService.listByPage(JSON.stringify(merge(true, sortParam, {
+                util.send(PushService.listByPage(ko.toJSON(merge(true, sortParam, {
                     page: Math.floor(data.start / 10) + 1,
                     pageSize: 10
                 }))), function(response) {
@@ -264,11 +275,11 @@ require(['jquery', 'util', 'layer', 'pushService', 'resourcesService', 'ko', 'mo
                 });
                 $('._data_table_disable').click(function () {
                     var item = viewModel.table.row($(this).closest('tr')).data();
-                    viewModel.status(item.id, 0);
+                    viewModel.status(item.id, false);
                 });
                 $('._data_table_enable').click(function () {
                     var item = viewModel.table.row($(this).closest('tr')).data();
-                    viewModel.status(item.id, 1);
+                    viewModel.status(item.id, true);
                 });
                 util.adjustIframeHeight();
             },
@@ -306,9 +317,7 @@ require(['jquery', 'util', 'layer', 'pushService', 'resourcesService', 'ko', 'mo
                 }
             }, {
                 data: 'deduct',
-                render: function (deduct) {
-                    return '$' + (deduct || 0)
-                }
+                render: util.RENDER.PRICE
             }, {
                 data: 'url',
                 class: 'ellipsis',
@@ -316,9 +325,7 @@ require(['jquery', 'util', 'layer', 'pushService', 'resourcesService', 'ko', 'mo
                 render: util.RENDER.ELLIPSIS_URL
             }, {
                 data: 'status',
-                render: function (status) {
-                    return status == 0 ? '禁用' : status == 1 ? '启用' : '已发送';
-                }
+                render: util.RENDER.STATUS
             }, {
                 data: 'create_time',
                 render: function(create_time) {
@@ -336,9 +343,8 @@ require(['jquery', 'util', 'layer', 'pushService', 'resourcesService', 'ko', 'mo
                         '<ul class="dropdown-menu">' +
                             (data.type == 1 ? '<li><a href="#" class="_data_table_img_file">上传图片</a></li>' : '') +
                             (data.type == 2 || data.type == 3 ? '<li><a href="#" class="_data_table_app_file">上传应用</a></li>' : '') +
-                            (data.status != 0 ? '<li><a href="#" class="_data_table_send">发送</a></li>' : '') +
-                            (data.status != 0 ? '<li><a href="#" class="_data_table_disable">禁用</a></li>' : '') +
-                            (data.status == 0 ? '<li><a href="#" class="_data_table_enable">启用</a></li>' : '') +
+                            (data.status ? '<li><a href="#" class="_data_table_disable">禁用</a></li>' : '') +
+                            (!data.status ? '<li><a href="#" class="_data_table_enable">启用</a></li>' : '') +
                         '</ul>' +
                     '</div>';
                 }

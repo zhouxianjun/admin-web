@@ -26,9 +26,11 @@
  */
 'use strict';
 const apiService = require('../service/ApiService').instance();
+const pushService = require('../service/PushService').instance();
 const Result = require('../dto/Result');
 const Utils = require('../util/Utils');
 const PublicStruct = require('../thrift/PublicStruct_types');
+const dowlUrl = '/resources/qiniuDownload?key=';
 module.exports = class {
     static get path() {
         return '/api';
@@ -58,7 +60,7 @@ module.exports = class {
         console.log(this.ips);
         console.log(this.ip);
         console.log(getClientIp(this.req));
-        let res = yield apiService.getBoxResourcesList(this.session.user.id, '/resources/qiniuDownload?key=');
+        let res = yield apiService.getBoxResourcesList(this.session.user.id, dowlUrl);
         Utils.writeResult(this, new Result(true, {
             key: 'map',
             value: JSON.parse(res)
@@ -77,6 +79,19 @@ module.exports = class {
     * mobileActive() {
         let params = this.request.body;
         let res = yield apiService.mobileActive(this.session.user.box_id, JSON.stringify(params), this.session.user.id, this.ip);
+        Utils.writeResult(this, new Result(res));
+    }
+    * listUnRead() {
+        let params = this.request.body;
+        let res = yield pushService.listUnRead(this.session.user.id, params.client, params.type, dowlUrl);
+        Utils.writeResult(this, new Result(true, {
+            key: 'list',
+            value: JSON.parse(res)
+        }));
+    }
+    * readPush() {
+        let params = this.request.body;
+        let res = yield pushService.readPush(this.session.user.id, params.client, params.type, params.push);
         Utils.writeResult(this, new Result(res));
     }
 };

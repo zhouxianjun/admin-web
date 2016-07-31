@@ -132,6 +132,7 @@ module.exports = class PermissionsController {
             key: 'menus',
             value: Utils.makeTree(menus, 0, 'pid', 'id', 'sub', item => {
                 if (!item.sub) item.sub = [];
+                item.panel = item.target;
                 if (!item.panel) item.panel = 'panel_' + item.id;
             })
         }, {

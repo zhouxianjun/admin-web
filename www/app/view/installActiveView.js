@@ -84,11 +84,12 @@ require(['jquery', 'util', 'layer', 'installActiveService', 'ko', 'moment', 'mer
         }
     };
     $(function () {
+        util.tableToolsButton();
         viewModel.table = $('#box-table').DataTable(merge(true, util.dataTableSettings, {
             dom: 'T<"clear">lfrtip',
             ajax: function (data, callback, settings) {
                 var sortParam = util.getSortParam(data, ['name', 'memo', 'hours', 'create_time']);
-                util.send(InstallActiveService.listByPage(JSON.stringify(merge(true, sortParam, {
+                util.send(InstallActiveService.listByPage(ko.toJSON(merge(true, sortParam, {
                     page: Math.floor(data.start / 10) + 1,
                     pageSize: 10
                 }))), function(response) {
@@ -113,7 +114,7 @@ require(['jquery', 'util', 'layer', 'installActiveService', 'ko', 'moment', 'mer
                     var confirmLayer = layer.confirm('您确定删除此策略吗？', {
                         btn: ['确定','取消'] //按钮
                     }, function(){
-                        util.send(InstallActiveService.remove(JSON.stringify({
+                        util.send(InstallActiveService.remove(ko.toJSON({
                             id: item.id
                         })), function() {
                             viewModel.table.draw(false);

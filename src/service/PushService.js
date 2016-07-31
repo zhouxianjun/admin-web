@@ -32,6 +32,8 @@ module.exports = class PushService extends ThriftClient.referenceBean {
     update() {}
     changeImg() {}
     changeApp() {}
+    listUnRead() {}
+    readPush() {}
     get type() {
         return require('../thrift/PushService');
     }
