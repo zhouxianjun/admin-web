@@ -29,6 +29,7 @@ const path = require('path');
 const walk = require('walk');
 const logger = require('./LogUtils').log();
 const Utils = require('./Utils');
+const config = require('../../config.json');
 module.exports = class FileRouter {
     constructor(router) {
         this.router = router;
@@ -71,7 +72,7 @@ module.exports = class FileRouter {
         }
     }
     addRouter(obj, simpleName) {
-        let fKey = obj.path || '/' + simpleName.substring(0, 1).toLowerCase() + simpleName.substring(1);
+        let fKey = `${config.base_path || ''}${obj.path || '/' + simpleName.substring(0, 1).toLowerCase() + simpleName.substring(1)}`;
         let tmp = Reflect.construct(obj.prototype.constructor, [this.router]);
         this.delRouter(obj, simpleName);
         Reflect.ownKeys(obj.prototype).forEach(method => {
@@ -100,7 +101,7 @@ module.exports = class FileRouter {
         });
     }
     delRouter(obj, name) {
-        let fKey = obj.path || '/' + name.substring(0, 1).toLowerCase() + name.substring(1);
+        let fKey = `${config.base_path || ''}${obj.path || '/' + name.substring(0, 1).toLowerCase() + name.substring(1)}`;
         Reflect.ownKeys(obj.prototype).forEach(method => {
             let descriptor = Reflect.getOwnPropertyDescriptor(obj.prototype, method);
             if (method != 'constructor' &&

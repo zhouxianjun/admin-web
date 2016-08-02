@@ -55,7 +55,29 @@ app.use(bodyParser());
 app.keys = ['session_key'];
 app.use(session({
     store: redisStore(),
-    ttl: config.session_ttl
+    ttl: config.session_ttl,
+    cookie: {
+        path: '/'
+    },
+    beforeSave: function (ctx, session) {
+        console.log(ctx.path);
+        if (session.user) {
+            let roles = session.user.roles;
+            if (!roles) return;
+            let needOnly = true;
+            roles.forEach(role => {
+                //if (role.)
+            });
+            let key = `koa:user:${session.user.id}`;
+            let res = ctx.sessionStore.get(key);
+            console.log(res);
+            if (!res.sessionId) {
+                console.log(session);
+                //ctx.sessionStore.set(key, ctx.sessionId,);
+            }
+        }
+        return false;
+    }
 }));
 app.use(function *session(next){
     yield next;

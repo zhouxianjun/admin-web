@@ -126,8 +126,8 @@ ApiService_boxLogin_result.prototype.read = function(input) {
     switch (fid)
     {
       case 0:
-      if (ftype == Thrift.Type.I64) {
-        this.success = input.readI64();
+      if (ftype == Thrift.Type.STRING) {
+        this.success = input.readString();
       } else {
         input.skip(ftype);
       }
@@ -152,8 +152,8 @@ ApiService_boxLogin_result.prototype.read = function(input) {
 ApiService_boxLogin_result.prototype.write = function(output) {
   output.writeStructBegin('ApiService_boxLogin_result');
   if (this.success !== null && this.success !== undefined) {
-    output.writeFieldBegin('success', Thrift.Type.I64, 0);
-    output.writeI64(this.success);
+    output.writeFieldBegin('success', Thrift.Type.STRING, 0);
+    output.writeString(this.success);
     output.writeFieldEnd();
   }
   if (this.ex !== null && this.ex !== undefined) {
