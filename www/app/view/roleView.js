@@ -163,7 +163,7 @@ require(['jquery', 'util', 'layer', 'moment', 'permissionsService', 'ko', 'dhtml
                 icons_path: '/plugins/dhtmlx/imgs/dhxmenu_material/',
                 context: true,
                 items: [
-                    {id: 'add', text: '新增菜单'},
+                    {id: 'add', text: '新增角色'},
                     {id: 'setMenu', text: '配置菜单'}
                 ]
             });
