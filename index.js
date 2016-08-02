@@ -36,6 +36,7 @@ const Static = require('koa-static');
 const session = require('koa-generic-session');
 const redisStore = require('koa-redis');
 const bodyParser = require('koa-bodyparser');
+const co = require('co');
 const app = new Koa();
 
 const ignoreUrl = config.ignoreUrl;
@@ -57,23 +58,32 @@ app.use(session({
     store: redisStore(),
     ttl: config.session_ttl,
     cookie: {
-        path: '/'
+        path: (!config.base_path || config.base_path == '') ? '/' : config.base_path
     },
     beforeSave: function (ctx, session) {
-        console.log(ctx.path);
         if (session.user) {
             let roles = session.user.roles;
             if (!roles) return;
             let needOnly = true;
             roles.forEach(role => {
-                //if (role.)
+                if (!role.only_login) {
+                    needOnly = false;
+                    return false;
+                }
             });
-            let key = `koa:user:${session.user.id}`;
-            let res = ctx.sessionStore.get(key);
-            console.log(res);
-            if (!res.sessionId) {
-                console.log(session);
-                //ctx.sessionStore.set(key, ctx.sessionId,);
+            if (needOnly) {
+                let key = `user:${session.user.id}`;
+                co(function* () {
+                    let res = yield ctx.sessionStore.get(key);
+                    if (res && res != ctx.sessionId) {
+                        logger.info('user: %s rep login now ip: %s destroy before session: %s', session.user.id, ctx.ip, res);
+                        yield ctx.sessionStore.destroy(res);
+                    }
+                    yield ctx.sessionStore.set(key, ctx.sessionId, config.session_ttl);
+                }, (err, result) => {
+                    if (err)
+                        logger.error('Need Only Login error', err);
+                });
             }
         }
         return false;
@@ -149,7 +159,33 @@ app.use(function *error(next){
     }
 });
 
-router.get('/', function *(next) {
+if (config.base_path && config.base_path != '') {
+    router.get('/', function *(next) {
+        this.redirect(config.base_path);
+    });
+    router.get(config.base_path, function *(next) {
+        if (this.session.user) {
+            this.redirect('/pages/index.html');
+            return;
+         }
+        this.redirect('/pages/login.html');
+    });
+} else {
+    router.get('/', function *(next) {
+        if (this.session.user) {
+            this.redirect('/pages/index.html');
+            return;
+        }
+        this.redirect('/pages/login.html');
+    });
+}
+
+router.get((!config.base_path || config.base_path == '') ? '/' : config.base_path, function *(next) {
+    console.log(this.session);
+    /*if (this.session.user) {
+        this.redirect('/pages/index.html');
+        return;
+    }*/
     this.redirect('/pages/login.html');
 });
 

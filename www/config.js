@@ -92,3 +92,4 @@ require.config({
         'daterange': ['jquery', 'bootstrap', 'moment']
     }
 });
+window.baseUrl = '/web';

@@ -245,7 +245,7 @@ require(['jquery', 'util', 'layer', 'boxService', 'ko', 'moment', 'merge', 'data
                 data: 'version',
                 render: function (version, sn, data) {
                     if (!version) return '';
-                    return '<a target="_blank" class="fa fa-download" href="/resources/downloadByVersion?id=' + data.version_id + '">&nbsp;' + version + '</a>';
+                    return '<a target="_blank" class="fa fa-download" href="'+window.baseUrl+'/resources/downloadByVersion?id=' + data.version_id + '">&nbsp;' + version + '</a>';
                 }
             }, {
                 data: 'status',

@@ -189,7 +189,7 @@ require(['jquery', 'ko', 'permissionsService', 'userService', 'util', 'layer', '
             });
         },
         logout: function () {
-            window.location.href = '/user/logout';
+            window.location.href = window.baseUrl + '/user/logout';
         }
     };
 

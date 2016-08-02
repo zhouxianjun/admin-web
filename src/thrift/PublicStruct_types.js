@@ -17,6 +17,7 @@ RoleStruct = module.exports.RoleStruct = function(args) {
   this.update_time = null;
   this.status = null;
   this.ow = null;
+  this.only_login = null;
   if (args) {
     if (args.id !== undefined && args.id !== null) {
       this.id = args.id;
@@ -38,6 +39,9 @@ RoleStruct = module.exports.RoleStruct = function(args) {
     }
     if (args.ow !== undefined && args.ow !== null) {
       this.ow = args.ow;
+    }
+    if (args.only_login !== undefined && args.only_login !== null) {
+      this.only_login = args.only_login;
     }
   }
 };
@@ -104,6 +108,13 @@ RoleStruct.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 9:
+      if (ftype == Thrift.Type.BOOL) {
+        this.only_login = input.readBool();
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -148,6 +159,11 @@ RoleStruct.prototype.write = function(output) {
   if (this.ow !== null && this.ow !== undefined) {
     output.writeFieldBegin('ow', Thrift.Type.BOOL, 8);
     output.writeBool(this.ow);
+    output.writeFieldEnd();
+  }
+  if (this.only_login !== null && this.only_login !== undefined) {
+    output.writeFieldBegin('only_login', Thrift.Type.BOOL, 9);
+    output.writeBool(this.only_login);
     output.writeFieldEnd();
   }
   output.writeFieldStop();

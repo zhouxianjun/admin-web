@@ -29,7 +29,8 @@ require(['jquery', 'ko', 'userService', 'util', 'layer', 'bootstrap', 'icheck', 
     var viewModel = {
         username: ko.observable(),
         password: ko.observable(),
-        error: ko.observable(util.getUrlParam('error'))
+        error: ko.observable(util.getUrlParam('error')),
+        baseUrl: window.baseUrl
     };
     ko.applyBindings(viewModel);
     $(function () {

@@ -183,7 +183,7 @@ require(['jquery', 'util', 'layer', 'appService', 'appActiveService', 'resources
                         width: 200,
                         height: 150,
                         resource_id: response.data.list[i].id,
-                        showPicUrl: '/resources/qiniuDownload?key=' + response.data.list[i].md5 + '-thumb&show=true'
+                        showPicUrl: window.baseUrl + '/resources/qiniuDownload?key=' + response.data.list[i].md5 + '-thumb&show=true'
                     });
                 }
                 var length = 4 - viewModel.app_img_array().length;

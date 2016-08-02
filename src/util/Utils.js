@@ -29,6 +29,7 @@ const path = require('path');
 const watch = require('watch');
 const thrift = require('thrift');
 const querystring = require('querystring');
+const config = require('../../config.json');
 const enumerables = ['hasOwnProperty', 'valueOf', 'isPrototypeOf', 'propertyIsEnumerable',
     'toLocaleString', 'toString', 'constructor'];
 module.exports = class Utils {
@@ -156,7 +157,7 @@ module.exports = class Utils {
         switch (ctx.accepts('html', 'json')) {
             case 'html':
                 if (result.code == 99) {
-                    ctx.redirect('/');
+                    ctx.redirect((!config.base_path || config.base_path == '') ? '/' : config.base_path);
                     return;
                 }
                 ctx.type = 'html';
@@ -211,9 +212,16 @@ module.exports = class Utils {
         if (user) {
             try {
                 ctx.session.user = JSON.parse(user);
-                ctx.session.interfaces = yield interfaceService.interfacesByUser(ctx.session.user.id);
+                let list = yield interfaceService.interfacesByUser(ctx.session.user.id);
+                if (list) {
+                    list.forEach(item => {
+                        item.auth = `${config.base_path}${item.auth}`;
+                    });
+                    ctx.session.interfaces = list;
+                }
                 return true;
             } catch (err) {
+                console.log(err.stack);
                 return false;
             }
         }

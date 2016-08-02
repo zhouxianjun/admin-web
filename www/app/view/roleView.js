@@ -106,9 +106,10 @@ require(['jquery', 'util', 'layer', 'moment', 'permissionsService', 'ko', 'dhtml
                 });
             });
         }
-        function update(rId, name, status, pid, oldPid) {
+        function update(rId, name, status, only_login, pid, oldPid) {
             var id = myTreeGrid.getRowAttribute(rId, 'id');
             status = typeof status == 'undefined' ? myTreeGrid.getRowAttribute(rId, 'status') : status;
+            only_login = typeof only_login == 'undefined' ? myTreeGrid.getRowAttribute(rId, 'only_login') : only_login;
             if (status == 'true') status = true;
             if (status == 'false') status = false;
             name = typeof name == 'undefined' ? myTreeGrid.getRowAttribute(rId, 'name') : name;
@@ -122,7 +123,8 @@ require(['jquery', 'util', 'layer', 'moment', 'permissionsService', 'ko', 'dhtml
                 id: id,
                 name: name,
                 pid: pid,
-                status: status
+                status: status,
+                only_login: only_login
             }));
             util.send(ajax, function (response) {
                 myTreeGrid._h2.forEachChild(rId, function(element){
@@ -146,11 +148,11 @@ require(['jquery', 'util', 'layer', 'moment', 'permissionsService', 'ko', 'dhtml
             myTreeGrid = new dhtmlXGridObject('tree_role');
             myTreeGrid.setImagePath('/plugins/dhtmlx/imgs/');
             myTreeGrid.setSkin("material");
-            myTreeGrid.setHeader('ID,,名称,状态,创建时间,更新时间');
-            myTreeGrid.setColumnIds('id,tree,name,status,create_time,update_time');
-            myTreeGrid.setInitWidths("*,*,*,*,140,140");
-            myTreeGrid.setColTypes('ro,tree,ed,combo,ltro,ltro');
-            myTreeGrid.enableResizing('false,false,false,false,false,false');
+            myTreeGrid.setHeader('ID,,名称,状态,单例登录,创建时间,更新时间');
+            myTreeGrid.setColumnIds('id,tree,name,status,only_login,create_time,update_time');
+            myTreeGrid.setInitWidths("*,*,*,*,*,140,140");
+            myTreeGrid.setColTypes('ro,tree,ed,combo,combo,ltro,ltro');
+            myTreeGrid.enableResizing('false,false,false,false,false,false,false');
             myTreeGrid.setColumnHidden(0, true);
             myTreeGrid.enableDragAndDrop(true);
             myTreeGrid.enableTreeGridLines();
@@ -179,7 +181,7 @@ require(['jquery', 'util', 'layer', 'moment', 'permissionsService', 'ko', 'dhtml
                 if (stage == 2) {
                     if (!nValue || !nValue.length || nValue == oValue)
                         return false;
-                    update(rId, cInd == 2 ? nValue : undefined, cInd == 3 ? nValue : undefined);
+                    update(rId, cInd == 2 ? nValue : undefined, cInd == 3 ? nValue : undefined, cInd == 4 ? nValue : undefined);
                 }
                 return true;
             });
@@ -193,6 +195,7 @@ require(['jquery', 'util', 'layer', 'moment', 'permissionsService', 'ko', 'dhtml
             myTreeGrid.init();
             var combo = myTreeGrid.getColumnCombo(3);//takes the column index
             util.initStatusCombo(combo);
+            util.initStatusCombo(myTreeGrid.getColumnCombo(4));
             util.send(PermissionsService.rolesByMgr()).then(function (response) {
                 myTreeGrid.parse(response, 'js');
                 myTreeGrid.expandAll();

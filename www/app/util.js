@@ -58,7 +58,7 @@ define(['jquery', 'layer', 'moment', 'underscore', 'dhtmlx', 'slimScroll'], func
         ajaxResponse: function (response, callback, errorFn) {
             var defer = $.Deferred();
             if (response.code == 99) {
-                this.getTopWin().location.href = '/';
+                this.getTopWin().location.href =  (!window.baseUrl || window.baseUrl == '') ? '/' : window.baseUrl;
                 return;
             }
             if (response.code != 1 && typeof response.code != 'undefined') {
@@ -212,7 +212,7 @@ define(['jquery', 'layer', 'moment', 'underscore', 'dhtmlx', 'slimScroll'], func
         },
         buildAjax: function (url, data, type) {
             return $.ajax({
-                url: url,
+                url: window.baseUrl + url,
                 type: type || 'POST',
                 dataType: 'json',
                 data: data,
@@ -225,7 +225,7 @@ define(['jquery', 'layer', 'moment', 'underscore', 'dhtmlx', 'slimScroll'], func
                 formData.append(key, data[key]);
             }
             return $.ajax({
-                url: url,
+                url: window.baseUrl + url,
                 type: 'POST',
                 processData: false,
                 contentType: false,
