@@ -272,6 +272,7 @@ define(['jquery', 'layer', 'moment', 'underscore', 'dhtmlx', 'slimScroll'], func
         },
         tableToolsButton: function () {
             if ($.fn.DataTable && $.fn.DataTable.TableTools) {
+                $.fn.DataTable.TableTools.defaults["sSwfPath"] = '/swf/copy_csv_xls_pdf.swf';
                 $.fn.DataTable.TableTools.defaults["aButtons"] = [ "copy", "csv"];
                 $.fn.DataTable.TableTools.buttons["copy"]["sButtonText"] = '复制';
             }

@@ -53,6 +53,8 @@ require.config({
         'bootstrap-upload': '/plugins/bootstrap-fileupload.min',
         'select2': '/plugins/select2/select2.min',
         'daterange': '/plugins/daterangepicker/daterangepicker',
+        'datepicker-org': '/plugins/datepicker/bootstrap-datepicker',
+        'datepicker': '/plugins/datepicker/locales/bootstrap-datepicker.zh-CN',
 
         // service
         'userService': 'service/UserService',
@@ -71,7 +73,8 @@ require.config({
         'pushService': 'service/PushService',
         'installActiveService': 'service/InstallActiveService',
         'modelRefService': 'service/ModelRefService',
-        'deductionService': 'service/DeductionService'
+        'deductionService': 'service/DeductionService',
+        'statisticsService': 'service/StatisticsService'
     },
     shim: {
         'jquery-tmpl': ['jquery'],
@@ -89,7 +92,8 @@ require.config({
         'fileupload': ['jquery'],
         'bootstrap-upload': ['bootstrap'],
         'select2': ['jquery', 'bootstrap'],
-        'daterange': ['jquery', 'bootstrap', 'moment']
+        'daterange': ['jquery', 'bootstrap', 'moment'],
+        'datepicker': ['jquery', 'bootstrap', 'datepicker-org']
     }
 });
 window.baseUrl = '/web';

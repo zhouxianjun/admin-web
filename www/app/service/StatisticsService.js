@@ -27,20 +27,8 @@
 'use strict';
 define(['jquery', 'util'], function ($, util) {
     return {
-        login: function(data){
-            return util.buildAjax('/user/login', data);
-        },
-        setRefs: function (data) {
-            return util.buildAjax('/user/setRefs', data);
-        },
-        update: function(data) {
-            return util.buildAjax('/user/update', data);
-        },
-        info: function() {
-            return util.buildAjax('/user/info');
-        },
-        childUsers: function() {
-            return util.buildAjax('/user/childUsers');
+        indexForAdmin: function(data){
+            return util.buildAjax('/statistics/indexForAdmin', data);
         }
     };
 });

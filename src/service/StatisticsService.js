@@ -1,8 +1,8 @@
 /**
  * Created with JetBrains Idea.
  * User: Gary
- * Date: 16-7-4
- * Time: 下午10:03
+ * Date: 16-7-8
+ * Time: 下午10:35
  *                 _ooOoo_
  *                o8888888o
  *                88" . "88
@@ -25,22 +25,12 @@
  *           佛祖保佑       永无BUG
  */
 'use strict';
-define(['jquery', 'util'], function ($, util) {
-    return {
-        login: function(data){
-            return util.buildAjax('/user/login', data);
-        },
-        setRefs: function (data) {
-            return util.buildAjax('/user/setRefs', data);
-        },
-        update: function(data) {
-            return util.buildAjax('/user/update', data);
-        },
-        info: function() {
-            return util.buildAjax('/user/info');
-        },
-        childUsers: function() {
-            return util.buildAjax('/user/childUsers');
-        }
-    };
-});
+const ThriftClient = require('node-thrift-client');
+module.exports = class StatisticsService extends ThriftClient.referenceBean {
+    getStaticIndexByDateForSuper() {}
+    getStaticIndexByDateForAdmin() {}
+    getStaticIndexByDate() {}
+    get type() {
+        return require('../thrift/StatisticsService');
+    }
+};

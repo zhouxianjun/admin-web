@@ -78,4 +78,11 @@ module.exports = class {
         let res = yield userService.update(new PublicStruct.UserStruct(params));
         Utils.writeResult(this, new Result(res ? true : false));
     }
+    * childUsers() {
+        let users = yield userService.usersByUser(this.session.user.id);
+        Utils.writeResult(this, new Result(true, {
+            key: 'list',
+            value: Utils.makeList(users)
+        }));
+    }
 };

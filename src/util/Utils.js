@@ -150,7 +150,7 @@ module.exports = class Utils {
     }
 
     static writeResult(ctx, result) {
-        if (ctx.path.startsWith('/user/login')) {
+        if (ctx.path.startsWith(`${config.base_path}/user/login`)) {
             ctx.redirect(`/pages/login.html?error=${querystring.escape(result.json.msg)}`);
             return;
         }
@@ -177,7 +177,7 @@ module.exports = class Utils {
         for(let item of array){
             Reflect.ownKeys(item).forEach(key => {
                 if (item[key] instanceof thrift.Int64)
-                    item[key] = item[key].toNumber();
+                    item[key] = `${item[key].toNumber()}`;
             });
             if(item[prop_parent] == pid){
                 result.push(item);
@@ -196,7 +196,7 @@ module.exports = class Utils {
         for(let item of array){
             Reflect.ownKeys(item).forEach(key => {
                 if (item[key] instanceof thrift.Int64)
-                    item[key] = item[key].toNumber();
+                    item[key] = `${item[key].toNumber()}`;
             });
         }
         return array;
